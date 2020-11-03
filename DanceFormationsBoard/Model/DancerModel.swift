@@ -12,3 +12,7 @@ public class DancerModel{
   }
   
 }
+
+
+
+//Game Scene - add new dancer models, add to formation

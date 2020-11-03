@@ -10,30 +10,42 @@
         <!--Game View Controller-->
         <scene sceneID="LJV-bT-5d2">
             <objects>
-                <viewController id="6mI-VL-OAy" customClass="GameViewController" customModule="DanceFormations" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="6mI-VL-OAy" customClass="GameViewController" customModule="DanceFormationsBoard" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="XmL-ea-QKr">
                         <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CTd-Iw-4qb" userLabel="DetailView">
-                                <rect key="frame" x="44" y="0.0" width="240" height="343"/>
+                                <rect key="frame" x="44" y="0.0" width="200" height="343"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GJK-Ph-4bZ">
+                                        <rect key="frame" x="5" y="31" width="56" height="27"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="22"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Color:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X4d-wj-f98">
+                                        <rect key="frame" x="6" y="60" width="55" height="27"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="22"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Lines:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TlB-Oq-wPz">
+                                        <rect key="frame" x="5" y="95" width="55" height="27"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="22"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
                                 <color key="backgroundColor" red="0.11276707800000001" green="0.29728722569999999" blue="0.25714913010000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="240" id="cqV-KZ-MQ1"/>
+                                    <constraint firstAttribute="width" constant="200" id="cqV-KZ-MQ1"/>
                                 </constraints>
                             </view>
-                            <skView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K0L-qv-hQn" userLabel="stageView">
-                                <rect key="frame" x="292" y="0.0" width="312" height="343"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            </skView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1lt-HL-pxQ" userLabel="formationsTableView">
-                                <rect key="frame" x="612" y="0.0" width="240" height="343"/>
-                                <color key="backgroundColor" red="0.60784313729999995" green="0.64313725489999995" blue="0.70588235290000001" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="240" id="aa4-67-X1w"/>
-                                </constraints>
-                            </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ftX-yU-3dY" userLabel="musicView">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ftX-yU-3dY" userLabel="musicView">
                                 <rect key="frame" x="44" y="351" width="808" height="42"/>
                                 <subviews>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="WOc-2J-3Nd">
@@ -54,16 +66,52 @@
                                     <constraint firstItem="WOc-2J-3Nd" firstAttribute="leading" secondItem="ftX-yU-3dY" secondAttribute="leading" constant="32" id="qi5-LO-r1h"/>
                                 </constraints>
                             </view>
+                            <skView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K0L-qv-hQn" userLabel="stageView">
+                                <rect key="frame" x="252" y="0.0" width="392" height="343"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </skView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="AXB-O6-l8i">
+                                <rect key="frame" x="652" y="0.0" width="200" height="343"/>
+                                <subviews>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1lt-HL-pxQ" userLabel="formationsTableView">
+                                        <rect key="frame" x="0.0" y="0.0" width="200" height="305"/>
+                                        <color key="backgroundColor" red="0.11276707800000001" green="0.29728722569999999" blue="0.25714913010000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="200" id="aa4-67-X1w"/>
+                                        </constraints>
+                                        <color key="sectionIndexBackgroundColor" red="0.72134203740000002" green="1" blue="0.89536572999999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <prototypes>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReusableCell" id="V0d-4B-7ju" customClass="FormationSnapshotCell" customModule="DanceFormationsBoard" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="28" width="200" height="43.5"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="V0d-4B-7ju" id="h0E-zt-olN">
+                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </tableViewCellContentView>
+                                                <color key="backgroundColor" red="0.11276707800000001" green="0.29728722569999999" blue="0.25714913010000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </tableViewCell>
+                                        </prototypes>
+                                    </tableView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="coJ-4r-bti">
+                                        <rect key="frame" x="77" y="313" width="46" height="30"/>
+                                        <state key="normal" title="Button"/>
+                                        <connections>
+                                            <action selector="formationCreate:" destination="6mI-VL-OAy" eventType="touchUpInside" id="DZw-8B-bLd"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="nno-Um-1to"/>
                         <color key="backgroundColor" red="0.11372549019607843" green="0.29803921568627451" blue="0.25882352941176467" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="nno-Um-1to" firstAttribute="trailing" secondItem="ftX-yU-3dY" secondAttribute="trailing" id="5gN-oC-VHl"/>
+                            <constraint firstItem="nno-Um-1to" firstAttribute="trailing" secondItem="AXB-O6-l8i" secondAttribute="trailing" id="8if-wS-VAQ"/>
                             <constraint firstItem="CTd-Iw-4qb" firstAttribute="leading" secondItem="nno-Um-1to" secondAttribute="leading" id="CC4-Z5-zlf"/>
                             <constraint firstItem="nno-Um-1to" firstAttribute="bottom" secondItem="K0L-qv-hQn" secondAttribute="bottom" constant="50" id="CXw-w6-1h0"/>
-                            <constraint firstItem="nno-Um-1to" firstAttribute="bottom" secondItem="1lt-HL-pxQ" secondAttribute="bottom" constant="50" id="FKr-22-MMg"/>
-                            <constraint firstItem="1lt-HL-pxQ" firstAttribute="leading" secondItem="K0L-qv-hQn" secondAttribute="trailing" constant="8" id="MNd-m3-3WP"/>
-                            <constraint firstItem="1lt-HL-pxQ" firstAttribute="top" secondItem="nno-Um-1to" secondAttribute="top" id="P7t-lG-XBY"/>
+                            <constraint firstItem="AXB-O6-l8i" firstAttribute="top" secondItem="nno-Um-1to" secondAttribute="top" id="ChO-KW-MCN"/>
+                            <constraint firstItem="AXB-O6-l8i" firstAttribute="leading" secondItem="K0L-qv-hQn" secondAttribute="trailing" constant="8" id="De4-TH-5bb"/>
+                            <constraint firstItem="nno-Um-1to" firstAttribute="bottom" secondItem="AXB-O6-l8i" secondAttribute="bottom" constant="50" id="Rbv-Ab-Kro"/>
                             <constraint firstItem="CTd-Iw-4qb" firstAttribute="top" secondItem="nno-Um-1to" secondAttribute="top" id="VN6-TX-1cA"/>
                             <constraint firstItem="ftX-yU-3dY" firstAttribute="top" secondItem="K0L-qv-hQn" secondAttribute="bottom" constant="8" id="aGy-88-vdk"/>
                             <constraint firstItem="nno-Um-1to" firstAttribute="bottom" secondItem="CTd-Iw-4qb" secondAttribute="bottom" constant="50" id="akO-cT-lfQ"/>
@@ -71,10 +119,10 @@
                             <constraint firstItem="ftX-yU-3dY" firstAttribute="leading" secondItem="nno-Um-1to" secondAttribute="leading" id="cny-Bu-Hgh"/>
                             <constraint firstItem="K0L-qv-hQn" firstAttribute="top" secondItem="nno-Um-1to" secondAttribute="top" id="d0v-wZ-lOi"/>
                             <constraint firstItem="ftX-yU-3dY" firstAttribute="bottom" secondItem="nno-Um-1to" secondAttribute="bottom" id="o9j-ns-cZL"/>
-                            <constraint firstItem="nno-Um-1to" firstAttribute="trailing" secondItem="1lt-HL-pxQ" secondAttribute="trailing" id="u6t-sZ-6Ha"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="formsTableView" destination="1lt-HL-pxQ" id="obn-Y0-dTc"/>
                         <outlet property="squareView" destination="K0L-qv-hQn" id="Thk-fn-lvd"/>
                     </connections>
                 </viewController>

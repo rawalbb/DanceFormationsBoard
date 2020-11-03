@@ -1,13 +1,16 @@
 
 import SpriteKit
+import UIKit
 
 class GameScene: SKScene {
   
   var currentNode: SKSpriteNode?
-  let player = SKSpriteNode(imageNamed: "player")
   var xArray: [CGFloat] = []
   var yArray: [CGFloat] = []
   var dancerLabel: String = ""
+    var formationNodes: Formation?
+    var formationImage: UIImage?
+    var createFormationPressed: Bool = false
     
   override func didMove(to view: SKView) {
     // 2
@@ -147,7 +150,10 @@ class GameScene: SKScene {
           //self.addChild(label)
           n.addChild(label)
           print(label.position, " 2 LABEL Position")
-          
+            
+            formationNodes?.dancersInFormation.append(DancerModel(dancer: n, label: "Hello"))
+            formationNodes?.image = formationImage
+            
         }
           for node in touchedNodes.reversed() {
               if node.name == "draggable" {
