@@ -16,7 +16,7 @@ class GameViewController: UIViewController{
 //        scene1.dancerLabel = label
 //    }
     
-    var formimage: UIImage?
+    var formimage: [UIImage] = []
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     
@@ -30,7 +30,7 @@ class GameViewController: UIViewController{
             
         }
        
-        formimage = image
+        formimage.append(image)
         scene1.formationImage = image
         scene1.createFormationPressed = true
         self.formsTableView.reloadData()
@@ -85,17 +85,16 @@ class GameViewController: UIViewController{
 extension GameViewController: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
-        return 1
+        return formimage.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.formsTableView.dequeueReusableCell(withIdentifier: "ReusableCell") as! FormationSnapshotCell
         cell.formationName.delegate = self
-        if let image = formimage{
-            cell.formationImage?.image = image
-        }
         
-        cell.formationName?.text = "Formation 1"
+        cell.formationImage?.image = formimage[indexPath.row]
+
+        cell.formationName?.text = "Formation "
         
         return cell
         
