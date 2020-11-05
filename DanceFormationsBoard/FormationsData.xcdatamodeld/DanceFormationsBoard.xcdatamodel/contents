@@ -8,9 +8,10 @@
     </entity>
     <entity name="Formation" representedClassName=".Formation" syncable="YES">
         <attribute name="dancer" optional="YES" attributeType="Transformable" customClassName=".[Dancer]"/>
+        <attribute name="image" attributeType="Binary"/>
     </entity>
     <elements>
         <element name="Dancer" positionX="-45" positionY="0" width="128" height="103"/>
-        <element name="Formation" positionX="-18" positionY="27" width="128" height="58"/>
+        <element name="Formation" positionX="-18" positionY="27" width="128" height="73"/>
     </elements>
 </model>

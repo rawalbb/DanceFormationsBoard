@@ -8,13 +8,13 @@ class GameViewController: UIViewController{
     
     @IBOutlet weak var formsTableView: UITableView!
     @IBOutlet weak var squareView: SKView!
-//    @IBOutlet weak var dancerLabel: UITextField!
-//
-//
-//    @IBAction func buttonPressed(_ sender: UIButton) {
-//      let label = (dancerLabel.text)!
-//        scene1.dancerLabel = label
-//    }
+    //    @IBOutlet weak var dancerLabel: UITextField!
+    //
+    //
+    //    @IBAction func buttonPressed(_ sender: UIButton) {
+    //      let label = (dancerLabel.text)!
+    //        scene1.dancerLabel = label
+    //    }
     
     var formimage: [UIImage] = []
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -29,46 +29,53 @@ class GameViewController: UIViewController{
             squareView.drawHierarchy(in: squareView.bounds, afterScreenUpdates: true)
             
         }
-       
-        formimage.append(image)
-        scene1.formationImage = image
-        scene1.createFormationPressed = true
-        self.formsTableView.reloadData()
         var formarray = scene1.formationArray
         print("formarray", formarray)
         
-        let newFormation = Formation(context: self.context)
-        newFormation.dancer = formarray
+        formimage.append(image)
+        if let data = image.jpegData(compressionQuality: 1.0){
+            let newFormation = Formation(context: self.context)
+            newFormation.dancer = formarray
+            saveFormation()
+        }
+        else{
+            print("ERROR in formation image saving")
+        }
+        scene1.formationImage = image
+        scene1.createFormationPressed = true
+        self.formsTableView.reloadData()
         
-        saveFormation()
+        
+        
+        
         
     }
     
     var scene1: GameScene!
     
     
-  override func viewDidLoad() {
-    super.viewDidLoad()
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        scene1 = GameScene(size: squareView.bounds.size)
+        //let skView = view as! SKView
+        //squareView.showsFPS = true
+        //squareView.showsNodeCount = true
+        squareView.ignoresSiblingOrder = true
+        scene1.scaleMode = .fill
+        
+        formsTableView.register(UINib(nibName: "FormationSnapshotCell", bundle: nil), forCellReuseIdentifier: "ReusableCell")
+        formsTableView.dataSource = self
+        formsTableView.delegate = self
+        
+        squareView.presentScene(scene1)
+        
+        
+    }
     
-    scene1 = GameScene(size: squareView.bounds.size)
-    //let skView = view as! SKView
-    //squareView.showsFPS = true
-    //squareView.showsNodeCount = true
-    squareView.ignoresSiblingOrder = true
-    scene1.scaleMode = .fill
-    
-    formsTableView.register(UINib(nibName: "FormationSnapshotCell", bundle: nil), forCellReuseIdentifier: "ReusableCell")
-    formsTableView.dataSource = self
-    formsTableView.delegate = self
-    
-    squareView.presentScene(scene1)
-
-
-  }
-  
-  override var prefersStatusBarHidden: Bool {
-    return true
-  }
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
     
     func saveFormation(){
         
@@ -79,12 +86,12 @@ class GameViewController: UIViewController{
         }
     }
 }
-  
+
 
 
 extension GameViewController: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-
+        
         return formimage.count
     }
     
@@ -93,7 +100,7 @@ extension GameViewController: UITableViewDataSource, UITableViewDelegate{
         cell.formationName.delegate = self
         
         cell.formationImage?.image = formimage[indexPath.row]
-
+        
         cell.formationName?.text = "Formation "
         
         return cell
@@ -104,10 +111,10 @@ extension GameViewController: UITableViewDataSource, UITableViewDelegate{
 }
 
 extension GameViewController: UITextFieldDelegate{
-                       
+    
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
-    }
+}
 
