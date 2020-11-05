@@ -1,6 +1,7 @@
 
 import SpriteKit
 import UIKit
+import CoreData
 
 class GameScene: SKScene {
   
@@ -8,26 +9,15 @@ class GameScene: SKScene {
   var xArray: [CGFloat] = []
   var yArray: [CGFloat] = []
   var dancerLabel: String = ""
-    var formationNodes: Formation?
+    //var formationNodes: Formation?
     var formationImage: UIImage?
     var createFormationPressed: Bool = false
+    
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
   override func didMove(to view: SKView) {
     // 2
     backgroundColor = SKColor.gray
-    // 3
-//    player.position = CGPoint(x: size.width * 0.1, y: size.height * 0.5)
-//    // 4
-//    addChild(player)
-    
-//       var gridWidthMultiple: CGFloat
-//       {
-//           return 10
-//       }
-//       var gridHeightMultiple : CGFloat
-//       {
-//           return 20
-//       }
 
        var gridWidth: CGFloat
        {
@@ -50,7 +40,6 @@ class GameScene: SKScene {
        }
     
     drawGrid(width: gridWidth, height: gridHeight)
-    
     
   }
   
@@ -151,8 +140,14 @@ class GameScene: SKScene {
           n.addChild(label)
           print(label.position, " 2 LABEL Position")
             
-            formationNodes?.dancersInFormation.append(DancerModel(dancer: n, label: "Hello"))
-            formationNodes?.image = formationImage
+            let newDancer = Dancer(context: self.context)
+            newDancer.xPos = Float(n.position.x)
+            newDancer.yPos = Float(n.position.y)
+            newDancer.label = dancerLabel
+            newDancer.color = "Black"
+            self.saveDancers()
+            
+
             
         }
           for node in touchedNodes.reversed() {
@@ -223,5 +218,18 @@ class GameScene: SKScene {
     return CGPoint(x: nearestX, y: nearestY)
 
   }
+    
+    
+    
+    func saveDancers(){
+        
+        do{
+            try context.save()
+        } catch {
+            print("Error saving context \(error)")
+        }
+    }
 }
+
+
 

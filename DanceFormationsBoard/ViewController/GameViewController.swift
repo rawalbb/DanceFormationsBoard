@@ -4,7 +4,6 @@ import SpriteKit
 
 class GameViewController: UIViewController{
     
-    var formationsBrain: FormationsBrain?
     
     @IBOutlet weak var formsTableView: UITableView!
     @IBOutlet weak var squareView: SKView!
