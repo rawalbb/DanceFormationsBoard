@@ -1,6 +1,7 @@
 
 import UIKit
 import SpriteKit
+import CoreData
 
 class GameViewController: UIViewController{
     
@@ -16,6 +17,9 @@ class GameViewController: UIViewController{
 //    }
     
     var formimage: UIImage?
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    
     @IBAction func formationCreate(_ sender: Any) {
         
         let renderer = UIGraphicsImageRenderer(size: squareView.frame.size)
@@ -30,6 +34,13 @@ class GameViewController: UIViewController{
         scene1.formationImage = image
         scene1.createFormationPressed = true
         self.formsTableView.reloadData()
+        var formarray = scene1.formationArray
+        print("formarray", formarray)
+        
+        let newFormation = Formation(context: self.context)
+        newFormation.dancer = formarray
+        
+        saveFormation()
         
     }
     
@@ -58,8 +69,17 @@ class GameViewController: UIViewController{
   override var prefersStatusBarHidden: Bool {
     return true
   }
-  
+    
+    func saveFormation(){
+        
+        do{
+            try context.save()
+        } catch {
+            print("Error saving context \(error)")
+        }
+    }
 }
+  
 
 
 extension GameViewController: UITableViewDataSource, UITableViewDelegate{

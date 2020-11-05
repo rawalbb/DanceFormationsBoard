@@ -12,8 +12,13 @@ class GameScene: SKScene {
     //var formationNodes: Formation?
     var formationImage: UIImage?
     var createFormationPressed: Bool = false
+    var formationArray: [Dancer] = []
+    
+
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    
     
   override func didMove(to view: SKView) {
     // 2
@@ -45,6 +50,7 @@ class GameScene: SKScene {
   
 
   func drawGrid(width: CGFloat, height: CGFloat){
+    
 
     let xIncrement: CGFloat = width/10
     var xCounter: CGFloat = 0.0
@@ -141,11 +147,14 @@ class GameScene: SKScene {
           print(label.position, " 2 LABEL Position")
             
             let newDancer = Dancer(context: self.context)
+           
+            //let formation = Formation(context: Dancer)
             newDancer.xPos = Float(n.position.x)
             newDancer.yPos = Float(n.position.y)
             newDancer.label = dancerLabel
             newDancer.color = "Black"
             self.saveDancers()
+            formationArray.append(newDancer)
             
 
             
@@ -230,6 +239,14 @@ class GameScene: SKScene {
         }
     }
 }
+
+func createFormation(){
+    
+//    let newFormation = Formation(context: self.context)
+
+}
+
+
 
 
 
