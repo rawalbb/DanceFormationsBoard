@@ -79,7 +79,6 @@
                                         <constraints>
                                             <constraint firstAttribute="width" constant="200" id="aa4-67-X1w"/>
                                         </constraints>
-                                        <color key="sectionIndexBackgroundColor" red="0.72134203740000002" green="1" blue="0.89536572999999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReusableCell" id="V0d-4B-7ju" customClass="FormationSnapshotCell" customModule="DanceFormationsBoard" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="28" width="200" height="43.5"/>

@@ -10,11 +10,11 @@
 		4324B4672550976800B3060E /* FormationSnapshotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B4652550976800B3060E /* FormationSnapshotCell.swift */; };
 		4324B4682550976800B3060E /* FormationSnapshotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4324B4662550976800B3060E /* FormationSnapshotCell.xib */; };
 		4324B4DC255358A200B3060E /* FormationsData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4324B4D9255358A200B3060E /* FormationsData.xcdatamodeld */; };
-		4324B4EF25539B9C00B3060E /* Dancer+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B4ED25539B9C00B3060E /* Dancer+CoreDataClass.swift */; };
-		4324B4F025539B9C00B3060E /* Dancer+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B4EE25539B9C00B3060E /* Dancer+CoreDataProperties.swift */; };
-		4324B4F525539BC600B3060E /* Formation+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B4F325539BC600B3060E /* Formation+CoreDataClass.swift */; };
-		4324B4F625539BC600B3060E /* Formation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B4F425539BC600B3060E /* Formation+CoreDataProperties.swift */; };
 		4324B4FB2553B51900B3060E /* CoreDataUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B4FA2553B51900B3060E /* CoreDataUtil.swift */; };
+		4324B51B25563A9A00B3060E /* Dancer+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B51725563A9900B3060E /* Dancer+CoreDataClass.swift */; };
+		4324B51C25563A9A00B3060E /* Dancer+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B51825563A9900B3060E /* Dancer+CoreDataProperties.swift */; };
+		4324B51D25563A9A00B3060E /* Formation+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B51925563A9A00B3060E /* Formation+CoreDataClass.swift */; };
+		4324B51E25563A9A00B3060E /* Formation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B51A25563A9A00B3060E /* Formation+CoreDataProperties.swift */; };
 		43A0A9D925505F5300394193 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0A9D825505F5300394193 /* AppDelegate.swift */; };
 		43A0A9DB25505F5300394193 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0A9DA25505F5300394193 /* SceneDelegate.swift */; };
 		43A0A9DD25505F5400394193 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0A9DC25505F5300394193 /* GameViewController.swift */; };
@@ -32,11 +32,11 @@
 		4324B4662550976800B3060E /* FormationSnapshotCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FormationSnapshotCell.xib; sourceTree = "<group>"; };
 		4324B4DA255358A200B3060E /* DanceFormationsBoard.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DanceFormationsBoard.xcdatamodel; sourceTree = "<group>"; };
 		4324B4DB255358A200B3060E /* FormationsData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FormationsData.xcdatamodel; sourceTree = "<group>"; };
-		4324B4ED25539B9C00B3060E /* Dancer+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dancer+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
-		4324B4EE25539B9C00B3060E /* Dancer+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dancer+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
-		4324B4F325539BC600B3060E /* Formation+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Formation+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
-		4324B4F425539BC600B3060E /* Formation+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Formation+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		4324B4FA2553B51900B3060E /* CoreDataUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataUtil.swift; sourceTree = "<group>"; };
+		4324B51725563A9900B3060E /* Dancer+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dancer+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		4324B51825563A9900B3060E /* Dancer+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dancer+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		4324B51925563A9A00B3060E /* Formation+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Formation+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		4324B51A25563A9A00B3060E /* Formation+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Formation+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		43A0A9D525505F5300394193 /* DanceFormationsBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DanceFormationsBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43A0A9D825505F5300394193 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		43A0A9DA25505F5300394193 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -65,10 +65,10 @@
 		4324B4EA255399EA00B3060E /* Entities */ = {
 			isa = PBXGroup;
 			children = (
-				4324B4ED25539B9C00B3060E /* Dancer+CoreDataClass.swift */,
-				4324B4EE25539B9C00B3060E /* Dancer+CoreDataProperties.swift */,
-				4324B4F325539BC600B3060E /* Formation+CoreDataClass.swift */,
-				4324B4F425539BC600B3060E /* Formation+CoreDataProperties.swift */,
+				4324B51725563A9900B3060E /* Dancer+CoreDataClass.swift */,
+				4324B51825563A9900B3060E /* Dancer+CoreDataProperties.swift */,
+				4324B51925563A9A00B3060E /* Formation+CoreDataClass.swift */,
+				4324B51A25563A9A00B3060E /* Formation+CoreDataProperties.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -228,15 +228,15 @@
 				4324B4FB2553B51900B3060E /* CoreDataUtil.swift in Sources */,
 				43A0A9DD25505F5400394193 /* GameViewController.swift in Sources */,
 				43A0A9D925505F5300394193 /* AppDelegate.swift in Sources */,
+				4324B51B25563A9A00B3060E /* Dancer+CoreDataClass.swift in Sources */,
 				4324B4672550976800B3060E /* FormationSnapshotCell.swift in Sources */,
-				4324B4F525539BC600B3060E /* Formation+CoreDataClass.swift in Sources */,
-				4324B4F025539B9C00B3060E /* Dancer+CoreDataProperties.swift in Sources */,
-				4324B4EF25539B9C00B3060E /* Dancer+CoreDataClass.swift in Sources */,
 				43A0AA052550601300394193 /* FormationViewModel.swift in Sources */,
+				4324B51D25563A9A00B3060E /* Formation+CoreDataClass.swift in Sources */,
 				43A0A9DB25505F5300394193 /* SceneDelegate.swift in Sources */,
+				4324B51C25563A9A00B3060E /* Dancer+CoreDataProperties.swift in Sources */,
 				43A0A9FC2550600200394193 /* DancerViewModel.swift in Sources */,
 				4324B4DC255358A200B3060E /* FormationsData.xcdatamodeld in Sources */,
-				4324B4F625539BC600B3060E /* Formation+CoreDataProperties.swift in Sources */,
+				4324B51E25563A9A00B3060E /* Formation+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

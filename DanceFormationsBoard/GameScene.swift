@@ -12,7 +12,8 @@ class GameScene: SKScene {
     //var formationNodes: Formation?
     var formationImage: UIImage?
     var createFormationPressed: Bool = false
-    var formationArray: [Dancer] = []
+    var formationArray: [Formation] = []
+    var newForm: Formation!
     
 
     
@@ -94,6 +95,23 @@ class GameScene: SKScene {
     
     
   }
+    
+    public func formationSelected(formationNum: Int){
+        //drawGrid(width: <#T##CGFloat#>, height: <#T##CGFloat#>)
+        var selectedFormation = formationArray[formationNum]
+        var dancers = selectedFormation.dancers
+        var dancerArray = dancers?.allObjects as! [Dancer]
+        self.removeAllChildren()
+        for dancer in dancerArray {
+            let n = SKSpriteNode(imageNamed: "circle")
+            n.position = CGPoint(x: CGFloat(dancer.xPos), y: CGFloat(dancer.yPos))
+            print("Dancer", dancer.xPos)
+            self.addChild(n)
+        }
+        
+        
+        
+    }
   
   
 //  override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -149,12 +167,14 @@ class GameScene: SKScene {
             let newDancer = Dancer(context: self.context)
            
             //let formation = Formation(context: Dancer)
+            
             newDancer.xPos = Float(n.position.x)
             newDancer.yPos = Float(n.position.y)
             newDancer.label = dancerLabel
             newDancer.color = "Black"
+            newDancer.owner = newForm
+            //newDancer.dancerId = UUID().uuidString
             self.saveDancers()
-            formationArray.append(newDancer)
             
 
             
@@ -240,11 +260,7 @@ class GameScene: SKScene {
     }
 }
 
-func createFormation(){
-    
-//    let newFormation = Formation(context: self.context)
 
-}
 
 
 
