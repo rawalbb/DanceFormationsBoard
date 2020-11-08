@@ -3,47 +3,36 @@ import SpriteKit
 import UIKit
 import CoreData
 
+protocol GameSceneUpdatesDelegate {
+    func dancerToAdd(xPosition: Float, yPosition: Float, id: String, color: String)
+}
+
+
 class GameScene: SKScene {
   
   var currentNode: SKSpriteNode?
   var xArray: [CGFloat] = []
   var yArray: [CGFloat] = []
   var dancerLabel: String = ""
-    //var formationNodes: Formation?
-    var formationImage: UIImage?
+    var gridWidth: CGFloat = 0.0
+    var gridHeight: CGFloat = 0.0
+  var myDelegate : GameSceneUpdatesDelegate!
+
     var createFormationPressed: Bool = false
     var formationArray: [Formation] = []
-    var newForm: Formation!
-    
 
-    
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    
     
     
   override func didMove(to view: SKView) {
     // 2
-    backgroundColor = SKColor.gray
+    backgroundColor = SKColor.white
 
-       var gridWidth: CGFloat
-       {
-        print(view.bounds.minX, view.bounds.maxX)
-        print("FRAME", view.frame.minY, view.frame.maxY)
-        return view.bounds.width
-       }
+    gridWidth = view.bounds.width
 
-       var gridHeight: CGFloat
-       {
-        print(view.bounds.minY, view.bounds.maxX)
-        print("FRAME", view.frame.minX, view.frame.maxX)
-        return view.bounds.height
-       }
+    gridHeight = view.bounds.height
+ 
 
-       var gridCenter: CGPoint {
-        
-        return CGPoint(x: view.bounds.midX, y: view.bounds.midY)
-        
-       }
+       //var gridCenter: CGPoint { return CGPoint(x: view.bounds.midX, y: view.bounds.midY) }
     
     drawGrid(width: gridWidth, height: gridHeight)
     
@@ -95,23 +84,10 @@ class GameScene: SKScene {
     
     
   }
+        
+        
+        
     
-    public func formationSelected(formationNum: Int){
-        //drawGrid(width: <#T##CGFloat#>, height: <#T##CGFloat#>)
-        var selectedFormation = formationArray[formationNum]
-        var dancers = selectedFormation.dancers
-        var dancerArray = dancers?.allObjects as! [Dancer]
-        self.removeAllChildren()
-        for dancer in dancerArray {
-            let n = SKSpriteNode(imageNamed: "circle")
-            n.position = CGPoint(x: CGFloat(dancer.xPos), y: CGFloat(dancer.yPos))
-            print("Dancer", dancer.xPos)
-            self.addChild(n)
-        }
-        
-        
-        
-    }
   
   
 //  override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -164,17 +140,17 @@ class GameScene: SKScene {
           n.addChild(label)
           print(label.position, " 2 LABEL Position")
             
-            let newDancer = Dancer(context: self.context)
-           
-            //let formation = Formation(context: Dancer)
             
-            newDancer.xPos = Float(n.position.x)
-            newDancer.yPos = Float(n.position.y)
-            newDancer.label = dancerLabel
-            newDancer.color = "Black"
-            newDancer.owner = newForm
-            //newDancer.dancerId = UUID().uuidString
-            self.saveDancers()
+//            let newDancer = Dancer(context: self.context)
+//
+//            //let formation = Formation(context: Dancer)
+//
+            let xPos = Float(n.position.x)
+            let yPos = Float(n.position.y)
+            let color = "Black"
+            let dancerId = UUID().uuidString
+            self.myDelegate.dancerToAdd(xPosition: xPos, yPosition: yPos, id: dancerId, color: color)
+            //self.saveDancers()
             
 
             
@@ -249,20 +225,36 @@ class GameScene: SKScene {
   }
     
     
-    
-    func saveDancers(){
+    func formationSelected(dancers: [Dancer]){
         
-        do{
-            try context.save()
-        } catch {
-            print("Error saving context \(error)")
-        }
+        self.removeAllChildren()
+        drawGrid(width: gridWidth, height: gridHeight)
+        for dancer in dancers{
+        let n = SKSpriteNode(imageNamed: "circle")
+        let label = SKLabelNode(text: dancerLabel)
+        print("DANCE LABEL", dancerLabel)
+        
+        ////When text is changed it should get the currently selected Node and change it's text
+        
+        label.fontSize = 12.0
+        label.color = UIColor.black
+        
+
+        //closestNode!.lineWidth = 20
+        
+            n.position = CGPoint(x: CGFloat(dancer.xPos), y: CGFloat(dancer.yPos))
+        label.position = CGPoint(x: 0, y: 16 )
+        n.name = "draggable"
+           
+           self.addChild(n)
+        //self.addChild(label)
+        n.addChild(label)
+        print(label.position, " 2 LABEL Position")
+        
     }
+    
 }
 
-
-
-
-
+}
 
 

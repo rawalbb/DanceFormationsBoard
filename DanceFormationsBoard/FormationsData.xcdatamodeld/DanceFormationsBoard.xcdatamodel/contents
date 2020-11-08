@@ -2,6 +2,7 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17192" systemVersion="19H2" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Dancer" representedClassName=".Dancer" syncable="YES">
         <attribute name="color" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="label" optional="YES" attributeType="String"/>
         <attribute name="xPos" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="yPos" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
@@ -10,10 +11,10 @@
     <entity name="Formation" representedClassName=".Formation" syncable="YES">
         <attribute name="image" optional="YES" attributeType="Binary"/>
         <attribute name="name" optional="YES" attributeType="String"/>
-        <relationship name="dancers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Dancer" inverseName="owner" inverseEntity="Dancer"/>
+        <relationship name="dancers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Dancer" inverseName="owner" inverseEntity="Dancer"/>
     </entity>
     <elements>
-        <element name="Dancer" positionX="-45" positionY="0" width="128" height="118"/>
+        <element name="Dancer" positionX="-45" positionY="0" width="128" height="133"/>
         <element name="Formation" positionX="-18" positionY="27" width="128" height="88"/>
     </elements>
 </model>

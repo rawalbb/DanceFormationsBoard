@@ -1,13 +1,97 @@
 
 import Foundation
+import UIKit
+import SpriteKit
+import CoreData
+
 
 class FormationViewModel{
-  
-  //func manuallyDrawPaths
-  
-  //new class Routine with an array of all formations
-  //Should show amount of seconds you want to stay in each formation
-  //x to delete node
-  //allow drag and drop to switch formation order
-  //allow music to be added
+    
+    
+    var currentIndex = 0
+    var formationArray = [Formation]()
+    var currentFormation: Formation?
+    
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    
+    func saveFormation(){
+        do{
+            try context.save()
+        } catch {
+            print("Error saving context \(error)")
+        }
+    }
+    
+    func createNewFormation(formData: Data? = nil) -> Formation{
+        var numFormation = formationArray.count-1
+        let newFormation = Formation(context: context)
+        newFormation.name = "Formation \(numFormation)"
+        if formData == nil{
+            newFormation.image = UIImage(named: "circle")?.jpegData(compressionQuality: 1.0)
+        } else{
+            newFormation.image = formData
+        }
+        newFormation.dancers = nil
+        numFormation += 1
+        self.formationArray.append(newFormation)
+        self.saveFormation()
+        return newFormation
+    }
+    
+    func getCurrentFormation() -> Formation{
+        currentFormation = formationArray[currentIndex]
+        return formationArray[currentIndex]
+        
+    }
+    
+    func setCurrentSelection(index: Int){
+        currentIndex = index
+    }
+    
+    func updateSelected(name: String, formArray: [Formation]){
+        //Called in tableview didSelectRow
+        //and Initially
+        currentFormation = formArray.filter({ $0.name == name }).first
+    }
+    
+    func updateFormImage(){
+        
+    }
+    
+    func updateFormLabel(){
+        
+    }
+    
+    func updateDancerInFormation(dancer: Dancer){
+        
+
+    }
+    
+    func drawInitialGrid(width: CGFloat, height: CGFloat){
+        
+    }
+    
+    func removeFormation(row: Int){
+        
+        context.delete(formationArray[row]) //removes all Dancers associated with it
+        formationArray.remove(at: row)
+        //Make sure to call save after
+        
+    }
+    
+    func loadFormations() -> [Formation]{
+        //Should be called in viewDidLoad
+        
+        let request : NSFetchRequest<Formation> = Formation.fetchRequest()
+        do{
+            
+            formationArray = try context.fetch(request)
+        }
+        catch{
+            print("Error Fetching Data from Context in Formation ViewModel \(error)")
+        }
+        
+        return formationArray
+    }
 }

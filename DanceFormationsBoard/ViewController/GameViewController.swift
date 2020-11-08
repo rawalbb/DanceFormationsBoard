@@ -9,11 +9,15 @@ class GameViewController: UIViewController{
     @IBOutlet weak var formsTableView: UITableView!
     @IBOutlet weak var squareView: SKView!
     
-    //var formimage: [UIImage] = [] //Don't need
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var formationVM = FormationViewModel()
+    var dancerVM = DancerViewModel()
     var formationArray: [Formation] = []
+    
+    //var formimage: [UIImage] = [] //Don't need
+    //let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    //var formationArray: [Formation] = []
     var scene1: GameScene!
-    var newFormation: Formation!
+    //var newFormation: Formation!
     
     //Need Array of Formations
     
@@ -25,56 +29,38 @@ class GameViewController: UIViewController{
         squareView.ignoresSiblingOrder = true
         scene1.scaleMode = .fill
         
+        formationArray = formationVM.loadFormations()
+        if formationArray.count == 0{
+            formationVM.createNewFormation()
+            formationArray = formationVM.loadFormations()
+            var curr = formationVM.getCurrentFormation()
+            dancerVM.loadDancers(selectedFormation: curr)
+        }
+        formationVM.setCurrentSelection(index: 0)
+        
         formsTableView.register(UINib(nibName: "FormationSnapshotCell", bundle: nil), forCellReuseIdentifier: "ReusableCell")
         formsTableView.dataSource = self
         formsTableView.delegate = self
+        scene1.myDelegate = self
         squareView.presentScene(scene1)
         
-        loadFormations()
 
-            newFormation = Formation(context: self.context)
-            scene1.newForm = newFormation
-        
-        
     }
     
     
     override var prefersStatusBarHidden: Bool {
         return true
     }
-    
-    func saveFormation(){
-        
-        do{
-            try context.save()
-        } catch {
-            print("Error saving context \(error)")
-        }
-    }
 
     
     @IBAction func formationCreate(_ sender: Any) {
         
-        let renderer = UIGraphicsImageRenderer(size: squareView.frame.size)
-        let image = renderer.image { ctx in
-            squareView.drawHierarchy(in: squareView.bounds, afterScreenUpdates: true)
-        }
-        //var formarray = scene1.formationArray
-        //print("formarray", formarray)
-        //^^Getting array of dancers
-        //formimage.append(image)
-        if let data = image.jpegData(compressionQuality: 1.0){
-            newFormation.image = data
-            saveFormation()
-        }
-        else{
-            print("ERROR in formation image saving")
-        }
-        scene1.formationImage = image
-        scene1.createFormationPressed = true
-        loadFormations()
+        var imageData = dancerVM.imageToData(view: squareView)
+        formationVM.createNewFormation(formData: imageData)
+        formationArray = formationVM.loadFormations()
+        var curr = formationVM.getCurrentFormation()
+        dancerVM.loadDancers(selectedFormation: curr)
         self.formsTableView.reloadData()
-          
     }
 
 
@@ -82,35 +68,34 @@ class GameViewController: UIViewController{
 
 extension GameViewController: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        //return formimage.count
+    
         return formationArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = self.formsTableView.dequeueReusableCell(withIdentifier: "ReusableCell") as! FormationSnapshotCell
-        cell.formationName.delegate = self
+        //cell.formationName.delegate = self
         
         let item = formationArray[indexPath.row]
-        if let formationImage = item.image{
-            let cellImage = UIImage(data: formationImage)
+        if let formationData = item.image{
+            let cellImage = UIImage(data: formationData)
             cell.formationImage?.image = cellImage
         }
         
-        
-        //cell.formationImage?.image = formimage[indexPath.row]
-        
-        cell.formationName?.text = "Formation "
-        
+        cell.formationName?.text = item.name
         return cell
         
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         let currentCell = tableView.cellForRow(at: indexPath) as! FormationSnapshotCell
-            
-        scene1.formationSelected(formationNum: indexPath.row)
+        formationVM.setCurrentSelection(index: indexPath.row)
+        var curr = formationVM.getCurrentFormation()
+        var dancers = dancerVM.loadDancers(selectedFormation: curr)
+        scene1.formationSelected(dancers: dancers)
+
     }
     
     
@@ -122,6 +107,17 @@ extension GameViewController: UITextFieldDelegate{
         textField.resignFirstResponder()
         return true
     }
+}
+
+extension GameViewController: GameSceneUpdatesDelegate{
+    
+    func dancerToAdd(xPosition: Float, yPosition: Float, id: String, color: String) {
+        
+        let curr = formationVM.getCurrentFormation()
+        dancerVM.addDancer(xPosition: xPosition, yPosition: yPosition, label: "Label", id: id, color: color, selectedFormation: curr)
+    }
+    
+    
 }
 
 
@@ -136,20 +132,4 @@ extension GameViewController: UITextFieldDelegate{
  
  
  */
-extension GameViewController{ 
-    
-    func loadFormations(){
-        let request : NSFetchRequest<Formation> = Formation.fetchRequest()
-        let requestDancer : NSFetchRequest<Dancer> = Dancer.fetchRequest()
-        do{
-            let dancersArray = try context.fetch(requestDancer)
-            formationArray = try context.fetch(request)
-            scene1.formationArray = formationArray
-            print(formationArray.count, "Printing Num Formations")
-        }
-        catch{
-            print("Error Fetching Data from Context \(error)")
-        }
 
-}
-}
