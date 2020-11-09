@@ -21,10 +21,14 @@ class DancerViewModel{
         
         let request : NSFetchRequest<Dancer> = Dancer.fetchRequest()
         
-        let predicate = NSPredicate(format: "owner.name MATCHES %@", selectedFormation.name!)
+        print("In Load Dancers", selectedFormation.name!)
+        
+        let predicate = NSPredicate(format: "owner.name = %@", selectedFormation.name!)
+        request.predicate = predicate
         do{
             
             dancerArray = try context.fetch(request)
+            print(dancerArray.count)
         }
         catch{
             print("Error Fetching Data from Context in Dancer ViewModel \(error)")
@@ -56,12 +60,41 @@ class DancerViewModel{
         newDancer.yPos = yPosition
         newDancer.label = label
         newDancer.color = "Black"
+        newDancer.id = id
+        //selectedFormation.addToDancers(newDancer)
         newDancer.owner = selectedFormation
-        self.dancerArray.append(newDancer)
-        
+        //self.dancerArray.append(newDancer)
         self.saveDancer()
         
         //Call Save everytime this is called
+    }
+    
+    func addDancer(dancer: Dancer, selectedFormation: Formation){
+        
+        
+        let newDancer = Dancer(context: context)
+        newDancer.xPos = dancer.xPos
+        newDancer.yPos = dancer.yPos
+        newDancer.label = dancer.label
+        newDancer.color = dancer.color
+        newDancer.id = UUID().uuidString
+        newDancer.owner = selectedFormation
+        //self.dancerArray.append(newDancer)
+        self.saveDancer()
+        
+        //Call Save everytime this is called
+    }
+    
+    func updateDancerPosition(xPosition: Float, yPosition: Float){
+        
+        
+//        if let toUpdate = dancerArray.firstIndex(where: { $0.xPos = xPosition && $0.yPos = yPosition }) {
+//            print("The first index < 7 = \(index)")
+//        }
+
+        //WORK IN PROGRESS
+            
+        self.saveDancer()
     }
     
     func imageToData(view formationView: SKView) -> Data?{

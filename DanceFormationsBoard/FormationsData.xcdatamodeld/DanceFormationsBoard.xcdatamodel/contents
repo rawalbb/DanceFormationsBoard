@@ -2,7 +2,7 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17192" systemVersion="19H2" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Dancer" representedClassName=".Dancer" syncable="YES">
         <attribute name="color" optional="YES" attributeType="String"/>
-        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="label" optional="YES" attributeType="String"/>
         <attribute name="xPos" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="yPos" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>

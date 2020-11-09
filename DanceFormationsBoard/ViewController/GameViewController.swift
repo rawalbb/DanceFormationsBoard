@@ -7,11 +7,13 @@ class GameViewController: UIViewController{
     
     
     @IBOutlet weak var formsTableView: UITableView!
+
     @IBOutlet weak var squareView: SKView!
     
     var formationVM = FormationViewModel()
     var dancerVM = DancerViewModel()
     var formationArray: [Formation] = []
+    var sceneGridFinished = false
     
     //var formimage: [UIImage] = [] //Don't need
     //let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -26,25 +28,45 @@ class GameViewController: UIViewController{
         super.viewDidLoad()
         
         scene1 = GameScene(size: squareView.bounds.size)
-        squareView.ignoresSiblingOrder = true
+        //squareView.ignoresSiblingOrder = true
         scene1.scaleMode = .fill
         
-        formationArray = formationVM.loadFormations()
-        if formationArray.count == 0{
-            formationVM.createNewFormation()
-            formationArray = formationVM.loadFormations()
-            var curr = formationVM.getCurrentFormation()
-            dancerVM.loadDancers(selectedFormation: curr)
-        }
-        formationVM.setCurrentSelection(index: 0)
         
         formsTableView.register(UINib(nibName: "FormationSnapshotCell", bundle: nil), forCellReuseIdentifier: "ReusableCell")
         formsTableView.dataSource = self
         formsTableView.delegate = self
         scene1.myDelegate = self
-        squareView.presentScene(scene1)
         
+        squareView.presentScene(scene1)
+        //squareView.backgroundColor = .blue
+        
+        formationArray = formationVM.loadFormations()
+        if sceneGridFinished{
 
+        if formationArray.count == 0{
+//            //if Count is 0, create a new formation, with random image, when next is pressed, save current and create new
+                let image = dancerVM.imageToData(view: squareView)
+                formationVM.createNewFormation(formData: image)
+                formationArray = formationVM.loadFormations()
+            formationVM.setCurrentSelection(index: formationVM.currentIndex)
+                //var curr = formationVM.getCurrentFormation()
+                //dancerVM.loadDancers(selectedFormation: curr)
+        }
+        else{
+            formationVM.setCurrentSelection(index: 0)
+            dancerVM.loadDancers(selectedFormation: formationVM.getCurrentFormation())
+        }
+        
+    }
+        else{
+            print("ERROR SCENE GRID DID NOT FINISH")
+        }
+        
+        
+        for formation in formationArray{
+            var a = formation.dancers?.allObjects as! [Dancer]
+            print("Formation INFO \(formation.name) ", a.count)
+        }
     }
     
     
@@ -53,15 +75,37 @@ class GameViewController: UIViewController{
     }
 
     
-    @IBAction func formationCreate(_ sender: Any) {
-        
+    @IBAction func nextFormationPressed(_ sender: Any) {
         var imageData = dancerVM.imageToData(view: squareView)
+        formationVM.getCurrentFormation().image = imageData
+        
+        print("When Next is pressed, this is the #dancers there are ", formationVM.getCurrentFormation().dancers?.count)
+        dancerVM.saveDancer()
+        formationVM.saveFormation()
+        formationArray = formationVM.loadFormations()//Trying this out:
+        print("When Next is pressed after Load , this is the #dancers there are ", formationVM.getCurrentFormation().dancers?.count)
         formationVM.createNewFormation(formData: imageData)
+        
         formationArray = formationVM.loadFormations()
-        var curr = formationVM.getCurrentFormation()
-        dancerVM.loadDancers(selectedFormation: curr)
+        print("After Creation is pressed after Load , this is the #dancers there are ", formationVM.formationArray[formationVM.currentIndex-1].dancers?.count)
+        //var curr = formationVM.getCurrentFormation()
+        //dancerVM.loadDancers(selectedFormation: curr)
         self.formsTableView.reloadData()
     }
+    
+    
+    @IBAction func playFormationsPressed(_ sender: Any) {
+        
+        
+//        for index in 0..<formationArray.count{
+//            let dancerArr = formationArray[index]
+//            let firstIndex = NSIndexPath(row: index, section: 0) as! IndexPath
+//            formsTableView.scrollToRow(at: firstIndex, at: .top, animated: true)
+//            scene1.formationSelected(dancers: dancerArr)
+//        }
+        
+    }
+    
 
 
 }
@@ -115,10 +159,21 @@ extension GameViewController: GameSceneUpdatesDelegate{
         
         let curr = formationVM.getCurrentFormation()
         dancerVM.addDancer(xPosition: xPosition, yPosition: yPosition, label: "Label", id: id, color: color, selectedFormation: curr)
+        
+        formationVM.saveFormation()
     }
     
     
+    func gridFinished(finished: Bool) {
+        sceneGridFinished = true
+    }
+    
+    func dancerMoved(xPosition: Float, yPosition: Float) {
+        <#code#>
+    }
+ 
 }
+
 
 
 

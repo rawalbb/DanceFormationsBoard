@@ -23,7 +23,6 @@
 		43A0A9E825505F5800394193 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43A0A9E625505F5800394193 /* LaunchScreen.storyboard */; };
 		43A0A9FC2550600200394193 /* DancerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0A9FB2550600200394193 /* DancerViewModel.swift */; };
 		43A0AA052550601300394193 /* FormationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0AA042550601300394193 /* FormationViewModel.swift */; };
-		43A0AA0A2550617E00394193 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 43A0AA092550617E00394193 /* GameScene.sks */; };
 		43A0AA0D255061AB00394193 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0AA0C255061AB00394193 /* GameScene.swift */; };
 /* End PBXBuildFile section */
 
@@ -47,7 +46,6 @@
 		43A0A9E925505F5800394193 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43A0A9FB2550600200394193 /* DancerViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DancerViewModel.swift; sourceTree = "<group>"; };
 		43A0AA042550601300394193 /* FormationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormationViewModel.swift; sourceTree = "<group>"; };
-		43A0AA092550617E00394193 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		43A0AA0C255061AB00394193 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -104,7 +102,6 @@
 				4324B4F92553B4EB00B3060E /* CoreData */,
 				4324B4662550976800B3060E /* FormationSnapshotCell.xib */,
 				4324B4652550976800B3060E /* FormationSnapshotCell.swift */,
-				43A0AA092550617E00394193 /* GameScene.sks */,
 				43A0AA0C255061AB00394193 /* GameScene.swift */,
 				43A0A9FA25505FFA00394193 /* ViewModel */,
 				43A0A9F125505F7B00394193 /* View */,
@@ -209,7 +206,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43A0AA0A2550617E00394193 /* GameScene.sks in Resources */,
 				43A0A9E825505F5800394193 /* LaunchScreen.storyboard in Resources */,
 				4324B4682550976800B3060E /* FormationSnapshotCell.xib in Resources */,
 				43A0A9E525505F5800394193 /* Assets.xcassets in Resources */,

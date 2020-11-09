@@ -8,9 +8,10 @@ import CoreData
 class FormationViewModel{
     
     
-    var currentIndex = 0
+    var currentIndex = -1
     var formationArray = [Formation]()
     var currentFormation: Formation?
+    var danceVM = DancerViewModel()
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -23,8 +24,9 @@ class FormationViewModel{
         }
     }
     
+    
     func createNewFormation(formData: Data? = nil) -> Formation{
-        var numFormation = formationArray.count-1
+        var numFormation = formationArray.count
         let newFormation = Formation(context: context)
         newFormation.name = "Formation \(numFormation)"
         if formData == nil{
@@ -32,15 +34,28 @@ class FormationViewModel{
         } else{
             newFormation.image = formData
         }
-        newFormation.dancers = nil
+        if currentIndex != -1{
+            print(currentIndex, "CURR INDEX")
+            var dancerObjects = getCurrentFormation().dancers as! Set<Dancer>
+            print("When creating new, checking dancer count of old ", dancerObjects.count)
+            for dancer in dancerObjects{
+                danceVM.addDancer(dancer: dancer, selectedFormation: newFormation)
+            }
+        }
+        else{
+            newFormation.dancers = nil
+        }
         numFormation += 1
         self.formationArray.append(newFormation)
+        currentIndex += 1
         self.saveFormation()
         return newFormation
     }
     
     func getCurrentFormation() -> Formation{
         currentFormation = formationArray[currentIndex]
+        
+        //print("Current Index", currentIndex)
         return formationArray[currentIndex]
         
     }

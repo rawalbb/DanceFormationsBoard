@@ -5,6 +5,10 @@ import CoreData
 
 protocol GameSceneUpdatesDelegate {
     func dancerToAdd(xPosition: Float, yPosition: Float, id: String, color: String)
+    
+    func gridFinished(finished: Bool)
+    
+    func dancerMoved(xPosition: Float, yPosition: Float)
 }
 
 
@@ -82,6 +86,7 @@ class GameScene: SKScene {
       yLineNodes.append(shapeNode)
     }
     
+    self.myDelegate.gridFinished(finished: true)
     
   }
         
@@ -117,10 +122,9 @@ class GameScene: SKScene {
         if (touchedNodes.count == 0){
           
           var nearest = getNearestIntersection(x: location.x, y: location.y)
-          print("TOUCH LOCATION", location)
+          //print("TOUCH LOCATION", location)
           let n = SKSpriteNode(imageNamed: "circle")
           let label = SKLabelNode(text: dancerLabel)
-          print("DANCE LABEL", dancerLabel)
           
           ////When text is changed it should get the currently selected Node and change it's text
           
@@ -132,13 +136,11 @@ class GameScene: SKScene {
           
              n.position = nearest
           label.position = CGPoint(x: 0, y: 16 )
-          print(label.position, "LABEL Position")
           n.name = "draggable"
              
              self.addChild(n)
           //self.addChild(label)
           n.addChild(label)
-          print(label.position, " 2 LABEL Position")
             
             
 //            let newDancer = Dancer(context: self.context)
@@ -170,6 +172,9 @@ class GameScene: SKScene {
       if let touch = touches.first, let node = currentNode {
           let touchLocation = touch.location(in: self)
           node.position = touchLocation
+        
+        self.myDelegate.dancerMoved(xPosition: Float(node.position.x), yPosition: Float(node.position.y))
+  
       }
   }
   
@@ -229,10 +234,10 @@ class GameScene: SKScene {
         
         self.removeAllChildren()
         drawGrid(width: gridWidth, height: gridHeight)
+        print("DAncer ", dancers.count)
         for dancer in dancers{
         let n = SKSpriteNode(imageNamed: "circle")
         let label = SKLabelNode(text: dancerLabel)
-        print("DANCE LABEL", dancerLabel)
         
         ////When text is changed it should get the currently selected Node and change it's text
         
@@ -249,7 +254,6 @@ class GameScene: SKScene {
            self.addChild(n)
         //self.addChild(label)
         n.addChild(label)
-        print(label.position, " 2 LABEL Position")
         
     }
     
