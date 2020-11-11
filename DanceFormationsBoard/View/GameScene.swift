@@ -8,13 +8,13 @@ protocol GameSceneUpdatesDelegate {
     
     func gridFinished(finished: Bool)
     
-    func dancerMoved(xPosition: Float, yPosition: Float)
+    func dancerMoved(id: String, xPosition: Float, yPosition: Float)
 }
 
 
 class GameScene: SKScene {
   
-  var currentNode: SKSpriteNode?
+  var currentNode: DanceNode?
   var xArray: [CGFloat] = []
   var yArray: [CGFloat] = []
   var dancerLabel: String = ""
@@ -90,29 +90,7 @@ class GameScene: SKScene {
     
   }
         
-        
-        
-    
-  
-  
-//  override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-//
-//    guard let touch = touches.first else {
-//      return
-//    }
-//    let touchLocation = touch.location(in: self)
-//    var nearest = getNearestIntersection(x: touchLocation.x, y: touchLocation.y)
-//    print("TOUCH LOCATION", touchLocation)
-//    let n = SKSpriteNode(imageNamed: "projectile")
-//
-//
-//    //closestNode!.lineWidth = 20
-//
-//       n.position = nearest
-//    n.name = "draggable"
-//
-//       self.addChild(n)
-//  }
+
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
       if let touch = touches.first {
@@ -123,7 +101,7 @@ class GameScene: SKScene {
           
           var nearest = getNearestIntersection(x: location.x, y: location.y)
           //print("TOUCH LOCATION", location)
-          let n = SKSpriteNode(imageNamed: "circle")
+          let n = DanceNode(imageNamed: "circle")
           let label = SKLabelNode(text: dancerLabel)
           
           ////When text is changed it should get the currently selected Node and change it's text
@@ -149,8 +127,9 @@ class GameScene: SKScene {
 //
             let xPos = Float(n.position.x)
             let yPos = Float(n.position.y)
+            n.nodeId = UUID().uuidString
             let color = "Black"
-            let dancerId = UUID().uuidString
+            let dancerId = n.nodeId
             self.myDelegate.dancerToAdd(xPosition: xPos, yPosition: yPos, id: dancerId, color: color)
             //self.saveDancers()
             
@@ -159,7 +138,7 @@ class GameScene: SKScene {
         }
           for node in touchedNodes.reversed() {
               if node.name == "draggable" {
-                self.currentNode = (node as! SKSpriteNode)
+                self.currentNode = (node as! DanceNode)
               }
           }
       }
@@ -167,19 +146,28 @@ class GameScene: SKScene {
     
     
   }
+    
+    //Instead of touches moved - try to do it at touches ended
   
   override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
       if let touch = touches.first, let node = currentNode {
           let touchLocation = touch.location(in: self)
-          node.position = touchLocation
-        
-        self.myDelegate.dancerMoved(xPosition: Float(node.position.x), yPosition: Float(node.position.y))
-  
+        node.position = touchLocation
+
       }
   }
   
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-      self.currentNode = nil
+    if let touch = touches.first, let node = currentNode {
+        let touchLocation = touch.location(in: self)
+        node.position = touchLocation
+      var id = node.nodeId
+      print("Node ID", id)
+        print("Moved", node.position.x, node.position.y)
+        print("Moved", Float(node.position.x), Float(node.position.y))
+      self.myDelegate.dancerMoved(id: id, xPosition: Float(node.position.x), yPosition: Float(node.position.y))
+
+    }
   }
   
   override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -236,8 +224,10 @@ class GameScene: SKScene {
         drawGrid(width: gridWidth, height: gridHeight)
         print("DAncer ", dancers.count)
         for dancer in dancers{
-        let n = SKSpriteNode(imageNamed: "circle")
+        let n = DanceNode(imageNamed: "circle")
+            n.nodeId = dancer.id!
         let label = SKLabelNode(text: dancerLabel)
+            print("When Formation selected ids", dancer.id)
         
         ////When text is changed it should get the currently selected Node and change it's text
         
@@ -246,9 +236,12 @@ class GameScene: SKScene {
         
 
         //closestNode!.lineWidth = 20
-        
+            
             n.position = CGPoint(x: CGFloat(dancer.xPos), y: CGFloat(dancer.yPos))
+                        print("X ", n.position.x)
+                        print("Y ", n.position.y)
         label.position = CGPoint(x: 0, y: 16 )
+            
         n.name = "draggable"
            
            self.addChild(n)
@@ -261,4 +254,8 @@ class GameScene: SKScene {
 
 }
 
+class DanceNode: SKSpriteNode{
+    
+    var nodeId: String = ""
+}
 

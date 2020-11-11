@@ -37,11 +37,11 @@ class GameViewController: UIViewController{
         formsTableView.delegate = self
         scene1.myDelegate = self
         
-        squareView.presentScene(scene1)
+        //squareView.presentScene(scene1)
         //squareView.backgroundColor = .blue
         
         formationArray = formationVM.loadFormations()
-        if sceneGridFinished{
+
 
         if formationArray.count == 0{
 //            //if Count is 0, create a new formation, with random image, when next is pressed, save current and create new
@@ -57,10 +57,7 @@ class GameViewController: UIViewController{
             dancerVM.loadDancers(selectedFormation: formationVM.getCurrentFormation())
         }
         
-    }
-        else{
-            print("ERROR SCENE GRID DID NOT FINISH")
-        }
+
         
         
         for formation in formationArray{
@@ -68,6 +65,13 @@ class GameViewController: UIViewController{
             print("Formation INFO \(formation.name) ", a.count)
         }
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        squareView.presentScene(scene1)
+    }
+    
     
     
     override var prefersStatusBarHidden: Bool {
@@ -159,8 +163,11 @@ extension GameViewController: GameSceneUpdatesDelegate{
         
         let curr = formationVM.getCurrentFormation()
         dancerVM.addDancer(xPosition: xPosition, yPosition: yPosition, label: "Label", id: id, color: color, selectedFormation: curr)
-        
+        var imageData = dancerVM.imageToData(view: squareView)
+        formationVM.getCurrentFormation().image = imageData
         formationVM.saveFormation()
+        formationArray = formationVM.loadFormations()
+        formsTableView.reloadData()
     }
     
     
@@ -168,8 +175,14 @@ extension GameViewController: GameSceneUpdatesDelegate{
         sceneGridFinished = true
     }
     
-    func dancerMoved(xPosition: Float, yPosition: Float) {
-        <#code#>
+    func dancerMoved(id: String, xPosition: Float, yPosition: Float) {
+        dancerVM.updateDancerPosition(id: id, xPosition: xPosition, yPosition: yPosition)
+        print("In View Controller Updating", xPosition, yPosition)
+        var imageData = dancerVM.imageToData(view: squareView)
+        formationVM.getCurrentFormation().image = imageData
+        formationVM.saveFormation()
+        formationArray = formationVM.loadFormations()
+        formsTableView.reloadData()
     }
  
 }
@@ -177,14 +190,4 @@ extension GameViewController: GameSceneUpdatesDelegate{
 
 
 
-//MARK-: Load Formations
-/*
- 1. Get First formation and add those dancers as nodes on SpriteKit
- 2. and load up tableview with formation images
- 3. Later do transition things
- 
- 
- 
- 
- */
 

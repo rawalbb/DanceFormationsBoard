@@ -85,16 +85,18 @@ class DancerViewModel{
         //Call Save everytime this is called
     }
     
-    func updateDancerPosition(xPosition: Float, yPosition: Float){
-        
-        
-//        if let toUpdate = dancerArray.firstIndex(where: { $0.xPos = xPosition && $0.yPos = yPosition }) {
-//            print("The first index < 7 = \(index)")
-//        }
-
-        //WORK IN PROGRESS
+    func updateDancerPosition( id: String, xPosition: Float, yPosition: Float){
+        //var toUpdate = [Dancer]()
+        if let toUpdateIndex = dancerArray.firstIndex(where: { $0.id == id }) {
+            print("TO UPDATE in dancerVM", xPosition, yPosition)
             
+            dancerArray[toUpdateIndex].xPos = xPosition
+            dancerArray[toUpdateIndex].yPos = yPosition
+        }
+        
         self.saveDancer()
+        
+        
     }
     
     func imageToData(view formationView: SKView) -> Data?{
