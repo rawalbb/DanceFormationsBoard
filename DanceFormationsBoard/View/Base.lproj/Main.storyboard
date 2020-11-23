@@ -80,7 +80,7 @@
                                             <constraint firstAttribute="width" constant="150" id="aa4-67-X1w"/>
                                         </constraints>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReusableCell" id="V0d-4B-7ju" customClass="FormationSnapshotCell" customModule="DanceFormationsBoard" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="gray" indentationWidth="10" reuseIdentifier="ReusableCell" id="V0d-4B-7ju" customClass="FormationSnapshotCell" customModule="DanceFormationsBoard" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="28" width="150" height="43.5"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="V0d-4B-7ju" id="h0E-zt-olN">

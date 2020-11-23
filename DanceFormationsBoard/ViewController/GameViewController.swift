@@ -14,6 +14,7 @@ class GameViewController: UIViewController{
     var dancerVM = DancerViewModel()
     var formationArray: [Formation] = []
     var sceneGridFinished = false
+    var currIndexPath: IndexPath?
     
     //var formimage: [UIImage] = [] //Don't need
     //let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -51,10 +52,14 @@ class GameViewController: UIViewController{
             formationVM.setCurrentSelection(index: formationVM.currentIndex)
                 //var curr = formationVM.getCurrentFormation()
                 //dancerVM.loadDancers(selectedFormation: curr)
+            currIndexPath = IndexPath(row: 0, section: 0)
+            self.formsTableView.selectRow(at: currIndexPath, animated: true, scrollPosition: .top)
         }
         else{
             formationVM.setCurrentSelection(index: 0)
             dancerVM.loadDancers(selectedFormation: formationVM.getCurrentFormation())
+            currIndexPath = IndexPath(row: 0, section: 0)
+            self.formsTableView.selectRow(at: currIndexPath, animated: true, scrollPosition: .top)
         }
         
 
@@ -95,20 +100,70 @@ class GameViewController: UIViewController{
         //var curr = formationVM.getCurrentFormation()
         //dancerVM.loadDancers(selectedFormation: curr)
         self.formsTableView.reloadData()
+        if let currentPath = currIndexPath{
+        self.formsTableView.deselectRow(at: currentPath, animated: true)
+        var nextIndexPath = IndexPath(row: currentPath.row + 1, section: 0)
+            self.formsTableView.selectRow(at: nextIndexPath, animated: true, scrollPosition: .top)
+        }
     }
+    
     
     
     @IBAction func playFormationsPressed(_ sender: Any) {
         
-        
-//        for index in 0..<formationArray.count{
-//            let dancerArr = formationArray[index]
-//            let firstIndex = NSIndexPath(row: index, section: 0) as! IndexPath
-//            formsTableView.scrollToRow(at: firstIndex, at: .top, animated: true)
-//            scene1.formationSelected(dancers: dancerArr)
-//        }
-        
+
+            if let currentPath = self.currIndexPath{
+                
+                    self.scene1.playThroughFormations()
+
+                
+                //for i in currentPath.row..<self.formationArray.count{
+                //self?.playFormations
+
+
+                
     }
+    }
+    
+    
+    //Call Game Scene method
+    
+    func playFormationsHelper() -> [Dancer]?{
+        
+        if let nextFormation = formationVM.getNextFormation(){
+            let nextDancerForms = dancerVM.loadNextDancers(nextFormation: nextFormation)
+            return nextDancerForms
+//            if let currentPath = self.currIndexPath{
+//                print("Current Index", formationVM.currentIndex)
+//                    self.scene1.playThroughFormations(nextDancerPositions: nextDancerForms)
+////                if (currentPath.row + 1 < formationArray.count){
+////                Timer.scheduledTimer(withTimeInterval: 5.0, repeats: false, block: { timer in
+////
+////                    let nextIndexPath = IndexPath(row: currentPath.row + 1, section: 0)
+////                    self.formsTableView.deselectRow(at: currentPath, animated: true)
+////                    //self.currIndexPath = nextIndexPath
+////                    print(self.currIndexPath?.row)
+////                        self.formsTableView.selectRow(at: nextIndexPath, animated: true, scrollPosition: .top)
+////
+////            })
+////                    self.currIndexPath = IndexPath(row: currentPath.row + 1, section: 0)
+////                }
+//
+                print(currIndexPath?.row)
+                
+                formationVM.currentIndex += 1
+            
+            }
+            else{
+                print("Error in Playing Formations")
+                return nil
+            }
+            
+}
+
+    
+    
+
     
 
 
@@ -143,8 +198,14 @@ extension GameViewController: UITableViewDataSource, UITableViewDelegate{
         var curr = formationVM.getCurrentFormation()
         var dancers = dancerVM.loadDancers(selectedFormation: curr)
         scene1.formationSelected(dancers: dancers)
-
+        currIndexPath = indexPath
     }
+    
+    
+    
+
+    
+    
     
     
 }

@@ -11,6 +11,7 @@ class FormationViewModel{
     var currentIndex = -1
     var formationArray = [Formation]()
     var currentFormation: Formation?
+    var nextFormation: Formation?
     var danceVM = DancerViewModel()
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -62,6 +63,17 @@ class FormationViewModel{
     
     func setCurrentSelection(index: Int){
         currentIndex = index
+    }
+    
+    func getNextFormation() -> Formation?{
+        print(currentIndex)
+        print(formationArray.count)
+        if currentIndex < formationArray.count - 1{
+            return formationArray[currentIndex + 1]
+        }
+        else{
+            return nil
+        }
     }
     
     func updateSelected(name: String, formArray: [Formation]){

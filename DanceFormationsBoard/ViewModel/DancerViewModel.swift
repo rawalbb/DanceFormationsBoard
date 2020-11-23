@@ -7,6 +7,7 @@ class DancerViewModel{
   
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var dancerArray = [Dancer]()
+    var nextDancerArray = [Dancer]()
     
     func saveDancer(){
         
@@ -77,7 +78,7 @@ class DancerViewModel{
         newDancer.yPos = dancer.yPos
         newDancer.label = dancer.label
         newDancer.color = dancer.color
-        newDancer.id = UUID().uuidString
+        newDancer.id = dancer.id
         newDancer.owner = selectedFormation
         //self.dancerArray.append(newDancer)
         self.saveDancer()
@@ -112,6 +113,27 @@ class DancerViewModel{
         else{
             return nil
         }
+    }
+    
+    
+    func loadNextDancers(nextFormation: Formation) -> [Dancer]{
+        
+        let request : NSFetchRequest<Dancer> = Dancer.fetchRequest()
+        
+        print("In Load Dancers", nextFormation.name!)
+        
+        let predicate = NSPredicate(format: "owner.name = %@", nextFormation.name!)
+        request.predicate = predicate
+        do{
+            
+            nextDancerArray = try context.fetch(request)
+            print(nextDancerArray.count)
+        }
+        catch{
+            print("Error Fetching Data from Context in Dancer ViewModel \(error)")
+        }
+        
+        return nextDancerArray
     }
  
 }

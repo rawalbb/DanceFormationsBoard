@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -17,6 +17,8 @@
 		4324B529255799F700B3060E /* Formation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B525255799F700B3060E /* Formation+CoreDataProperties.swift */; };
 		4324B52A255799F700B3060E /* Dancer+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B526255799F700B3060E /* Dancer+CoreDataClass.swift */; };
 		4324B52B255799F700B3060E /* Dancer+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B527255799F700B3060E /* Dancer+CoreDataProperties.swift */; };
+		43483FDB2563319F009A1CB7 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 43483FDA2563319F009A1CB7 /* RxCocoa */; };
+		43483FDD2563319F009A1CB7 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 43483FDC2563319F009A1CB7 /* RxSwift */; };
 		43A0A9D925505F5300394193 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0A9D825505F5300394193 /* AppDelegate.swift */; };
 		43A0A9DB25505F5300394193 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0A9DA25505F5300394193 /* SceneDelegate.swift */; };
 		43A0A9DD25505F5400394193 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0A9DC25505F5300394193 /* GameViewController.swift */; };
@@ -58,6 +60,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43483FDD2563319F009A1CB7 /* RxSwift in Frameworks */,
+				43483FDB2563319F009A1CB7 /* RxCocoa in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,19 +142,11 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
-		43A0A9F325505F9200394193 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		43A0A9FA25505FFA00394193 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
 				43A0A9FB2550600200394193 /* DancerViewModel.swift */,
 				43A0AA042550601300394193 /* FormationViewModel.swift */,
-				43A0A9F325505F9200394193 /* Model */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -171,6 +167,10 @@
 			dependencies = (
 			);
 			name = DanceFormationsBoard;
+			packageProductDependencies = (
+				43483FDA2563319F009A1CB7 /* RxCocoa */,
+				43483FDC2563319F009A1CB7 /* RxSwift */,
+			);
 			productName = DanceFormationsBoard;
 			productReference = 43A0A9D525505F5300394193 /* DanceFormationsBoard.app */;
 			productType = "com.apple.product-type.application";
@@ -198,6 +198,9 @@
 				Base,
 			);
 			mainGroup = 43A0A9CC25505F5300394193;
+			packageReferences = (
+				43483FD92563319F009A1CB7 /* XCRemoteSwiftPackageReference "RxSwift" */,
+			);
 			productRefGroup = 43A0A9D625505F5300394193 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -442,6 +445,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		43483FD92563319F009A1CB7 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		43483FDA2563319F009A1CB7 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 43483FD92563319F009A1CB7 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		43483FDC2563319F009A1CB7 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 43483FD92563319F009A1CB7 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		4324B4D9255358A200B3060E /* FormationsData.xcdatamodeld */ = {
