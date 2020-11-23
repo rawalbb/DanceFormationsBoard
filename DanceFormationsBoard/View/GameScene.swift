@@ -20,11 +20,11 @@ class GameScene: SKScene {
     var myDelegate : GameSceneUpdatesDelegate!
     var formationVM = FormationViewModel()
     var dancerVM = DancerViewModel()
-    var sequence: [SKAction] = []
 
     var formationArray: [Formation] = []
     var arrayOfActions: [SKAction] = []
     var sampIndex: Int = 0
+    var wait = SKAction.wait(forDuration: 0.0)
     
     
 
@@ -96,14 +96,14 @@ class GameScene: SKScene {
                 
                 
                 let n = DanceNode(imageNamed: "circle")
-                let label = SKLabelNode(text: dancerLabel)
+                let label = SKLabelNode(text: "Bunz")
                 var nearest = getNearestIntersection(x: location.x, y: location.y)
                 
                 label.fontSize = 12.0
-                label.color = UIColor.black
+                label.color = UIColor.red
                 
                 n.position = nearest
-                label.position = CGPoint(x: 0, y: 16 )
+                label.position = CGPoint(x: 150, y: 150 )
                 n.name = "draggable"
                 
                 self.addChild(n)
@@ -233,7 +233,7 @@ class GameScene: SKScene {
         
         if self.formationVM.currentIndex < 3{
             
-          
+   
         let actionA = SKAction.run { [unowned self] in
     
             var currNodes: [DanceNode] = []
@@ -253,7 +253,9 @@ class GameScene: SKScene {
                 
                 let next = CGPoint(x: CGFloat(dancer.xPos), y: CGFloat(dancer.yPos))
 
-                let action = SKAction.move(to: next , duration: 1.0)
+                let action = SKAction.move(to: next , duration: 2.0)
+
+                
 
                 currNodes[toUpdateIndex].run(action)
                 
@@ -269,8 +271,11 @@ class GameScene: SKScene {
             
 
         }
-            let sequence = SKAction.sequence([actionA, actionA, actionA])
-            self.run(sequence)
+            
+            let sequence = SKAction.sequence([wait, actionA])
+            wait = SKAction.wait(forDuration: 2.2)
+            self.run(sequence, completion: playThroughFormations)
+            //self.run(SKAction.repeat(sequence, count: 4))
             arrayOfActions.append(actionA)
 }
         else{
