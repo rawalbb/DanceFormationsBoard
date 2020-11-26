@@ -7,6 +7,8 @@ protocol GameSceneUpdatesDelegate {
     func dancerToAdd(xPosition: Float, yPosition: Float, id: String, color: String)
     func gridFinished(finished: Bool)
     func dancerMoved(id: String, xPosition: Float, yPosition: Float)
+    func updateCellSelect()
+    func updateCellDeselect()
 }
 
 class GameScene: SKScene {
@@ -18,13 +20,7 @@ class GameScene: SKScene {
     var gridWidth: CGFloat = 0.0
     var gridHeight: CGFloat = 0.0
     var myDelegate : GameSceneUpdatesDelegate!
-    var formationVM = FormationViewModel()
-    var dancerVM = DancerViewModel()
-
-    var formationArray: [Formation] = []
     var arrayOfActions: [SKAction] = []
-    var sampIndex: Int = 0
-    var wait = SKAction.wait(forDuration: 0.0)
     
     
 
@@ -121,11 +117,14 @@ class GameScene: SKScene {
                 
                 
             }
-            for node in touchedNodes.reversed() {
-                if node.name == "draggable" {
-                    self.currentNode = (node as! DanceNode)
-                }
+            else{
+                self.currentNode = self.nodes(at: location).first as? DanceNode
             }
+//            for node in touchedNodes.reversed() {
+//                if node.name == "draggable" {
+//                    self.currentNode = (node as! DanceNode)
+//                }
+//            }
         }
         
         
@@ -138,18 +137,20 @@ class GameScene: SKScene {
             let touchLocation = touch.location(in: self)
             node.position = touchLocation
             
+            
         }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first, let node = currentNode {
             let touchLocation = touch.location(in: self)
-            node.position = touchLocation
+            node.position = getNearestIntersection(x: touchLocation.x, y: touchLocation.y)
             var id = node.nodeId
             
             self.myDelegate.dancerMoved(id: id, xPosition: Float(node.position.x), yPosition: Float(node.position.y))
             
         }
+        currentNode = nil
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -227,27 +228,17 @@ class GameScene: SKScene {
         
     }
     
-    func playThroughFormations(){
-
-        print("Curr Index", self.formationVM.currentIndex)
+    func playThroughFormations(dancers: [Dancer], waitTime: Double, transitionTime: Double){
         
-        if self.formationVM.currentIndex < 3{
-            
+        //print("Curr Index", self.formationVM.currentIndex)
    
         let actionA = SKAction.run { [unowned self] in
-    
             var currNodes: [DanceNode] = []
                 self.enumerateChildNodes(withName: "draggable") { (node, stop) in
                 currNodes.append(node as! DanceNode)
             }
-                self.formationVM.formationArray = self.formationVM.loadFormations()
-                if let nextFormation = self.formationVM.getNextFormation(){
-                    print(nextFormation.name)
-                    let nextDancerForms = self.dancerVM.loadNextDancers(nextFormation: nextFormation)
         
-        
-        
-        for dancer in nextDancerForms{
+        for dancer in dancers{
 
             if let toUpdateIndex = currNodes.firstIndex(where: { $0.nodeId == dancer.id }) {
                 
@@ -265,29 +256,19 @@ class GameScene: SKScene {
             }
 
         }
-                    self.formationVM.currentIndex += 1
+                    //self.formationVM.currentIndex += 1
        
     }
             
 
-        }
-            
-            let sequence = SKAction.sequence([wait, actionA])
-            wait = SKAction.wait(forDuration: 2.2)
-            self.run(sequence, completion: playThroughFormations)
-            //self.run(SKAction.repeat(sequence, count: 4))
-            arrayOfActions.append(actionA)
-}
-        else{
-            print("Array of Actions", arrayOfActions.count)
-//            self.run(SKAction.sequence([arrayOfActions]))
-            print("Done")
-        }
         
-
-        
-        
+            let wait = SKAction.wait(forDuration: waitTime)
+        arrayOfActions.append(wait)
+        arrayOfActions.append(actionA)
     }
+        
+        
+    
 }
     
 

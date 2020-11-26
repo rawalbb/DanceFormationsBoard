@@ -66,8 +66,8 @@ class FormationViewModel{
     }
     
     func getNextFormation() -> Formation?{
-        print(currentIndex)
-        print(formationArray.count)
+        //print(currentIndex)
+        //print(formationArray.count)
         if currentIndex < formationArray.count - 1{
             return formationArray[currentIndex + 1]
         }

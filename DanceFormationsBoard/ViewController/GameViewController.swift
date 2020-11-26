@@ -2,6 +2,8 @@
 import UIKit
 import SpriteKit
 import CoreData
+import AVFoundation
+import MediaPlayer
 
 class GameViewController: UIViewController{
     
@@ -9,12 +11,19 @@ class GameViewController: UIViewController{
     @IBOutlet weak var formsTableView: UITableView!
 
     @IBOutlet weak var squareView: SKView!
+    @IBOutlet weak var musicSlider: UISlider!
+    
+    
     
     var formationVM = FormationViewModel()
     var dancerVM = DancerViewModel()
     var formationArray: [Formation] = []
     var sceneGridFinished = false
     var currIndexPath: IndexPath?
+    var audioPlayer = AVAudioPlayer()
+    var player: AVAudioPlayer!
+
+    //let musicPlayer = MPMusicPlayerController.systemMusicPlayer
     
     //var formimage: [UIImage] = [] //Don't need
     //let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -69,7 +78,9 @@ class GameViewController: UIViewController{
             var a = formation.dancers?.allObjects as! [Dancer]
             print("Formation INFO \(formation.name) ", a.count)
         }
-    }
+        
+        
+        }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -110,60 +121,45 @@ class GameViewController: UIViewController{
     
     
     @IBAction func playFormationsPressed(_ sender: Any) {
-        
+        var waitT = 0.0
+        //player.play()
+        //musicPlayer.play()
+               
+                for i in formationVM.currentIndex..<formationVM.formationArray.count{
+                    
+                    if let currentPath = self.currIndexPath{
 
-            if let currentPath = self.currIndexPath{
+                    print(formationVM.currentFormation?.name)
+                    if let nextFormation = formationVM.getNextFormation(){
+                    let nextDancerForms = dancerVM.loadNextDancers(nextFormation: nextFormation)
+                        formationVM.currentFormation = nextFormation
+                        
+                        
+                        print("New Current Path ", currentPath.row)
+
                 
-                    self.scene1.playThroughFormations()
-
+                    self.scene1.playThroughFormations(dancers: nextDancerForms, waitTime: waitT, transitionTime: 2.0)
+                    
+                        waitT = 4.0
                 
                 //for i in currentPath.row..<self.formationArray.count{
                 //self?.playFormations
 
 
-                
+                }
+                    
+                    formationVM.currentIndex += 1
+       
     }
+                    //currIndexPath = IndexPath(row: formationVM.currentIndex, section: 0)
+                self.scene1.run(SKAction.sequence(self.scene1.arrayOfActions))
+                    
+                    let currNext = IndexPath(row: formationVM.currentIndex, section: 0)
+
+               
     }
-    
-    
-    //Call Game Scene method
-    
-    func playFormationsHelper() -> [Dancer]?{
-        
-        if let nextFormation = formationVM.getNextFormation(){
-            let nextDancerForms = dancerVM.loadNextDancers(nextFormation: nextFormation)
-            return nextDancerForms
-//            if let currentPath = self.currIndexPath{
-//                print("Current Index", formationVM.currentIndex)
-//                    self.scene1.playThroughFormations(nextDancerPositions: nextDancerForms)
-////                if (currentPath.row + 1 < formationArray.count){
-////                Timer.scheduledTimer(withTimeInterval: 5.0, repeats: false, block: { timer in
-////
-////                    let nextIndexPath = IndexPath(row: currentPath.row + 1, section: 0)
-////                    self.formsTableView.deselectRow(at: currentPath, animated: true)
-////                    //self.currIndexPath = nextIndexPath
-////                    print(self.currIndexPath?.row)
-////                        self.formsTableView.selectRow(at: nextIndexPath, animated: true, scrollPosition: .top)
-////
-////            })
-////                    self.currIndexPath = IndexPath(row: currentPath.row + 1, section: 0)
-////                }
-//
-                print(currIndexPath?.row)
-                
-                formationVM.currentIndex += 1
-            
-            }
-            else{
-                print("Error in Playing Formations")
-                return nil
-            }
-            
-}
-
-    
-    
-
+        player.stop()
+    }
     
 
 
@@ -179,6 +175,12 @@ extension GameViewController: UITableViewDataSource, UITableViewDelegate{
         
         let cell = self.formsTableView.dequeueReusableCell(withIdentifier: "ReusableCell") as! FormationSnapshotCell
         //cell.formationName.delegate = self
+        let index = formationVM.currentIndex
+        if indexPath.row == index {
+            //cell.backgroundColor = UIColor.blue
+            //cell.setSelected(true, animated: true)
+            tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+        }
         
         let item = formationArray[indexPath.row]
         if let formationData = item.image{
@@ -197,6 +199,9 @@ extension GameViewController: UITableViewDataSource, UITableViewDelegate{
         formationVM.setCurrentSelection(index: indexPath.row)
         var curr = formationVM.getCurrentFormation()
         var dancers = dancerVM.loadDancers(selectedFormation: curr)
+        //currentCell.selectionStyle = .blue
+        //currentCell.setSelected(true, animated: true)
+        currentCell.setHighlighted(false, animated: false)
         scene1.formationSelected(dancers: dancers)
         currIndexPath = indexPath
     }
@@ -223,6 +228,7 @@ extension GameViewController: GameSceneUpdatesDelegate{
     func dancerToAdd(xPosition: Float, yPosition: Float, id: String, color: String) {
         
         let curr = formationVM.getCurrentFormation()
+
         dancerVM.addDancer(xPosition: xPosition, yPosition: yPosition, label: "Label", id: id, color: color, selectedFormation: curr)
         var imageData = dancerVM.imageToData(view: squareView)
         formationVM.getCurrentFormation().image = imageData
@@ -238,14 +244,71 @@ extension GameViewController: GameSceneUpdatesDelegate{
     
     func dancerMoved(id: String, xPosition: Float, yPosition: Float) {
         dancerVM.updateDancerPosition(id: id, xPosition: xPosition, yPosition: yPosition)
-        print("In View Controller Updating", xPosition, yPosition)
+       
         var imageData = dancerVM.imageToData(view: squareView)
         formationVM.getCurrentFormation().image = imageData
         formationVM.saveFormation()
         formationArray = formationVM.loadFormations()
         formsTableView.reloadData()
     }
+    
+    func updateCellSelect() {
+        let curr = IndexPath(row: self.formationVM.currentIndex, section: 0)
+        
+        DispatchQueue.main.async {
+            self.formsTableView.selectRow(at: curr, animated: true, scrollPosition: .top)
+        }
+    }
+    
+    func updateCellDeselect(){
+        
+        DispatchQueue.main.async {
+            let curr = IndexPath(row: self.formationVM.currentIndex, section: 0)
+            self.formsTableView.deselectRow(at: curr, animated: true)
+        }
+    }
  
+}
+
+
+
+//MARK: - Music
+
+extension GameViewController: AVAudioPlayerDelegate{
+
+    @IBAction func uploadMusic(sender: UIButton){
+        
+        let mediaItems = MPMediaQuery.songs().items
+             let mediaCollection = MPMediaItemCollection(items: mediaItems ?? [])
+       // print("mediaCollectionItems: \(String(describing: mediaCollection.items[0].title))") //It's alwa
+        if mediaCollection.items.count > 0{
+             let item = mediaCollection.items[0]
+             let pathURL = item.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
+        
+
+        //let sound = NSURL(fileURLWithPath: Bundle.main.path(forResource: "Bulleya", ofType: "mp3")!)
+
+        do{
+            //player = try AVAudioPlayer(contentsOf: unwrappedPath)
+            
+            player = try! AVAudioPlayer(contentsOf: pathURL as URL)
+            print(pathURL)
+            print("AudiPlayer set")
+            player.delegate = self
+            player.prepareToPlay()
+            player.play()
+        }
+        catch{
+            print(error)
+        }
+        
+        
+        
+    }
+    
+    
+    }
+    
 }
 
 

@@ -45,7 +45,7 @@
                                     <constraint firstAttribute="width" constant="150" id="cqV-KZ-MQ1"/>
                                 </constraints>
                             </view>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ftX-yU-3dY" userLabel="musicView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ftX-yU-3dY" userLabel="musicView">
                                 <rect key="frame" x="44" y="351" width="808" height="42"/>
                                 <subviews>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="WOc-2J-3Nd">
@@ -54,6 +54,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sJ1-Iu-rcO">
                                         <rect key="frame" x="697" y="6" width="47" height="30"/>
                                         <state key="normal" title="Button"/>
+                                        <connections>
+                                            <action selector="uploadMusicWithSender:" destination="6mI-VL-OAy" eventType="touchUpInside" id="hPB-JS-n4u"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.94509803920000002" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -80,7 +83,7 @@
                                             <constraint firstAttribute="width" constant="150" id="aa4-67-X1w"/>
                                         </constraints>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="gray" indentationWidth="10" reuseIdentifier="ReusableCell" id="V0d-4B-7ju" customClass="FormationSnapshotCell" customModule="DanceFormationsBoard" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" indentationWidth="10" reuseIdentifier="ReusableCell" id="V0d-4B-7ju" customClass="FormationSnapshotCell" customModule="DanceFormationsBoard" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="28" width="150" height="43.5"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="V0d-4B-7ju" id="h0E-zt-olN">

@@ -19,6 +19,8 @@
 		4324B52B255799F700B3060E /* Dancer+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B527255799F700B3060E /* Dancer+CoreDataProperties.swift */; };
 		43483FDB2563319F009A1CB7 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 43483FDA2563319F009A1CB7 /* RxCocoa */; };
 		43483FDD2563319F009A1CB7 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 43483FDC2563319F009A1CB7 /* RxSwift */; };
+		43621CF4256EE3DB00D3B0DB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43621CF3256EE3DB00D3B0DB /* AVFoundation.framework */; };
+		43621D2B256F770100D3B0DB /* Bulleya.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 43621D2A256F770100D3B0DB /* Bulleya.mp3 */; };
 		43A0A9D925505F5300394193 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0A9D825505F5300394193 /* AppDelegate.swift */; };
 		43A0A9DB25505F5300394193 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0A9DA25505F5300394193 /* SceneDelegate.swift */; };
 		43A0A9DD25505F5400394193 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0A9DC25505F5300394193 /* GameViewController.swift */; };
@@ -42,6 +44,8 @@
 		4324B525255799F700B3060E /* Formation+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Formation+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		4324B526255799F700B3060E /* Dancer+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dancer+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
 		4324B527255799F700B3060E /* Dancer+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dancer+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		43621CF3256EE3DB00D3B0DB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		43621D2A256F770100D3B0DB /* Bulleya.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Bulleya.mp3; path = "../../../../Music/iTunes/iTunes Media/Music/Unknown Artist/Unknown Album/Bulleya.mp3"; sourceTree = "<group>"; };
 		43A0A9D525505F5300394193 /* DanceFormationsBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DanceFormationsBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43A0A9D825505F5300394193 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		43A0A9DA25505F5300394193 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -62,6 +66,7 @@
 			files = (
 				43483FDD2563319F009A1CB7 /* RxSwift in Frameworks */,
 				43483FDB2563319F009A1CB7 /* RxCocoa in Frameworks */,
+				43621CF4256EE3DB00D3B0DB /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,11 +93,20 @@
 			path = CoreData;
 			sourceTree = "<group>";
 		};
+		43621CF2256EE3DB00D3B0DB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				43621CF3256EE3DB00D3B0DB /* AVFoundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		43A0A9CC25505F5300394193 = {
 			isa = PBXGroup;
 			children = (
 				43A0A9D725505F5300394193 /* DanceFormationsBoard */,
 				43A0A9D625505F5300394193 /* Products */,
+				43621CF2256EE3DB00D3B0DB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -117,6 +131,7 @@
 				43A0A9DA25505F5300394193 /* SceneDelegate.swift */,
 				43A0A9E425505F5800394193 /* Assets.xcassets */,
 				43A0A9E625505F5800394193 /* LaunchScreen.storyboard */,
+				43621D2A256F770100D3B0DB /* Bulleya.mp3 */,
 				43A0A9E925505F5800394193 /* Info.plist */,
 				4324B4D9255358A200B3060E /* FormationsData.xcdatamodeld */,
 			);
@@ -218,6 +233,7 @@
 				43A0A9E825505F5800394193 /* LaunchScreen.storyboard in Resources */,
 				4324B4682550976800B3060E /* FormationSnapshotCell.xib in Resources */,
 				43A0A9E525505F5800394193 /* Assets.xcassets in Resources */,
+				43621D2B256F770100D3B0DB /* Bulleya.mp3 in Resources */,
 				43A0A9E025505F5400394193 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -393,6 +409,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 42YBZZURTJ;
 				INFOPLIST_FILE = DanceFormationsBoard/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -412,6 +429,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 42YBZZURTJ;
 				INFOPLIST_FILE = DanceFormationsBoard/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
