@@ -4,7 +4,7 @@ import CoreData
 
 
 protocol GameSceneUpdatesDelegate {
-    func dancerToAdd(xPosition: Float, yPosition: Float, id: String, color: String)
+    func dancerToAdd(xPosition: Float, yPosition: Float, id: String, color: String, label: String)
     func gridFinished(finished: Bool)
     func dancerMoved(id: String, xPosition: Float, yPosition: Float)
     func updateCellSelect()
@@ -21,6 +21,7 @@ class GameScene: SKScene {
     var gridHeight: CGFloat = 0.0
     var myDelegate : GameSceneUpdatesDelegate!
     var arrayOfActions: [SKAction] = []
+    var backgroundMuisc: SKAudioNode!
     
     
 
@@ -96,14 +97,17 @@ class GameScene: SKScene {
                 var nearest = getNearestIntersection(x: location.x, y: location.y)
                 
                 label.fontSize = 12.0
-                label.color = UIColor.red
+                //label.color = UIColor.red
+                label.fontColor = UIColor.red
                 
                 n.position = nearest
-                label.position = CGPoint(x: 150, y: 150 )
+                label.name = "subName"
+                label.position = CGPoint(x: 20, y: 20 )
+                //label.color = UIColor.blue
                 n.name = "draggable"
-                
-                self.addChild(n)
                 n.addChild(label)
+                self.addChild(n)
+                
                 
             
                 let xPos = Float(n.position.x)
@@ -111,7 +115,7 @@ class GameScene: SKScene {
                 n.nodeId = UUID().uuidString
                 let color = "Black"
                 let dancerId = n.nodeId
-                self.myDelegate.dancerToAdd(xPosition: xPos, yPosition: yPos, id: dancerId, color: color)
+                self.myDelegate.dancerToAdd(xPosition: xPos, yPosition: yPos, id: dancerId, color: color, label: label.text ?? "")
                 //self.saveDancers()
                 
                 
@@ -201,12 +205,12 @@ class GameScene: SKScene {
         for dancer in dancers{
             let n = DanceNode(imageNamed: "circle")
             n.nodeId = dancer.id!
-            let label = SKLabelNode(text: dancerLabel)
+            let label = SKLabelNode(text: dancer.label)
             
             ////When text is changed it should get the currently selected Node and change it's text
             
             label.fontSize = 12.0
-            label.color = UIColor.black
+            label.fontColor = UIColor.red
             
             
             //closestNode!.lineWidth = 20
@@ -217,10 +221,10 @@ class GameScene: SKScene {
             label.position = CGPoint(x: 0, y: 16 )
             
             n.name = "draggable"
-            
+            n.addChild(label)
             self.addChild(n)
             //self.addChild(label)
-            n.addChild(label)
+            
             
         }
         
@@ -228,7 +232,35 @@ class GameScene: SKScene {
         
     }
     
-    func playThroughFormations(dancers: [Dancer], waitTime: Double, transitionTime: Double){
+    func playSong(){
+        
+        if let musicURL = Bundle.main.url(forResource: "Bulleya", withExtension: "mp3") {
+            backgroundMuisc = SKAudioNode(url: musicURL)
+        }
+        
+        backgroundMuisc.name = "music"
+        self.addChild(backgroundMuisc)
+        
+        let actionB = SKAction.run {
+            self.backgroundMuisc.run(SKAction.play())
+        }
+        
+        arrayOfActions.append(actionB)
+
+    }
+    
+    func endSong(){
+
+        
+        let actionC = SKAction.run {
+            self.backgroundMuisc.run(SKAction.stop())
+        }
+        
+        arrayOfActions.append(actionC)
+
+    }
+    
+    func playThroughFormations(dancers: [Dancer], waitTime: Double, transitionTime: Double, formIndex: Int, totalForms: Int){
         
         //print("Curr Index", self.formationVM.currentIndex)
    
@@ -265,9 +297,17 @@ class GameScene: SKScene {
             let wait = SKAction.wait(forDuration: waitTime)
         arrayOfActions.append(wait)
         arrayOfActions.append(actionA)
-    }
         
+        print("Form Index ", formIndex)
+        print("Total ", totalForms)
+        if formIndex + 2 == totalForms{
+            print("Form Indexxxxx ", formIndex)
+            print("Total;;; ", totalForms)
+            arrayOfActions.append(SKAction.wait(forDuration: 2.0))
+            self.endSong()
+        }
         
+}
     
 }
     

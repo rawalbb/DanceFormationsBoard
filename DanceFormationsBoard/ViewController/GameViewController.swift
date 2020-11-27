@@ -124,7 +124,11 @@ class GameViewController: UIViewController{
         var waitT = 0.0
         //player.play()
         //musicPlayer.play()
-               
+        
+        ///The action is indeed cancelled(it actually finished when you start playing) but it will not stop the audio. Use SKAudioNode if you need to suddenly stop sounds
+        self.scene1.playSong()
+
+        
                 for i in formationVM.currentIndex..<formationVM.formationArray.count{
                     
                     if let currentPath = self.currIndexPath{
@@ -138,27 +142,32 @@ class GameViewController: UIViewController{
                         print("New Current Path ", currentPath.row)
 
                 
-                    self.scene1.playThroughFormations(dancers: nextDancerForms, waitTime: waitT, transitionTime: 2.0)
+                        self.scene1.playThroughFormations(dancers: nextDancerForms, waitTime: waitT, transitionTime: 2.0, formIndex: formationVM.currentIndex, totalForms: formationArray.count)
                     
                         waitT = 4.0
                 
                 //for i in currentPath.row..<self.formationArray.count{
                 //self?.playFormations
 
-
+                        
                 }
                     
                     formationVM.currentIndex += 1
        
     }
                     //currIndexPath = IndexPath(row: formationVM.currentIndex, section: 0)
+                    
+                    
+                    //self.scene1.endSong()
+
                 self.scene1.run(SKAction.sequence(self.scene1.arrayOfActions))
                     
                     let currNext = IndexPath(row: formationVM.currentIndex, section: 0)
+                    //self.scene1.arrayOfActions = []
 
                
     }
-        player.stop()
+        //player.stop()
     }
     
 
@@ -225,11 +234,11 @@ extension GameViewController: UITextFieldDelegate{
 
 extension GameViewController: GameSceneUpdatesDelegate{
     
-    func dancerToAdd(xPosition: Float, yPosition: Float, id: String, color: String) {
+    func dancerToAdd(xPosition: Float, yPosition: Float, id: String, color: String, label: String) {
         
         let curr = formationVM.getCurrentFormation()
 
-        dancerVM.addDancer(xPosition: xPosition, yPosition: yPosition, label: "Label", id: id, color: color, selectedFormation: curr)
+        dancerVM.addDancer(xPosition: xPosition, yPosition: yPosition, label: label, id: id, color: color, selectedFormation: curr)
         var imageData = dancerVM.imageToData(view: squareView)
         formationVM.getCurrentFormation().image = imageData
         formationVM.saveFormation()
