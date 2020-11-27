@@ -17,8 +17,6 @@
 		4324B529255799F700B3060E /* Formation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B525255799F700B3060E /* Formation+CoreDataProperties.swift */; };
 		4324B52A255799F700B3060E /* Dancer+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B526255799F700B3060E /* Dancer+CoreDataClass.swift */; };
 		4324B52B255799F700B3060E /* Dancer+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B527255799F700B3060E /* Dancer+CoreDataProperties.swift */; };
-		43483FDB2563319F009A1CB7 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 43483FDA2563319F009A1CB7 /* RxCocoa */; };
-		43483FDD2563319F009A1CB7 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 43483FDC2563319F009A1CB7 /* RxSwift */; };
 		43621CF4256EE3DB00D3B0DB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43621CF3256EE3DB00D3B0DB /* AVFoundation.framework */; };
 		43621D2B256F770100D3B0DB /* Bulleya.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 43621D2A256F770100D3B0DB /* Bulleya.mp3 */; };
 		43A0A9D925505F5300394193 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0A9D825505F5300394193 /* AppDelegate.swift */; };
@@ -64,8 +62,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43483FDD2563319F009A1CB7 /* RxSwift in Frameworks */,
-				43483FDB2563319F009A1CB7 /* RxCocoa in Frameworks */,
 				43621CF4256EE3DB00D3B0DB /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -183,8 +179,6 @@
 			);
 			name = DanceFormationsBoard;
 			packageProductDependencies = (
-				43483FDA2563319F009A1CB7 /* RxCocoa */,
-				43483FDC2563319F009A1CB7 /* RxSwift */,
 			);
 			productName = DanceFormationsBoard;
 			productReference = 43A0A9D525505F5300394193 /* DanceFormationsBoard.app */;
@@ -474,19 +468,6 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		43483FDA2563319F009A1CB7 /* RxCocoa */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 43483FD92563319F009A1CB7 /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = RxCocoa;
-		};
-		43483FDC2563319F009A1CB7 /* RxSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 43483FD92563319F009A1CB7 /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = RxSwift;
-		};
-/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		4324B4D9255358A200B3060E /* FormationsData.xcdatamodeld */ = {

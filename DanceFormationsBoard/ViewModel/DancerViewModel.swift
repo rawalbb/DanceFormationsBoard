@@ -100,6 +100,19 @@ class DancerViewModel{
         
     }
     
+    
+    func updateDancerLabel( id: String, label: String){
+
+        if let toUpdateIndex = dancerArray.firstIndex(where: { $0.id == id }) {
+
+            dancerArray[toUpdateIndex].label = label
+        }
+        
+        self.saveDancer()
+        
+        
+    }
+    
     func imageToData(view formationView: SKView) -> Data?{
         
         let renderer = UIGraphicsImageRenderer(size: formationView.frame.size)

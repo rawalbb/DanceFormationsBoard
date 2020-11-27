@@ -13,6 +13,7 @@ class GameViewController: UIViewController{
     @IBOutlet weak var squareView: SKView!
     @IBOutlet weak var musicSlider: UISlider!
     
+    @IBOutlet weak var labelTextField: UITextField!
     
     
     var formationVM = FormationViewModel()
@@ -22,7 +23,9 @@ class GameViewController: UIViewController{
     var currIndexPath: IndexPath?
     var audioPlayer = AVAudioPlayer()
     var player: AVAudioPlayer!
-
+    var enableText: Bool = false
+    var colorPicker = UIColorPickerViewController()
+    var selectedColor = UIColor.black
     //let musicPlayer = MPMusicPlayerController.systemMusicPlayer
     
     //var formimage: [UIImage] = [] //Don't need
@@ -46,6 +49,7 @@ class GameViewController: UIViewController{
         formsTableView.dataSource = self
         formsTableView.delegate = self
         scene1.myDelegate = self
+        labelTextField.delegate = self
         
         //squareView.presentScene(scene1)
         //squareView.backgroundColor = .blue
@@ -76,11 +80,21 @@ class GameViewController: UIViewController{
         
         for formation in formationArray{
             var a = formation.dancers?.allObjects as! [Dancer]
-            print("Formation INFO \(formation.name) ", a.count)
+            //print("Formation INFO \(formation.name) ", a.count)
         }
         
         
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+//               NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+//               NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        
         }
+    
+//    deinit {
+//         NotificationCenter.default.removeObserver(UIResponder.keyboardWillShowNotification)
+//         NotificationCenter.default.removeObserver(UIResponder.keyboardWillHideNotification)
+//         NotificationCenter.default.removeObserver(UIResponder.keyboardWillChangeFrameNotification)
+//     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -99,15 +113,15 @@ class GameViewController: UIViewController{
         var imageData = dancerVM.imageToData(view: squareView)
         formationVM.getCurrentFormation().image = imageData
         
-        print("When Next is pressed, this is the #dancers there are ", formationVM.getCurrentFormation().dancers?.count)
+        //print("When Next is pressed, this is the #dancers there are ", formationVM.getCurrentFormation().dancers?.count)
         dancerVM.saveDancer()
         formationVM.saveFormation()
         formationArray = formationVM.loadFormations()//Trying this out:
-        print("When Next is pressed after Load , this is the #dancers there are ", formationVM.getCurrentFormation().dancers?.count)
+        //print("When Next is pressed after Load , this is the #dancers there are ", formationVM.getCurrentFormation().dancers?.count)
         formationVM.createNewFormation(formData: imageData)
         
         formationArray = formationVM.loadFormations()
-        print("After Creation is pressed after Load , this is the #dancers there are ", formationVM.formationArray[formationVM.currentIndex-1].dancers?.count)
+        //print("After Creation is pressed after Load , this is the #dancers there are ", formationVM.formationArray[formationVM.currentIndex-1].dancers?.count)
         //var curr = formationVM.getCurrentFormation()
         //dancerVM.loadDancers(selectedFormation: curr)
         self.formsTableView.reloadData()
@@ -139,7 +153,7 @@ class GameViewController: UIViewController{
                         formationVM.currentFormation = nextFormation
                         
                         
-                        print("New Current Path ", currentPath.row)
+                        //print("New Current Path ", currentPath.row)
 
                 
                         self.scene1.playThroughFormations(dancers: nextDancerForms, waitTime: waitT, transitionTime: 2.0, formIndex: formationVM.currentIndex, totalForms: formationArray.count)
@@ -171,6 +185,32 @@ class GameViewController: UIViewController{
     }
     
 
+    @IBAction func labelTextFieldChanged(_ sender: UITextField) {
+        print("Label changed")
+        if let text = labelTextField.text{
+            print(text)
+            self.scene1.updateDancerLabel(label: text)
+            if let nodeId = self.scene1.currentNode?.nodeId{
+            dancerVM.updateDancerLabel(id: nodeId, label: text)
+            var imageData = dancerVM.imageToData(view: squareView)
+            formationVM.getCurrentFormation().image = imageData
+            formationVM.saveFormation()
+            formationArray = formationVM.loadFormations()
+            formsTableView.reloadData()
+            }
+            
+        }
+    }
+    
+    
+    @IBAction func colorPickerButton(_ sender: UIButton) {
+        colorPicker.supportsAlpha = true
+        colorPicker.selectedColor = selectedColor
+        present(colorPicker, animated: true)
+    }
+    
+    
+    
 
 }
 
@@ -224,14 +264,26 @@ extension GameViewController: UITableViewDataSource, UITableViewDelegate{
     
 }
 
+//MARK: - KEYBOARD EXTENSIONS
 extension GameViewController: UITextFieldDelegate{
     
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        //print("In Return")
         textField.resignFirstResponder()
         return true
     }
+    
+    public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+      return enableText
+    }
+    
+//    @objc func keyboardWillChange(notification: Notification) {
+//        view.frame.origin.y = -100
+//    }
+    
 }
 
+//MARK: - GAMESCENE Delegate/Protocols
 extension GameViewController: GameSceneUpdatesDelegate{
     
     func dancerToAdd(xPosition: Float, yPosition: Float, id: String, color: String, label: String) {
@@ -276,6 +328,11 @@ extension GameViewController: GameSceneUpdatesDelegate{
             self.formsTableView.deselectRow(at: curr, animated: true)
         }
     }
+    
+    func enableTextField(enable: Bool) {
+        enableText = enable
+        //print(enableText)
+    }
  
 }
 
@@ -301,14 +358,14 @@ extension GameViewController: AVAudioPlayerDelegate{
             //player = try AVAudioPlayer(contentsOf: unwrappedPath)
             
             player = try! AVAudioPlayer(contentsOf: pathURL as URL)
-            print(pathURL)
-            print("AudiPlayer set")
+           // print(pathURL)
+            //print("AudiPlayer set")
             player.delegate = self
             player.prepareToPlay()
             player.play()
         }
         catch{
-            print(error)
+            //print(error)
         }
         
         

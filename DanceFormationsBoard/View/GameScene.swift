@@ -7,8 +7,10 @@ protocol GameSceneUpdatesDelegate {
     func dancerToAdd(xPosition: Float, yPosition: Float, id: String, color: String, label: String)
     func gridFinished(finished: Bool)
     func dancerMoved(id: String, xPosition: Float, yPosition: Float)
+    //func updateDancerLabel(id: String, label: String)
     func updateCellSelect()
     func updateCellDeselect()
+    func enableTextField(enable: Bool)
 }
 
 class GameScene: SKScene {
@@ -92,7 +94,10 @@ class GameScene: SKScene {
             if (touchedNodes.count == 0){
                 
                 
-                let n = DanceNode(imageNamed: "circle")
+                //let n = DanceNode(imageNamed: "circle")
+                let n = DanceNode(circleOfRadius: 10)
+                n.fillColor = UIColor.blue
+                    //let n = SKShapeNode(rectOf: CGSize(width: 10.0, height: 10.0), cornerRadius: 3.0)
                 let label = SKLabelNode(text: "Bunz")
                 var nearest = getNearestIntersection(x: location.x, y: location.y)
                 
@@ -101,7 +106,7 @@ class GameScene: SKScene {
                 label.fontColor = UIColor.red
                 
                 n.position = nearest
-                label.name = "subName"
+                label.name = "labelName"
                 label.position = CGPoint(x: 20, y: 20 )
                 //label.color = UIColor.blue
                 n.name = "draggable"
@@ -123,6 +128,7 @@ class GameScene: SKScene {
             }
             else{
                 self.currentNode = self.nodes(at: location).first as? DanceNode
+                self.myDelegate.enableTextField(enable: true)
             }
 //            for node in touchedNodes.reversed() {
 //                if node.name == "draggable" {
@@ -132,6 +138,31 @@ class GameScene: SKScene {
         }
         
         
+        
+    }
+    
+     func updateDancerLabel(label: String){
+        var childLabelNodes: [SKLabelNode] = []
+        if let node = currentNode{
+            node.enumerateChildNodes(withName: "labelName") { (node, stop) in
+                childLabelNodes.append(node as! SKLabelNode)
+                print(childLabelNodes.count, "Child Count")
+            }
+            if childLabelNodes.count != 0{
+            var a = childLabelNodes[0] as? SKLabelNode
+            if let childToUpdate = a{
+                print(childToUpdate.text)
+                childToUpdate.fontSize = 20
+                childToUpdate.text = label
+            }
+        }
+            else{
+                print("No childnodes found")
+            }
+        }
+        else{
+            print("No current node")
+        }
         
     }
     
@@ -154,11 +185,13 @@ class GameScene: SKScene {
             self.myDelegate.dancerMoved(id: id, xPosition: Float(node.position.x), yPosition: Float(node.position.y))
             
         }
-        currentNode = nil
+        //currentNode = nil
+        //self.myDelegate.enableTextField(enable: false)
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.currentNode = nil
+        self.myDelegate.enableTextField(enable: false)
     }
     
     
@@ -203,7 +236,8 @@ class GameScene: SKScene {
         drawGrid(width: gridWidth, height: gridHeight)
         //print("DAncer ", dancers.count)
         for dancer in dancers{
-            let n = DanceNode(imageNamed: "circle")
+            let n = DanceNode(circleOfRadius: 10)
+            n.fillColor = UIColor.blue
             n.nodeId = dancer.id!
             let label = SKLabelNode(text: dancer.label)
             
@@ -213,11 +247,13 @@ class GameScene: SKScene {
             label.fontColor = UIColor.red
             
             
+            
             //closestNode!.lineWidth = 20
             
             n.position = CGPoint(x: CGFloat(dancer.xPos), y: CGFloat(dancer.yPos))
 //            print("X ", n.position.x)
 //            print("Y ", n.position.y)
+            label.name = "labelName"
             label.position = CGPoint(x: 0, y: 16 )
             
             n.name = "draggable"
@@ -310,10 +346,9 @@ class GameScene: SKScene {
 }
     
 }
-    
 
 
-class DanceNode: SKSpriteNode{
+class DanceNode: SKShapeNode{
     
     var nodeId: String = ""
 }
