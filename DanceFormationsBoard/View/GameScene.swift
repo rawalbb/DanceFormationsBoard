@@ -11,6 +11,8 @@ protocol GameSceneUpdatesDelegate {
     func updateCellSelect()
     func updateCellDeselect()
     func enableTextField(enable: Bool)
+    func updateNodeColor(color: UIColor)
+    func removedDancer(id: String)
 }
 
 class GameScene: SKScene {
@@ -24,12 +26,14 @@ class GameScene: SKScene {
     var myDelegate : GameSceneUpdatesDelegate!
     var arrayOfActions: [SKAction] = []
     var backgroundMuisc: SKAudioNode!
+    var selectedNodeColor: UIColor!
+    //let font = UIFont(name: "GillSans-SemiBold", size: .14)!
     
     
 
     override func didMove(to view: SKView) {
         // 2
-        backgroundColor = SKColor.white
+        backgroundColor = SKColor.black
         gridWidth = view.bounds.width
         gridHeight = view.bounds.height
         drawGrid(width: gridWidth, height: gridHeight)
@@ -56,7 +60,7 @@ class GameScene: SKScene {
             xArray.append(xCounter)
             
             let shapeNode = SKShapeNode(path: path.cgPath)
-            shapeNode.strokeColor = UIColor.black
+            shapeNode.strokeColor = UIColor.white
             //drawGrid(path: path, width: gridWidth, height: gridHeight)
             addChild(shapeNode)
             xCounter += xIncrement
@@ -73,7 +77,7 @@ class GameScene: SKScene {
             yArray.append(yCounter)
             
             let shapeNode = SKShapeNode(path: path.cgPath)
-            shapeNode.strokeColor = UIColor.black
+            shapeNode.strokeColor = UIColor.white
             //drawGrid(path: path, width: gridWidth, height: gridHeight)
             addChild(shapeNode)
             yCounter += yIncrement
@@ -96,14 +100,16 @@ class GameScene: SKScene {
                 
                 //let n = DanceNode(imageNamed: "circle")
                 let n = DanceNode(circleOfRadius: 10)
-                n.fillColor = UIColor.blue
+                n.fillColor = selectedNodeColor
+                n.strokeColor = selectedNodeColor
                     //let n = SKShapeNode(rectOf: CGSize(width: 10.0, height: 10.0), cornerRadius: 3.0)
-                let label = SKLabelNode(text: "Bunz")
+                let label = SKLabelNode(text: "")
                 var nearest = getNearestIntersection(x: location.x, y: location.y)
                 
-                label.fontSize = 12.0
+                label.fontSize = 14.0
                 //label.color = UIColor.red
                 label.fontColor = UIColor.red
+                label.fontName = "GillSans-SemiBold"
                 
                 n.position = nearest
                 label.name = "labelName"
@@ -118,7 +124,7 @@ class GameScene: SKScene {
                 let xPos = Float(n.position.x)
                 let yPos = Float(n.position.y)
                 n.nodeId = UUID().uuidString
-                let color = "Black"
+                let color = UIColor.white.toHexString()
                 let dancerId = n.nodeId
                 self.myDelegate.dancerToAdd(xPosition: xPos, yPosition: yPos, id: dancerId, color: color, label: label.text ?? "")
                 //self.saveDancers()
@@ -129,6 +135,7 @@ class GameScene: SKScene {
             else{
                 self.currentNode = self.nodes(at: location).first as? DanceNode
                 self.myDelegate.enableTextField(enable: true)
+                self.myDelegate.updateNodeColor(color: currentNode?.fillColor ?? UIColor.white)
             }
 //            for node in touchedNodes.reversed() {
 //                if node.name == "draggable" {
@@ -152,7 +159,8 @@ class GameScene: SKScene {
             var a = childLabelNodes[0] as? SKLabelNode
             if let childToUpdate = a{
                 print(childToUpdate.text)
-                childToUpdate.fontSize = 20
+                childToUpdate.fontSize = 14
+                childToUpdate.fontName = "GillSans-SemiBold"
                 childToUpdate.text = label
             }
         }
@@ -167,6 +175,20 @@ class GameScene: SKScene {
     }
     
     
+    func updateDancerColor(color: String){
+       
+       if let node = currentNode{
+        
+        node.fillColor = UIColor(hex: color)
+          
+           }
+
+           else{
+               print("Cannot Update Node Color")
+           }
+       }
+    
+    
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first, let node = currentNode {
             let touchLocation = touch.location(in: self)
@@ -179,11 +201,30 @@ class GameScene: SKScene {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first, let node = currentNode {
             let touchLocation = touch.location(in: self)
+            print("In TOUCHES Ended")
+            print("GameScene Size", view?.bounds.width, view?.bounds.height)
+            print(self.children.count)
+            if node.position.x < 0.0 || node.position.x >= gridWidth{
+                print("X is offscreen")
+                //node.removeFromParent()
+                self.myDelegate.removedDancer(id: node.nodeId)
+                //currentNode = nil
+                //print("If", self.children.count)
+                
+            }
+            else if node.position.y < 0.0 || node.position.y >= gridHeight{
+                print("Y is offscreen")
+                //node.removeFromParent()
+                self.myDelegate.removedDancer(id: node.nodeId)
+                //currentNode = nil
+               // print("Else If", self.children.count)
+            }
+            else{
             node.position = getNearestIntersection(x: touchLocation.x, y: touchLocation.y)
             var id = node.nodeId
-            
             self.myDelegate.dancerMoved(id: id, xPosition: Float(node.position.x), yPosition: Float(node.position.y))
-            
+                print("Else", self.children.count)
+            }
         }
         //currentNode = nil
         //self.myDelegate.enableTextField(enable: false)
@@ -237,13 +278,15 @@ class GameScene: SKScene {
         //print("DAncer ", dancers.count)
         for dancer in dancers{
             let n = DanceNode(circleOfRadius: 10)
-            n.fillColor = UIColor.blue
+            n.fillColor = UIColor(hex: dancer.color)
+            n.strokeColor = UIColor(hex: dancer.color)
             n.nodeId = dancer.id!
             let label = SKLabelNode(text: dancer.label)
             
             ////When text is changed it should get the currently selected Node and change it's text
             
-            label.fontSize = 12.0
+            label.fontSize = 14.0
+            label.fontName = "GillSans-SemiBold"
             label.fontColor = UIColor.red
             
             

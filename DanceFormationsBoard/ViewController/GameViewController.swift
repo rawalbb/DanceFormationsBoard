@@ -14,6 +14,8 @@ class GameViewController: UIViewController{
     @IBOutlet weak var musicSlider: UISlider!
     
     @IBOutlet weak var labelTextField: UITextField!
+    @IBOutlet weak var nodeColorButton: UIButton!
+    
     
     
     var formationVM = FormationViewModel()
@@ -50,6 +52,9 @@ class GameViewController: UIViewController{
         formsTableView.delegate = self
         scene1.myDelegate = self
         labelTextField.delegate = self
+        nodeColorButton.backgroundColor = selectedColor
+        colorPicker.delegate = self
+        scene1.selectedNodeColor = selectedColor
         
         //squareView.presentScene(scene1)
         //squareView.backgroundColor = .blue
@@ -333,6 +338,20 @@ extension GameViewController: GameSceneUpdatesDelegate{
         enableText = enable
         //print(enableText)
     }
+    
+    func updateNodeColor(color: UIColor) {
+        selectedColor = color
+        nodeColorButton.backgroundColor = selectedColor
+    }
+    
+    func removedDancer(id: String) {
+        dancerVM.removeDancer(dancerId: id)
+        var imageData = dancerVM.imageToData(view: squareView)
+        formationVM.getCurrentFormation().image = imageData
+        formationVM.saveFormation()
+        formationArray = formationVM.loadFormations()
+        formsTableView.reloadData()
+    }
  
 }
 
@@ -344,40 +363,72 @@ extension GameViewController: AVAudioPlayerDelegate{
 
     @IBAction func uploadMusic(sender: UIButton){
         
-        let mediaItems = MPMediaQuery.songs().items
-             let mediaCollection = MPMediaItemCollection(items: mediaItems ?? [])
-       // print("mediaCollectionItems: \(String(describing: mediaCollection.items[0].title))") //It's alwa
-        if mediaCollection.items.count > 0{
-             let item = mediaCollection.items[0]
-             let pathURL = item.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
-        
-
-        //let sound = NSURL(fileURLWithPath: Bundle.main.path(forResource: "Bulleya", ofType: "mp3")!)
-
-        do{
-            //player = try AVAudioPlayer(contentsOf: unwrappedPath)
-            
-            player = try! AVAudioPlayer(contentsOf: pathURL as URL)
-           // print(pathURL)
-            //print("AudiPlayer set")
-            player.delegate = self
-            player.prepareToPlay()
-            player.play()
+//        let mediaItems = MPMediaQuery.songs().items
+//             let mediaCollection = MPMediaItemCollection(items: mediaItems ?? [])
+//       // print("mediaCollectionItems: \(String(describing: mediaCollection.items[0].title))") //It's alwa
+//        if mediaCollection.items.count > 0{
+//             let item = mediaCollection.items[0]
+//             let pathURL = item.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
+//
+//
+//        //let sound = NSURL(fileURLWithPath: Bundle.main.path(forResource: "Bulleya", ofType: "mp3")!)
+//
+//        do{
+//            //player = try AVAudioPlayer(contentsOf: unwrappedPath)
+//
+//            player = try! AVAudioPlayer(contentsOf: pathURL as URL)
+//           // print(pathURL)
+//            //print("AudiPlayer set")
+//            player.delegate = self
+//            player.prepareToPlay()
+//            player.play()
+//        }
+//        catch{
+//            //print(error)
+//        }
+//
+        let formToDelete = formationVM.getCurrentFormation()
+        formationVM.removeFormation(form: formToDelete)
+        formationVM.setCurrentSelection(index: formationVM.currentIndex-1)
+        if formationVM.currentIndex == -1{
+            self.scene1.removeAllChildren()
+            formationVM.createNewFormation()
         }
-        catch{
-            //print(error)
-        }
-        
-        
-        
+        formationVM.saveFormation()
+        formationArray = formationVM.loadFormations()
+        formsTableView.reloadData()
     }
     
     
     }
+    
+
+
+extension GameViewController: UIColorPickerViewControllerDelegate{
+    
+    func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
+        print("Did Dismiss Controller")
+    }
+    
+    func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
+        selectedColor = viewController.selectedColor
+        nodeColorButton.backgroundColor = selectedColor
+       
+        let colorString = selectedColor.toHexString()
+        scene1.selectedNodeColor = selectedColor
+        self.scene1.updateDancerColor(color: colorString)
+        
+        if let nodeId = self.scene1.currentNode?.nodeId{
+            dancerVM.updateDancerColor(id: nodeId, color: colorString)
+        var imageData = dancerVM.imageToData(view: squareView)
+        formationVM.getCurrentFormation().image = imageData
+        formationVM.saveFormation()
+        formationArray = formationVM.loadFormations()
+        formsTableView.reloadData()
+        }
     
 }
-
-
+}
 
 
 

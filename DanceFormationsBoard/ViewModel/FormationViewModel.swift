@@ -99,10 +99,10 @@ class FormationViewModel{
         
     }
     
-    func removeFormation(row: Int){
+    func removeFormation(form: Formation){
         
-        context.delete(formationArray[row]) //removes all Dancers associated with it
-        formationArray.remove(at: row)
+        context.delete(form) //removes all Dancers associated with it
+        //formationArray.remove(at: row)
         //Make sure to call save after
         
     }

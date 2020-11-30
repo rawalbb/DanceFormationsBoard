@@ -38,18 +38,18 @@ class DancerViewModel{
         return dancerArray
     }
     
-    func removeDancer(dancer: Dancer){
-        
-        context.delete(dancer)
-        
-        context.delete(dancer) //removes all Dancers associated with it
-        if let deletedDancer = dancerArray.firstIndex(where: {$0.id == dancer.id}){
-            dancerArray.remove(at: deletedDancer)
+    func removeDancer(dancerId: String){
+        print("In remove dancer ", dancerArray.count)
+        if let deletedDancer = dancerArray.firstIndex(where: {$0.id == dancerId}){
+           
+            //dancerArray.remove(at: deletedDancer)
+            let dancerToRemove = dancerArray[deletedDancer]
+            context.delete(dancerToRemove)
         } else{
             print("Error in Deleting Dancer in DancerViewModel")
         }
-       
-        //Make sure to call save after
+        print("In remove dancer ", dancerArray.count)
+        self.saveDancer()
         
     }
     
@@ -109,8 +109,17 @@ class DancerViewModel{
         }
         
         self.saveDancer()
+    }
+    
+    
+    func updateDancerColor( id: String, color: String){
+
+        if let toUpdateIndex = dancerArray.firstIndex(where: { $0.id == id }) {
+
+            dancerArray[toUpdateIndex].color = color
+        }
         
-        
+        self.saveDancer()
     }
     
     func imageToData(view formationView: SKView) -> Data?{
