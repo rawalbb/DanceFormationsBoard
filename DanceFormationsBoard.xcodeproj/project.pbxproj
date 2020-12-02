@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		43160D81255B9BB30038804F /* FormationTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43160D80255B9BB30038804F /* FormationTableView.swift */; };
-		43160D85255B9C860038804F /* BoardDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43160D84255B9C860038804F /* BoardDetailView.swift */; };
 		4324B4672550976800B3060E /* FormationSnapshotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B4652550976800B3060E /* FormationSnapshotCell.swift */; };
 		4324B4682550976800B3060E /* FormationSnapshotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4324B4662550976800B3060E /* FormationSnapshotCell.xib */; };
 		4324B4DC255358A200B3060E /* FormationsData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4324B4D9255358A200B3060E /* FormationsData.xcdatamodeld */; };
@@ -41,7 +40,6 @@
 
 /* Begin PBXFileReference section */
 		43160D80255B9BB30038804F /* FormationTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormationTableView.swift; sourceTree = "<group>"; };
-		43160D84255B9C860038804F /* BoardDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardDetailView.swift; sourceTree = "<group>"; };
 		4324B4652550976800B3060E /* FormationSnapshotCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormationSnapshotCell.swift; sourceTree = "<group>"; };
 		4324B4662550976800B3060E /* FormationSnapshotCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FormationSnapshotCell.xib; sourceTree = "<group>"; };
 		4324B4DA255358A200B3060E /* DanceFormationsBoard.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DanceFormationsBoard.xcdatamodel; sourceTree = "<group>"; };
@@ -160,7 +158,6 @@
 				43A0A9DE25505F5400394193 /* Main.storyboard */,
 				43A0AA0C255061AB00394193 /* GameScene.swift */,
 				43160D80255B9BB30038804F /* FormationTableView.swift */,
-				43160D84255B9C860038804F /* BoardDetailView.swift */,
 				43AB36AF2576B0B1001F5DAB /* BoardTableViewCell.swift */,
 				43AB36B02576B0B1001F5DAB /* BoardTableViewCell.xib */,
 			);
@@ -274,7 +271,6 @@
 				4324B4FB2553B51900B3060E /* CoreDataUtil.swift in Sources */,
 				43AB36BA25770200001F5DAB /* GViewController.swift in Sources */,
 				43A0A9DD25505F5400394193 /* GameViewController.swift in Sources */,
-				43160D85255B9C860038804F /* BoardDetailView.swift in Sources */,
 				4324B52B255799F700B3060E /* Dancer+CoreDataProperties.swift in Sources */,
 				43A0A9D925505F5300394193 /* AppDelegate.swift in Sources */,
 				43621D312571E2BD00D3B0DB /* UIColor+Extension.swift in Sources */,

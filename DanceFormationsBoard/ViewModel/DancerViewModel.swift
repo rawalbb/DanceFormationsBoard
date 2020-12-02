@@ -60,7 +60,7 @@ class DancerViewModel{
         newDancer.xPos = xPosition
         newDancer.yPos = yPosition
         newDancer.label = label
-        newDancer.color = "Black"
+        newDancer.color = color
         newDancer.id = id
         //selectedFormation.addToDancers(newDancer)
         newDancer.owner = selectedFormation

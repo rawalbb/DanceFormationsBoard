@@ -102,7 +102,7 @@ class GameScene: SKScene {
                 
                 
                 //let n = DanceNode(imageNamed: "circle")
-                let n = DanceNode(circleOfRadius: 12)
+                let n = DanceNode(circleOfRadius: 11)
                 n.fillColor = selectedNodeColor
                 n.strokeColor = selectedNodeColor
                     //let n = SKShapeNode(rectOf: CGSize(width: 10.0, height: 10.0), cornerRadius: 3.0)
@@ -127,7 +127,8 @@ class GameScene: SKScene {
                 let xPos = Float(n.position.x)
                 let yPos = Float(n.position.y)
                 n.nodeId = UUID().uuidString
-                let color = UIColor.white.toHexString()
+                let color = selectedNodeColor.toHexString()
+                print("COLOR ", color)
                 let dancerId = n.nodeId
                 self.myDelegate.dancerToAdd(xPosition: xPos, yPosition: yPos, id: dancerId, color: color, label: label.text ?? "")
                 //self.saveDancers()
@@ -280,7 +281,8 @@ class GameScene: SKScene {
         drawGrid(width: gridWidth, height: gridHeight)
         //print("DAncer ", dancers.count)
         for dancer in dancers{
-            let n = DanceNode(circleOfRadius: 10)
+            let n = DanceNode(circleOfRadius: 11)
+            print("In Formation Selected Color", dancer.color)
             n.fillColor = UIColor(hex: dancer.color)
             n.strokeColor = UIColor(hex: dancer.color)
             n.nodeId = dancer.id!

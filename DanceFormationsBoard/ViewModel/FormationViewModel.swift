@@ -5,6 +5,12 @@ import SpriteKit
 import CoreData
 
 
+protocol FormUpdatesDelegate{
+    
+    func formUpdated(formArray: [Formation])
+    
+}
+
 class FormationViewModel{
     
     
@@ -14,6 +20,7 @@ class FormationViewModel{
     var nextFormation: Formation?
     var danceVM = DancerViewModel()
     var currentBoard: FormationBoard!
+    var delegate: FormUpdatesDelegate?
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -27,35 +34,41 @@ class FormationViewModel{
     }
     
     
-    func createNewFormation(formData: Data? = nil, board: FormationBoard) -> Formation{
-        var numFormation = formationArray.count
+    func createNewFormation(formData: Data? = nil) -> Formation{
+        //var numFormation = formationArray.count
         let newFormation = Formation(context: context)
-        newFormation.name = "Formation \(numFormation)"
+        newFormation.name = "Formation \(formationArray.count)"
         if formData == nil{
-            newFormation.image = UIImage(named: "circle")?.jpegData(compressionQuality: 1.0)
+            newFormation.image = UIImage(named: "defaultFormImage")?.jpegData(compressionQuality: 1.0)
         } else{
             newFormation.image = formData
         }
         if currentIndex != -1{
-            print(currentIndex, "CURR INDEX")
+            print(currentIndex, "Current Formation Index")
             var dancerObjects = getCurrentFormation().dancers as! Set<Dancer>
             print("When creating new, checking dancer count of old ", dancerObjects.count)
             for dancer in dancerObjects{
                 danceVM.addDancer(dancer: dancer, selectedFormation: newFormation)
             }
+            
         }
         else{
             newFormation.dancers = nil
         }
-        newFormation.owner = currentBoard //TODO
-        numFormation += 1
-        self.formationArray.append(newFormation)
+        newFormation.formationOwner = currentBoard
+        //TODO
+        //numFormation += 1
+        //self.formationArray.append(newFormation)
+        
+        //self.saveFormation() //**CALL FROM Controller
         currentIndex += 1
-        self.saveFormation()
+        print("In Create ", currentIndex)
         return newFormation
     }
     
     func getCurrentFormation() -> Formation{
+        print("Current Index", currentIndex)
+        print("Formation Array Count", formationArray.count)
         currentFormation = formationArray[currentIndex]
         
         //print("Current Index", currentIndex)
@@ -109,12 +122,12 @@ class FormationViewModel{
         
     }
     
-    func loadFormations(board: FormationBoard) -> [Formation]{
+    func loadFormations() -> [Formation]{
         //Should be called in viewDidLoad
         //print(boardVM.currentBoardIndex)
         //let currentBoard = boardVM.getCurrentBoard()!
         let request : NSFetchRequest<Formation> = Formation.fetchRequest()
-        let predicate = NSPredicate(format: "owner.uniqueId = %@", currentBoard.uniqueId)
+        let predicate = NSPredicate(format: "formationOwner.uniqueId = %@", currentBoard.uniqueId)
         request.predicate = predicate
         do{
             
@@ -123,7 +136,7 @@ class FormationViewModel{
         catch{
             print("Error Fetching Data from Context in Formation ViewModel \(error)")
         }
-        
+        self.delegate?.formUpdated(formArray: formationArray)
         return formationArray
     }
     

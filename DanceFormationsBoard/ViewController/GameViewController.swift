@@ -42,7 +42,6 @@ class GameViewController: UIViewController{
         print("Game View ", boardVM.currentBoardIndex)
         formationVM.currentBoard = boardVM.getCurrentBoard()
         scene1 = GameScene(size: squareView.bounds.size)
-        //squareView.ignoresSiblingOrder = true
         scene1.scaleMode = .fill
         
         
@@ -58,7 +57,33 @@ class GameViewController: UIViewController{
         //squareView.presentScene(scene1)
         //squareView.backgroundColor = .blue
         
-        //formationArray = formationVM.loadFormations()
+        formationArray = formationVM.loadFormations()
+               if formationArray.count == 0{
+                formationVM.createNewFormation(formData: nil)
+                allFormUpdates()
+               }
+        ////            //if Count is 0, create a new formation, with random image, when next is pressed, save current and create new
+        //                let image = dancerVM.imageToData(view: squareView)
+        //                formationVM.createNewFormation(formData: image)
+        //                formationArray = formationVM.loadFormations()
+        //            formationVM.setCurrentSelection(index: formationVM.currentIndex)
+        //                //var curr = formationVM.getCurrentFormation()
+        //                //dancerVM.loadDancers(selectedFormation: curr)
+        //            currIndexPath = IndexPath(row: 0, section: 0)
+        //            self.formsTableView.selectRow(at: currIndexPath, animated: true, scrollPosition: .top)
+        //        }
+        //        else{
+        //            formationVM.setCurrentSelection(index: 0)
+        //            dancerVM.loadDancers(selectedFormation: formationVM.getCurrentFormation())
+        //            currIndexPath = IndexPath(row: 0, section: 0)
+        //            self.formsTableView.selectRow(at: currIndexPath, animated: true, scrollPosition: .top)
+        //        }
+        
+        
+        
+        
+        
+        
 
         
         }
@@ -182,6 +207,12 @@ class GameViewController: UIViewController{
     
     
     
+    func allFormUpdates(){
+        
+        formationVM.saveFormation()
+        formationVM.loadFormations()
+    }
+    
 
 }
 
@@ -209,6 +240,7 @@ extension GameViewController: UITableViewDataSource, UITableViewDelegate{
         }
         
         cell.formationName?.text = item.name
+        print("Item Nem", item.name)
         return cell
         
     }
@@ -319,6 +351,18 @@ extension GameViewController: GameSceneUpdatesDelegate{
         formsTableView.reloadData()
     }
  
+}
+
+extension GameViewController: FormUpdatesDelegate{
+    
+    func formUpdated(formArray: [Formation]) {
+        //self.boardVMArray = boardArray
+        formationArray = formArray
+        print("In Form Updated, Game Controller ", formationArray.count)
+        DispatchQueue.main.async {
+            self.formsTableView.reloadData()
+        }
+    }
 }
 
 
