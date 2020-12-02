@@ -18,12 +18,13 @@
         <attribute name="image" optional="YES" attributeType="Binary"/>
         <attribute name="lastEdited" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="notes" optional="YES" attributeType="String"/>
         <attribute name="uniqueId" optional="YES" attributeType="String"/>
         <relationship name="subFormations" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Formation" inverseName="formationOwner" inverseEntity="Formation"/>
     </entity>
     <elements>
         <element name="Dancer" positionX="-45" positionY="0" width="128" height="133"/>
         <element name="Formation" positionX="-18" positionY="27" width="128" height="103"/>
-        <element name="FormationBoard" positionX="-27" positionY="54" width="128" height="118"/>
+        <element name="FormationBoard" positionX="-27" positionY="54" width="128" height="133"/>
     </elements>
 </model>

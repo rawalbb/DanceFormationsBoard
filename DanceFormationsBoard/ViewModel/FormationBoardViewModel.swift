@@ -15,8 +15,8 @@ protocol BoardUpdatesDelegate{
 class FormationBoardViewModel{
     
     var boardsArray = [FormationBoard]()
-    var currentBoardIndex: Int = -1
-    var delegate: BoardUpdatesDelegate!
+    var currentBoardIndex: Int?
+    var delegate: BoardUpdatesDelegate?
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -26,12 +26,16 @@ class FormationBoardViewModel{
         let request : NSFetchRequest<FormationBoard> = FormationBoard.fetchRequest()
         do{
             
-            boardsArray = try context.fetch(request)
+            let tempBoardsArray = try context.fetch(request)
+            boardsArray = tempBoardsArray.sorted(by: {
+                $0.lastEdited.compare($1.lastEdited) == .orderedDescending
+            })
         }
         catch{
             print("Error Fetching Data from Context in Formation ViewModel \(error)")
         }
-        //self.delegate.boardUpdated(boardArray: boardsArray)
+
+        self.delegate?.boardUpdated(boardArray: boardsArray)
         return boardsArray
     }
     
@@ -42,18 +46,19 @@ class FormationBoardViewModel{
         } catch {
             print("Error saving context \(error)")
         }
-        self.delegate.boardUpdated(boardArray: boardsArray)
+        //loadBoards()
+        //self.delegate.boardUpdated(boardArray: boardsArray)
     }
     
     //Function: Remove Board
-    func removeBoard(){
+    func removeBoard(board: FormationBoard){
         
         do{
-            try context.delete(getCurrentBoard())
+            try context.delete(board)
         } catch {
             print("Error deleting Board \(error)")
         }
-        self.saveBoard()
+        //self.saveBoard()
         
     }
     
@@ -64,22 +69,43 @@ class FormationBoardViewModel{
         //when the initial formation is created, call this method
         
         let newBoard = FormationBoard(context: context)
-        newBoard.name = "Board 1"
+        newBoard.name = "Board \(boardsArray.count)"
         newBoard.lastEdited = Date()
-        let newImage = UIImage(systemName: "camera.metering.unknown") ?? #imageLiteral(resourceName: "Rx_Logo_M.png")
+        let newImage = UIImage(systemName: "camera.metering.unknown") ?? #imageLiteral(resourceName: "ReactiveExtensionsLogo")
         
         if let dataImage = imageToData(image: newImage){
             newBoard.image = dataImage
         }
+        newBoard.notes = ""
+        newBoard.uniqueId = UUID().uuidString
         self.boardsArray.append(newBoard)
-        self.saveBoard()
+       // self.saveBoard()
         
         
     }
     
     //Function: Get current Board
-    func getCurrentBoard() -> FormationBoard{
-        return boardsArray[currentBoardIndex]
+    func getCurrentBoard() -> FormationBoard?{
+        if let index = currentBoardIndex
+        {
+        return boardsArray[index]
+        }
+        else{
+            print("Getting Current Board Error")
+            return nil
+        }
+    }
+    
+    func getCurrentBoardIndex() -> Int?{
+        
+        if let index = currentBoardIndex
+        {
+        return index
+        }
+        else{
+            print("Getting Current Board Error")
+            return nil
+        }
     }
     
     
@@ -96,8 +122,15 @@ class FormationBoardViewModel{
     //Update Board Image
     func updateBoardImage(imageData: Data){
         
-        getCurrentBoard().image = imageData
-        self.saveBoard()
+        getCurrentBoard()?.image = imageData
+        //self.saveBoard()
+        
+    }
+    
+    func updateBoardNotes(notes: String){
+        
+        getCurrentBoard()?.notes = notes
+       // self.saveBoard()
         
     }
     
@@ -105,8 +138,8 @@ class FormationBoardViewModel{
     //Update Board Name
     func updateBoardName(boardName: String){
         
-        getCurrentBoard().name = boardName
-        self.saveBoard()
+        getCurrentBoard()?.name = boardName
+       // self.saveBoard()
     }
     
     func imageToData(image: UIImage) -> Data?{

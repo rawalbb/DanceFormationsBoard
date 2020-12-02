@@ -16,7 +16,9 @@ class FormationSnapshotCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+       
+        formationImage.layer.borderWidth = 4
+        formationImage.layer.borderColor = #colorLiteral(red: 0.4860776067, green: 0.5446216464, blue: 0.6717045903, alpha: 1)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -24,5 +26,9 @@ class FormationSnapshotCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+
+    
+    
     
 }

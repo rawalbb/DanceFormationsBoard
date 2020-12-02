@@ -13,6 +13,7 @@ class FormationViewModel{
     var currentFormation: Formation?
     var nextFormation: Formation?
     var danceVM = DancerViewModel()
+    var currentBoard: FormationBoard!
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -26,7 +27,7 @@ class FormationViewModel{
     }
     
     
-    func createNewFormation(formData: Data? = nil) -> Formation{
+    func createNewFormation(formData: Data? = nil, board: FormationBoard) -> Formation{
         var numFormation = formationArray.count
         let newFormation = Formation(context: context)
         newFormation.name = "Formation \(numFormation)"
@@ -46,6 +47,7 @@ class FormationViewModel{
         else{
             newFormation.dancers = nil
         }
+        newFormation.owner = currentBoard //TODO
         numFormation += 1
         self.formationArray.append(newFormation)
         currentIndex += 1
@@ -107,10 +109,13 @@ class FormationViewModel{
         
     }
     
-    func loadFormations() -> [Formation]{
+    func loadFormations(board: FormationBoard) -> [Formation]{
         //Should be called in viewDidLoad
-        
+        //print(boardVM.currentBoardIndex)
+        //let currentBoard = boardVM.getCurrentBoard()!
         let request : NSFetchRequest<Formation> = Formation.fetchRequest()
+        let predicate = NSPredicate(format: "owner.uniqueId = %@", currentBoard.uniqueId)
+        request.predicate = predicate
         do{
             
             formationArray = try context.fetch(request)
@@ -121,4 +126,6 @@ class FormationViewModel{
         
         return formationArray
     }
+    
+    
 }

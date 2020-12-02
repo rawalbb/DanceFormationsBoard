@@ -19,6 +19,7 @@ extension Formation {
     @NSManaged public var image: Data?
     @NSManaged public var name: String?
     @NSManaged public var dancers: NSSet?
+    @NSManaged public var owner: FormationBoard
 
 }
 

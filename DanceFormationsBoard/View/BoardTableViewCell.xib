@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="BoardReusableCell" rowHeight="73" id="KGk-i7-Jjw" customClass="BoardTableViewCell" customModule="DanceFormationsBoard" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="373" height="73"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="373" height="73"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" spacing="144" translatesAutoresizingMaskIntoConstraints="NO" id="o1z-Hy-cja">
+                        <rect key="frame" x="16" y="8" width="349" height="61"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="UFX-8Z-uBa" userLabel="labelStackView">
+                                <rect key="frame" x="0.0" y="0.0" width="105" height="61"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="252" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kKN-mF-uhQ">
+                                        <rect key="frame" x="0.0" y="0.0" width="105" height="34"/>
+                                        <color key="backgroundColor" name="formsBackgroundColor"/>
+                                        <color key="textColor" name="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                        <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                    </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="idz-QV-4xN">
+                                        <rect key="frame" x="0.0" y="46.5" width="105" height="14.5"/>
+                                        <fontDescription key="fontDescription" type="system" weight="thin" pointSize="12"/>
+                                        <color key="textColor" name="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="59s-GE-ocT">
+                                <rect key="frame" x="249" y="0.0" width="100" height="61"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="5FJ-Pq-bqp"/>
+                                    <constraint firstAttribute="height" constant="64" id="BIt-yT-Yls"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <color key="backgroundColor" name="formsBackgroundColor"/>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="o1z-Hy-cja" secondAttribute="bottom" constant="4" id="3La-lw-yCy"/>
+                    <constraint firstItem="o1z-Hy-cja" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="P7R-cj-d0X"/>
+                    <constraint firstItem="o1z-Hy-cja" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="ZP4-hJ-L0Z"/>
+                    <constraint firstAttribute="trailing" secondItem="o1z-Hy-cja" secondAttribute="trailing" constant="8" id="fT9-6I-FMe"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="boardDateTextField" destination="idz-QV-4xN" id="2iK-5T-Icn"/>
+                <outlet property="boardImageField" destination="59s-GE-ocT" id="9N4-cu-F8S"/>
+                <outlet property="boardNameTextField" destination="kKN-mF-uhQ" id="taG-eS-Msf"/>
+            </connections>
+            <point key="canvasLocation" x="107.97101449275362" y="70.647321428571431"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <namedColor name="formsBackgroundColor">
+            <color red="0.18400000035762787" green="0.20399999618530273" blue="0.21600000560283661" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="textColor">
+            <color red="0.75700002908706665" green="0.83899998664855957" blue="0.89800000190734863" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

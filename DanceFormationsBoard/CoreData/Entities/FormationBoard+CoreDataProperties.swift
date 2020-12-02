@@ -16,11 +16,12 @@ extension FormationBoard {
         return NSFetchRequest<FormationBoard>(entityName: "FormationBoard")
     }
 
-    @NSManaged public var image: Data?
-    @NSManaged public var lastEdited: Date?
+    @NSManaged public var image: Data
+    @NSManaged public var lastEdited: Date
     @NSManaged public var name: String?
-    @NSManaged public var uniqueId: String?
+    @NSManaged public var uniqueId: String
     @NSManaged public var subFormations: NSSet?
+    @NSManaged public var notes: String
 
 }
 

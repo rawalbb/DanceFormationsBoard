@@ -3,6 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,15 +17,16 @@
                 <rect key="frame" x="0.0" y="0.0" width="344" height="227"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="square.and.arrow.up" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="jCZ-yF-exb">
-                        <rect key="frame" x="0.0" y="-1" width="344" height="101"/>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="square.and.arrow.up" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="jCZ-yF-exb">
+                        <rect key="frame" x="6" y="2" width="332" height="106"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="100" id="3c3-lg-0sU"/>
                         </constraints>
+                        <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
                     </imageView>
                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Enter Name:" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oDK-1R-4sg">
-                        <rect key="frame" x="16" y="100" width="312" height="32"/>
-                        <color key="backgroundColor" red="0.11276707800000001" green="0.29728722569999999" blue="0.25714913010000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <rect key="frame" x="6" y="106" width="332" height="32"/>
+                        <color key="backgroundColor" name="navBarColor"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="32" id="PfU-he-i7N"/>
                         </constraints>
@@ -33,18 +35,18 @@
                         <textInputTraits key="textInputTraits"/>
                     </textField>
                 </subviews>
+                <color key="backgroundColor" name="formsBackgroundColor"/>
                 <constraints>
-                    <constraint firstItem="jCZ-yF-exb" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="1ZS-98-Bc8"/>
-                    <constraint firstAttribute="trailing" secondItem="oDK-1R-4sg" secondAttribute="trailing" constant="16" id="83f-hS-mjX"/>
-                    <constraint firstItem="oDK-1R-4sg" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="Imj-Z9-jCS"/>
+                    <constraint firstItem="jCZ-yF-exb" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="6" id="1ZS-98-Bc8"/>
+                    <constraint firstAttribute="trailing" secondItem="oDK-1R-4sg" secondAttribute="trailing" constant="6" id="83f-hS-mjX"/>
+                    <constraint firstItem="oDK-1R-4sg" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="6" id="Imj-Z9-jCS"/>
                     <constraint firstItem="oDK-1R-4sg" firstAttribute="top" secondItem="jCZ-yF-exb" secondAttribute="bottom" id="Uz7-jy-KPw"/>
-                    <constraint firstAttribute="trailing" secondItem="jCZ-yF-exb" secondAttribute="trailing" id="dsr-g6-ces"/>
+                    <constraint firstAttribute="trailing" secondItem="jCZ-yF-exb" secondAttribute="trailing" constant="6" id="dsr-g6-ces"/>
                     <constraint firstAttribute="bottom" secondItem="oDK-1R-4sg" secondAttribute="bottom" constant="4" id="raf-JQ-jFf"/>
-                    <constraint firstItem="jCZ-yF-exb" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="zr9-wx-P2c"/>
+                    <constraint firstItem="jCZ-yF-exb" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="6" id="zr9-wx-P2c"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
-            <color key="backgroundColor" red="0.11276707800000001" green="0.29728722569999999" blue="0.25714913010000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <connections>
                 <outlet property="formationImage" destination="jCZ-yF-exb" id="U8R-m4-JYP"/>
                 <outlet property="formationName" destination="oDK-1R-4sg" id="plM-ED-Olw"/>
@@ -54,5 +56,11 @@
     </objects>
     <resources>
         <image name="square.and.arrow.up" catalog="system" width="115" height="128"/>
+        <namedColor name="formsBackgroundColor">
+            <color red="0.18400000035762787" green="0.20399999618530273" blue="0.21600000560283661" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="navBarColor">
+            <color red="1" green="0.90200001001358032" blue="0.3449999988079071" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

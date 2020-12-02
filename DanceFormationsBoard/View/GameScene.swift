@@ -33,7 +33,8 @@ class GameScene: SKScene {
 
     override func didMove(to view: SKView) {
         // 2
-        backgroundColor = SKColor.black
+        backgroundColor = #colorLiteral(red: 0.1843137294, green: 0.2039215714, blue: 0.2156862766, alpha: 1)
+        
         gridWidth = view.bounds.width
         gridHeight = view.bounds.height
         drawGrid(width: gridWidth, height: gridHeight)
@@ -44,13 +45,14 @@ class GameScene: SKScene {
     //MARK: Scene Grid
     func drawGrid(width: CGFloat, height: CGFloat){
 
-        let xIncrement: CGFloat = width/10
         var xCounter: CGFloat = 0.0
         var yCounter: CGFloat = 0.0
         let yIncrement: CGFloat = height/10
+        let xIncrement: CGFloat = yIncrement
+        let xNumLines: Int = Int(width/xIncrement)
         var xLineNodes: [SKShapeNode] = []
         var yLineNodes: [SKShapeNode] = []
-        for _ in 1...10
+        for _ in 1...xNumLines
         {
             let path = UIBezierPath()
             let start = CGPoint(x: xCounter, y: 0)
@@ -60,7 +62,7 @@ class GameScene: SKScene {
             xArray.append(xCounter)
             
             let shapeNode = SKShapeNode(path: path.cgPath)
-            shapeNode.strokeColor = UIColor.white
+            shapeNode.strokeColor = #colorLiteral(red: 0.5587006807, green: 0.6035502553, blue: 0.6746274233, alpha: 1)
             //drawGrid(path: path, width: gridWidth, height: gridHeight)
             addChild(shapeNode)
             xCounter += xIncrement
@@ -77,7 +79,8 @@ class GameScene: SKScene {
             yArray.append(yCounter)
             
             let shapeNode = SKShapeNode(path: path.cgPath)
-            shapeNode.strokeColor = UIColor.white
+            shapeNode.strokeColor = #colorLiteral(red: 0.5587006807, green: 0.6035502553, blue: 0.6746274233, alpha: 1)
+            shapeNode.lineWidth = 2
             //drawGrid(path: path, width: gridWidth, height: gridHeight)
             addChild(shapeNode)
             yCounter += yIncrement
@@ -99,7 +102,7 @@ class GameScene: SKScene {
                 
                 
                 //let n = DanceNode(imageNamed: "circle")
-                let n = DanceNode(circleOfRadius: 10)
+                let n = DanceNode(circleOfRadius: 12)
                 n.fillColor = selectedNodeColor
                 n.strokeColor = selectedNodeColor
                     //let n = SKShapeNode(rectOf: CGSize(width: 10.0, height: 10.0), cornerRadius: 3.0)
