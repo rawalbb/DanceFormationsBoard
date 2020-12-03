@@ -55,6 +55,7 @@ class FormationViewModel{
         else{
             newFormation.dancers = nil
         }
+        newFormation.uniqueId = UUID().uuidString
         newFormation.formationOwner = currentBoard
         //TODO
         //numFormation += 1
@@ -62,7 +63,7 @@ class FormationViewModel{
         
         //self.saveFormation() //**CALL FROM Controller
         currentIndex += 1
-        print("In Create ", currentIndex)
+        print("In Create ", newFormation.formationOwner.uniqueId)
         return newFormation
     }
     
@@ -127,16 +128,19 @@ class FormationViewModel{
         //print(boardVM.currentBoardIndex)
         //let currentBoard = boardVM.getCurrentBoard()!
         let request : NSFetchRequest<Formation> = Formation.fetchRequest()
-        let predicate = NSPredicate(format: "formationOwner.uniqueId = %@", currentBoard.uniqueId)
+        print("Current Board Unique Id ", currentBoard.uniqueId)
+        let predicate = NSPredicate(format: "formationOwner.uniqueId == %@", currentBoard.uniqueId)
         request.predicate = predicate
         do{
             
             formationArray = try context.fetch(request)
+            //print(formationArray[0].formationOwner.uniqueId, "DFGSDFGDDFG" )
         }
         catch{
             print("Error Fetching Data from Context in Formation ViewModel \(error)")
         }
         self.delegate?.formUpdated(formArray: formationArray)
+        //TODO - return might be double if using formUpdates
         return formationArray
     }
     

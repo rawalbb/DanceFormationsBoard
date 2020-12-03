@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17192" systemVersion="19H15" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Dancer" representedClassName=".Dancer" syncable="YES">
-        <attribute name="color" optional="YES" attributeType="String"/>
-        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="color" attributeType="String"/>
+        <attribute name="id" attributeType="String"/>
         <attribute name="label" optional="YES" attributeType="String"/>
-        <attribute name="xPos" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="yPos" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="xPos" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="yPos" optional="YES" attributeType="Float" usesScalarValueType="YES"/>
         <relationship name="owner" maxCount="1" deletionRule="Nullify" destinationEntity="Formation" inverseName="dancers" inverseEntity="Formation"/>
     </entity>
     <entity name="Formation" representedClassName=".Formation" syncable="YES">
-        <attribute name="image" optional="YES" attributeType="Binary"/>
+        <attribute name="image" attributeType="Binary"/>
         <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="uniqueId" attributeType="String"/>
         <relationship name="dancers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Dancer" inverseName="owner" inverseEntity="Dancer"/>
         <relationship name="formationOwner" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FormationBoard" inverseName="subFormations" inverseEntity="FormationBoard"/>
     </entity>
     <entity name="FormationBoard" representedClassName=".FormationBoard" syncable="YES">
-        <attribute name="image" optional="YES" attributeType="Binary"/>
-        <attribute name="lastEdited" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="image" attributeType="Binary"/>
+        <attribute name="lastEdited" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="notes" optional="YES" attributeType="String"/>
-        <attribute name="uniqueId" optional="YES" attributeType="String"/>
+        <attribute name="uniqueId" attributeType="String"/>
         <relationship name="subFormations" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Formation" inverseName="formationOwner" inverseEntity="Formation"/>
     </entity>
     <elements>
         <element name="Dancer" positionX="-45" positionY="0" width="128" height="133"/>
-        <element name="Formation" positionX="-18" positionY="27" width="128" height="103"/>
+        <element name="Formation" positionX="-18" positionY="27" width="128" height="118"/>
         <element name="FormationBoard" positionX="-27" positionY="54" width="128" height="133"/>
     </elements>
 </model>

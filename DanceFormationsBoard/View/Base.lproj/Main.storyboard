@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <skView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K0L-qv-hQn" userLabel="stageView">
-                                <rect key="frame" x="0.0" y="0.0" width="694" height="343"/>
+                                <rect key="frame" x="44" y="0.0" width="650" height="343"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </skView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="AXB-O6-l8i" userLabel="rightStackView">
@@ -155,7 +155,7 @@
                             <constraint firstItem="AXB-O6-l8i" firstAttribute="top" secondItem="nno-Um-1to" secondAttribute="top" id="ChO-KW-MCN"/>
                             <constraint firstItem="AXB-O6-l8i" firstAttribute="leading" secondItem="K0L-qv-hQn" secondAttribute="trailing" constant="8" id="De4-TH-5bb"/>
                             <constraint firstItem="CTd-Iw-4qb" firstAttribute="top" secondItem="K0L-qv-hQn" secondAttribute="bottom" constant="4" id="Jm4-1n-MUV"/>
-                            <constraint firstItem="K0L-qv-hQn" firstAttribute="leading" secondItem="XmL-ea-QKr" secondAttribute="leading" id="KbP-FC-AXJ"/>
+                            <constraint firstItem="K0L-qv-hQn" firstAttribute="leading" secondItem="nno-Um-1to" secondAttribute="leading" id="KbP-FC-AXJ"/>
                             <constraint firstItem="nno-Um-1to" firstAttribute="bottom" secondItem="AXB-O6-l8i" secondAttribute="bottom" constant="50" id="Rbv-Ab-Kro"/>
                             <constraint firstItem="nno-Um-1to" firstAttribute="trailing" secondItem="CTd-Iw-4qb" secondAttribute="trailing" id="cv2-DG-01J"/>
                             <constraint firstItem="K0L-qv-hQn" firstAttribute="top" secondItem="nno-Um-1to" secondAttribute="top" id="d0v-wZ-lOi"/>

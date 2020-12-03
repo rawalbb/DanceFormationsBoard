@@ -50,7 +50,10 @@ class BoardViewController: UIViewController {
                  NotificationCenter.default.removeObserver(UIResponder.keyboardWillChangeFrameNotification)
              }
     
-    
+    override func viewWillAppear(_ animated: Bool) {
+        boardVM.loadBoards()
+        //Added so that when Board View Controller is loaded back up, it loads the pictures on the tableview
+    }
 
     /*
     // MARK: - Navigation
@@ -126,8 +129,20 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
         let cell = self.boardTableView.dequeueReusableCell(withIdentifier: "BoardReusableCell") as! BoardTableViewCell
         cell.boardNameTextField.text = boardVMArray[indexPath.row].name
         cell.boardDateTextField.text = "Last Updated: \(df.string(from: boardVMArray[indexPath.row].lastEdited))"
-        cell.boardImageField.image = UIImage(data: boardVMArray[indexPath.row].image)
-            
+        
+        if let subForm = boardVMArray[indexPath.row].subFormations?.allObjects as? [Formation]{
+        if subForm.count != 0{
+            if let a = subForm[0].image{
+            cell.boardImageField.image = UIImage(data: a)
+                cell.boardImageField.layer.borderWidth = 4
+                cell.boardImageField.layer.borderColor = #colorLiteral(red: 0.7568627451, green: 0.8392156863, blue: 0.8980392157, alpha: 1)
+            }
+        }
+        else{
+            cell.boardImageField.image = #imageLiteral(resourceName: "defaultFormImage")
+        }
+        
+        }
         
         return cell
     }
@@ -135,8 +150,6 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         boardVM.setCurrentBoard(index: indexPath.row)
-        print("Row selected", indexPath.row)
-        print("Updated Inex", boardVM.currentBoardIndex)
         let nextVC = storyboard?.instantiateViewController(identifier: "GameViewController") as! GameViewController
         nextVC.boardVM = boardVM
         self.navigationController?.pushViewController(nextVC, animated: true)
@@ -193,7 +206,6 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView,
                    leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         boardVM.setCurrentBoard(index: indexPath.row)
-        print("In Swipe, Setting Current Index", indexPath.row)
         
         let action = UIContextualAction(style: .destructive,
                                         title: "") { [weak self] (action, view, completionHandler) in
@@ -266,7 +278,6 @@ extension BoardViewController: UITextFieldDelegate{
     
     public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         
-        print("tag", textField.tag)
         boardVM.setCurrentBoard(index: textField.tag)
 //        let pointInTable = textField.convert(textField.bounds.origin, to: self.boardsCollectionView)
 //        let textFieldIndexPath = self.boardsCollectionView.indexPathForItem(at: pointInTable)
@@ -291,7 +302,6 @@ extension BoardViewController: BoardUpdatesDelegate{
     func boardUpdated(boardArray: [FormationBoard]) {
         //self.boardVMArray = boardArray
         boardVMArray = boardVM.getBoardArray()
-        print("In Board Updated, Board Controller ", boardArray.count)
         DispatchQueue.main.async {
             self.boardTableView.reloadData()
         }

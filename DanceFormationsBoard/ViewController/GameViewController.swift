@@ -20,26 +20,19 @@ class GameViewController: UIViewController{
     var formationVM = FormationViewModel()
     var dancerVM = DancerViewModel()
     var formationArray: [Formation] = []
-    var sceneGridFinished = false
     var currIndexPath: IndexPath?
     var enableText: Bool = false
     var selectedColor = UIColor.yellow
     //let musicPlayer = MPMusicPlayerController.systemMusicPlayer
     
-    //var formimage: [UIImage] = [] //Don't need
-    //let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    //var formationArray: [Formation] = []
+
     var scene1: GameScene!
-    //var newFormation: Formation!
-    
-    //Need Array of Formations
-    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        squareView.layer.borderWidth = 1
-//        squareView.layer.borderColor = #colorLiteral(red: 0.3058823645, green: 0.8039215803, blue: 0.7686274648, alpha: 1).cgColor
-        print("Game View ", boardVM.currentBoardIndex)
+
+        print("Game View ", boardVM.currentBoardIndex) //ASSERT 0
         formationVM.currentBoard = boardVM.getCurrentBoard()
         scene1 = GameScene(size: squareView.bounds.size)
         scene1.scaleMode = .fill
@@ -53,8 +46,9 @@ class GameViewController: UIViewController{
         labelTextField.delegate = self
         nodeColorButton.backgroundColor =  UIColor.yellow
         scene1.selectedNodeColor = selectedColor
+        formationVM.delegate = self
         
-        //squareView.presentScene(scene1)
+        squareView.presentScene(scene1)
         //squareView.backgroundColor = .blue
         
         formationArray = formationVM.loadFormations()
@@ -62,6 +56,15 @@ class GameViewController: UIViewController{
                 formationVM.createNewFormation(formData: nil)
                 allFormUpdates()
                }
+               else{
+                formationVM.setCurrentSelection(index: 0)
+                var curr = formationVM.getCurrentFormation()
+                var dancers = dancerVM.loadDancers(selectedFormation: curr)
+                scene1.initial = dancers
+//                scene1.formationSelected(dancers: dancers)
+                //Set CELL SELECTION
+               }
+        
         ////            //if Count is 0, create a new formation, with random image, when next is pressed, save current and create new
         //                let image = dancerVM.imageToData(view: squareView)
         //                formationVM.createNewFormation(formData: image)
@@ -108,27 +111,50 @@ class GameViewController: UIViewController{
 
     
     @IBAction func nextFormationPressed(_ sender: Any) {
+        
         var imageData = dancerVM.imageToData(view: squareView)
         formationVM.getCurrentFormation().image = imageData
-        
-        //print("When Next is pressed, this is the #dancers there are ", formationVM.getCurrentFormation().dancers?.count)
-        dancerVM.saveDancer()
-        formationVM.saveFormation()
-        //formationArray = formationVM.loadFormations()//Trying this out:
-        //print("When Next is pressed after Load , this is the #dancers there are ", formationVM.getCurrentFormation().dancers?.count)
-        //formationVM.createNewFormation(formData: imageData)
+        //dancerVM.saveDancer()
+        //formationVM.saveFormation()
+        formationArray = formationVM.loadFormations()//Trying this out:
+        formationVM.createNewFormation(formData: imageData)
+        allFormUpdates()
         
         //formationArray = formationVM.loadFormations()
         //print("After Creation is pressed after Load , this is the #dancers there are ", formationVM.formationArray[formationVM.currentIndex-1].dancers?.count)
         //var curr = formationVM.getCurrentFormation()
         //dancerVM.loadDancers(selectedFormation: curr)
-        self.formsTableView.reloadData()
-        if let currentPath = currIndexPath{
-        self.formsTableView.deselectRow(at: currentPath, animated: true)
-        var nextIndexPath = IndexPath(row: currentPath.row + 1, section: 0)
-            self.formsTableView.selectRow(at: nextIndexPath, animated: true, scrollPosition: .top)
+        
+//        if let currentPath = currIndexPath{
+//        self.formsTableView.deselectRow(at: currentPath, animated: true)
+//        var nextIndexPath = IndexPath(row: currentPath.row + 1, section: 0)
+//            self.formsTableView.selectRow(at: nextIndexPath, animated: true, scrollPosition: .top)
+//
+            
+            
+            
+            //        var imageData = dancerVM.imageToData(view: squareView)
+            //        formationVM.getCurrentFormation().image = imageData
+            //
+            //        //print("When Next is pressed, this is the #dancers there are ", formationVM.getCurrentFormation().dancers?.count)
+            //        dancerVM.saveDancer()
+            //        formationVM.saveFormation()
+            //        formationArray = formationVM.loadFormations()//Trying this out:
+            //        //print("When Next is pressed after Load , this is the #dancers there are ", formationVM.getCurrentFormation().dancers?.count)
+            //        formationVM.createNewFormation(formData: imageData)
+            //
+            //        formationArray = formationVM.loadFormations()
+            //        //print("After Creation is pressed after Load , this is the #dancers there are ", formationVM.formationArray[formationVM.currentIndex-1].dancers?.count)
+            //        //var curr = formationVM.getCurrentFormation()
+            //        //dancerVM.loadDancers(selectedFormation: curr)
+            //        self.formsTableView.reloadData()
+            //        if let currentPath = currIndexPath{
+            //        self.formsTableView.deselectRow(at: currentPath, animated: true)
+            //        var nextIndexPath = IndexPath(row: currentPath.row + 1, section: 0)
+            //            self.formsTableView.selectRow(at: nextIndexPath, animated: true, scrollPosition: .top)
+            //        }
         }
-    }
+    
     
     
     
@@ -211,6 +237,7 @@ class GameViewController: UIViewController{
         
         formationVM.saveFormation()
         formationVM.loadFormations()
+
     }
     
 
@@ -251,9 +278,6 @@ extension GameViewController: UITableViewDataSource, UITableViewDelegate{
         formationVM.setCurrentSelection(index: indexPath.row)
         var curr = formationVM.getCurrentFormation()
         var dancers = dancerVM.loadDancers(selectedFormation: curr)
-        //currentCell.selectionStyle = .blue
-        //currentCell.setSelected(true, animated: true)
-        currentCell.setHighlighted(false, animated: false)
         scene1.formationSelected(dancers: dancers)
         currIndexPath = indexPath
     }
@@ -294,6 +318,8 @@ extension GameViewController: GameSceneUpdatesDelegate{
         let curr = formationVM.getCurrentFormation()
 
         dancerVM.addDancer(xPosition: xPosition, yPosition: yPosition, label: label, id: id, color: color, selectedFormation: curr)
+        dancerVM.saveDancer()
+
         var imageData = dancerVM.imageToData(view: squareView)
         formationVM.getCurrentFormation().image = imageData
         formationVM.saveFormation()
@@ -301,14 +327,9 @@ extension GameViewController: GameSceneUpdatesDelegate{
         formsTableView.reloadData()
     }
     
-    
-    func gridFinished(finished: Bool) {
-        sceneGridFinished = true
-    }
-    
     func dancerMoved(id: String, xPosition: Float, yPosition: Float) {
         dancerVM.updateDancerPosition(id: id, xPosition: xPosition, yPosition: yPosition)
-       
+        dancerVM.saveDancer()
         var imageData = dancerVM.imageToData(view: squareView)
         formationVM.getCurrentFormation().image = imageData
         formationVM.saveFormation()
@@ -344,6 +365,7 @@ extension GameViewController: GameSceneUpdatesDelegate{
     
     func removedDancer(id: String) {
         dancerVM.removeDancer(dancerId: id)
+        dancerVM.saveDancer()
         var imageData = dancerVM.imageToData(view: squareView)
         formationVM.getCurrentFormation().image = imageData
         formationVM.saveFormation()

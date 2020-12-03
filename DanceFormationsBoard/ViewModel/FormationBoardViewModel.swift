@@ -71,7 +71,7 @@ class FormationBoardViewModel{
         let newBoard = FormationBoard(context: context)
         newBoard.name = "Board \(boardsArray.count)"
         newBoard.lastEdited = Date()
-        let newImage = UIImage(systemName: "camera.metering.unknown") ?? #imageLiteral(resourceName: "ReactiveExtensionsLogo")
+        let newImage = #imageLiteral(resourceName: "defaultFormImage")
         
         if let dataImage = imageToData(image: newImage){
             newBoard.image = dataImage
@@ -88,12 +88,14 @@ class FormationBoardViewModel{
     func getCurrentBoard() -> FormationBoard?{
         if let index = currentBoardIndex
         {
+            print("Board id", boardsArray[index].uniqueId)
         return boardsArray[index]
         }
         else{
             print("Getting Current Board Error")
             return nil
         }
+        
     }
     
     func getCurrentBoardIndex() -> Int?{

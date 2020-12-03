@@ -22,14 +22,17 @@ class DancerViewModel{
         
         let request : NSFetchRequest<Dancer> = Dancer.fetchRequest()
         
-        print("In Load Dancers", selectedFormation.name!)
+        print("In Load Dancers", selectedFormation.uniqueId)
         
-        let predicate = NSPredicate(format: "owner.name = %@", selectedFormation.name!)
+        let predicate = NSPredicate(format: "owner.uniqueId = %@", selectedFormation.uniqueId)
         request.predicate = predicate
         do{
             
             dancerArray = try context.fetch(request)
             print(dancerArray.count)
+            for danc in dancerArray{
+                print(danc.owner?.uniqueId)
+            }
         }
         catch{
             print("Error Fetching Data from Context in Dancer ViewModel \(error)")
@@ -49,7 +52,6 @@ class DancerViewModel{
             print("Error in Deleting Dancer in DancerViewModel")
         }
         print("In remove dancer ", dancerArray.count)
-        self.saveDancer()
         
     }
     
@@ -65,7 +67,6 @@ class DancerViewModel{
         //selectedFormation.addToDancers(newDancer)
         newDancer.owner = selectedFormation
         //self.dancerArray.append(newDancer)
-        self.saveDancer()
         
         //Call Save everytime this is called
     }
@@ -81,7 +82,6 @@ class DancerViewModel{
         newDancer.id = dancer.id
         newDancer.owner = selectedFormation
         //self.dancerArray.append(newDancer)
-        self.saveDancer()
         
         //Call Save everytime this is called
     }
@@ -95,8 +95,6 @@ class DancerViewModel{
             dancerArray[toUpdateIndex].yPos = yPosition
         }
         
-        self.saveDancer()
-        
         
     }
     
@@ -107,8 +105,6 @@ class DancerViewModel{
 
             dancerArray[toUpdateIndex].label = label
         }
-        
-        self.saveDancer()
     }
     
     
@@ -119,7 +115,6 @@ class DancerViewModel{
             dancerArray[toUpdateIndex].color = color
         }
         
-        self.saveDancer()
     }
     
     func imageToData(view formationView: SKView) -> Data?{

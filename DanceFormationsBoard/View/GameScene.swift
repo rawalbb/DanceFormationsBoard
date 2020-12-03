@@ -5,7 +5,6 @@ import CoreData
 
 protocol GameSceneUpdatesDelegate {
     func dancerToAdd(xPosition: Float, yPosition: Float, id: String, color: String, label: String)
-    func gridFinished(finished: Bool)
     func dancerMoved(id: String, xPosition: Float, yPosition: Float)
     //func updateDancerLabel(id: String, label: String)
     func updateCellSelect()
@@ -27,67 +26,87 @@ class GameScene: SKScene {
     var arrayOfActions: [SKAction] = []
     var backgroundMuisc: SKAudioNode!
     var selectedNodeColor: UIColor!
+    var initial: [Dancer]!
     //let font = UIFont(name: "GillSans-SemiBold", size: .14)!
     
     
+    override func sceneDidLoad() {
 
+
+    }
     override func didMove(to view: SKView) {
         // 2
+
         backgroundColor = #colorLiteral(red: 0.1843137294, green: 0.2039215714, blue: 0.2156862766, alpha: 1)
-        
         gridWidth = view.bounds.width
         gridHeight = view.bounds.height
-        drawGrid(width: gridWidth, height: gridHeight)
+
+        drawGrid()
+        formationSelected(dancers: initial)
         
     }
     
+    //Only want to
 
     //MARK: Scene Grid
-    func drawGrid(width: CGFloat, height: CGFloat){
-
+    func drawGrid(){
+        
         var xCounter: CGFloat = 0.0
         var yCounter: CGFloat = 0.0
-        let yIncrement: CGFloat = height/10
-        let xIncrement: CGFloat = yIncrement
-        let xNumLines: Int = Int(width/xIncrement)
-        var xLineNodes: [SKShapeNode] = []
-        var yLineNodes: [SKShapeNode] = []
-        for _ in 1...xNumLines
+        let increment: CGFloat = gridHeight/10
+        var xNumLines: Int {
+            return Int(gridWidth/increment)
+        }
+        var yNumLines: Int{
+            return Int(gridHeight/increment)
+        }
+        for num in 0...xNumLines
         {
             let path = UIBezierPath()
             let start = CGPoint(x: xCounter, y: 0)
-            let end = CGPoint(x: xCounter, y:height)
+            let end = CGPoint(x: xCounter, y:gridHeight)
             path.move(to: start)
             path.addLine(to: end)
-            xArray.append(xCounter)
             
-            let shapeNode = SKShapeNode(path: path.cgPath)
-            shapeNode.strokeColor = #colorLiteral(red: 0.5587006807, green: 0.6035502553, blue: 0.6746274233, alpha: 1)
-            //drawGrid(path: path, width: gridWidth, height: gridHeight)
-            addChild(shapeNode)
-            xCounter += xIncrement
-            xLineNodes.append(shapeNode)
+            
+            let lineNode = SKShapeNode(path: path.cgPath)
+            
+            if num != 0{
+                xArray.append(xCounter)
+            }
+            
+                lineNode.strokeColor = #colorLiteral(red: 0.5587006807, green: 0.6035502553, blue: 0.6746274233, alpha: 1)
+                lineNode.lineWidth = 2
+                xArray.append(xCounter)
+            
+            lineNode.name = "grid"
+            addChild(lineNode)
+            xCounter += increment
         }
         
-        for _ in 1...10
+        for num in 0...yNumLines
         {
             let path = UIBezierPath()
             let start = CGPoint(x: 0, y: yCounter)
-            let end = CGPoint(x: width, y:yCounter)
+            let end = CGPoint(x: gridWidth, y:yCounter)
             path.move(to: start)
             path.addLine(to: end)
-            yArray.append(yCounter)
             
-            let shapeNode = SKShapeNode(path: path.cgPath)
-            shapeNode.strokeColor = #colorLiteral(red: 0.5587006807, green: 0.6035502553, blue: 0.6746274233, alpha: 1)
-            shapeNode.lineWidth = 2
-            //drawGrid(path: path, width: gridWidth, height: gridHeight)
-            addChild(shapeNode)
-            yCounter += yIncrement
-            yLineNodes.append(shapeNode)
+            let lineNode = SKShapeNode(path: path.cgPath)
+            if num == 0 || num == yNumLines{
+                lineNode.strokeColor = #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)
+                lineNode.lineWidth = 3
+            }
+            else{
+                lineNode.strokeColor = #colorLiteral(red: 0.5587006807, green: 0.6035502553, blue: 0.6746274233, alpha: 1)
+                lineNode.lineWidth = 2
+                yArray.append(yCounter)
+            }
+           
+            lineNode.name = "grid"
+            addChild(lineNode)
+            yCounter += increment
         }
-        
-        self.myDelegate.gridFinished(finished: true)
         
     }
     
@@ -102,7 +121,7 @@ class GameScene: SKScene {
                 
                 
                 //let n = DanceNode(imageNamed: "circle")
-                let n = DanceNode(circleOfRadius: 11)
+                let n = DanceNode(circleOfRadius: 10.5)
                 n.fillColor = selectedNodeColor
                 n.strokeColor = selectedNodeColor
                     //let n = SKShapeNode(rectOf: CGSize(width: 10.0, height: 10.0), cornerRadius: 3.0)
@@ -118,7 +137,7 @@ class GameScene: SKScene {
                 label.name = "labelName"
                 label.position = CGPoint(x: 20, y: 20 )
                 //label.color = UIColor.blue
-                n.name = "draggable"
+                n.name = "dancers"
                 n.addChild(label)
                 self.addChild(n)
                 
@@ -128,7 +147,6 @@ class GameScene: SKScene {
                 let yPos = Float(n.position.y)
                 n.nodeId = UUID().uuidString
                 let color = selectedNodeColor.toHexString()
-                print("COLOR ", color)
                 let dancerId = n.nodeId
                 self.myDelegate.dancerToAdd(xPosition: xPos, yPosition: yPos, id: dancerId, color: color, label: label.text ?? "")
                 //self.saveDancers()
@@ -157,12 +175,10 @@ class GameScene: SKScene {
         if let node = currentNode{
             node.enumerateChildNodes(withName: "labelName") { (node, stop) in
                 childLabelNodes.append(node as! SKLabelNode)
-                print(childLabelNodes.count, "Child Count")
             }
             if childLabelNodes.count != 0{
             var a = childLabelNodes[0] as? SKLabelNode
             if let childToUpdate = a{
-                print(childToUpdate.text)
                 childToUpdate.fontSize = 14
                 childToUpdate.fontName = "GillSans-SemiBold"
                 childToUpdate.text = label
@@ -205,20 +221,13 @@ class GameScene: SKScene {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first, let node = currentNode {
             let touchLocation = touch.location(in: self)
-            print("In TOUCHES Ended")
-            print("GameScene Size", view?.bounds.width, view?.bounds.height)
-            print(self.children.count)
             if node.position.x < 0.0 || node.position.x >= gridWidth{
-                print("X is offscreen")
-                //node.removeFromParent()
+                node.removeFromParent()
                 self.myDelegate.removedDancer(id: node.nodeId)
-                //currentNode = nil
-                //print("If", self.children.count)
                 
             }
             else if node.position.y < 0.0 || node.position.y >= gridHeight{
-                print("Y is offscreen")
-                //node.removeFromParent()
+                node.removeFromParent()
                 self.myDelegate.removedDancer(id: node.nodeId)
                 //currentNode = nil
                // print("Else If", self.children.count)
@@ -227,7 +236,6 @@ class GameScene: SKScene {
             node.position = getNearestIntersection(x: touchLocation.x, y: touchLocation.y)
             var id = node.nodeId
             self.myDelegate.dancerMoved(id: id, xPosition: Float(node.position.x), yPosition: Float(node.position.y))
-                print("Else", self.children.count)
             }
         }
         //currentNode = nil
@@ -244,9 +252,9 @@ class GameScene: SKScene {
     
     
     func getNearestIntersection(x: CGFloat, y: CGFloat) -> CGPoint{
-        
         var nearestX: CGFloat {
-            xArray.reduce(0.0 as CGFloat){
+           
+            xArray.reduce(34.3 as CGFloat){
                 if abs($1 - x) < abs($0 - x){
                     return CGFloat($1)
                     
@@ -259,7 +267,7 @@ class GameScene: SKScene {
         
         
         var nearestY: CGFloat {
-            yArray.reduce(0.0 as CGFloat){
+            yArray.reduce(34.3 as CGFloat){
                 if abs($1 - y) < abs($0 - y){
                     return CGFloat($1)
                     
@@ -269,20 +277,23 @@ class GameScene: SKScene {
                 }
             }
         }
-        
         return CGPoint(x: nearestX, y: nearestY)
         
     }
     
     
-    func formationSelected(dancers: [Dancer]){
+    func formationSelected(dancers: [Dancer]?){
         
-        self.removeAllChildren()
-        drawGrid(width: gridWidth, height: gridHeight)
+        self.enumerateChildNodes(withName: "dancers") { (dancerNode, stop) in
+            dancerNode.removeFromParent()
+            //**Keeps Grid**
+        }
+
+        //self.removeAllChildren()
         //print("DAncer ", dancers.count)
+        if let dancers = dancers{
         for dancer in dancers{
-            let n = DanceNode(circleOfRadius: 11)
-            print("In Formation Selected Color", dancer.color)
+            let n = DanceNode(circleOfRadius: 10)
             n.fillColor = UIColor(hex: dancer.color)
             n.strokeColor = UIColor(hex: dancer.color)
             n.nodeId = dancer.id!
@@ -299,19 +310,17 @@ class GameScene: SKScene {
             //closestNode!.lineWidth = 20
             
             n.position = CGPoint(x: CGFloat(dancer.xPos), y: CGFloat(dancer.yPos))
-//            print("X ", n.position.x)
-//            print("Y ", n.position.y)
             label.name = "labelName"
             label.position = CGPoint(x: 0, y: 16 )
             
-            n.name = "draggable"
+            n.name = "dancers"
             n.addChild(label)
             self.addChild(n)
             //self.addChild(label)
             
             
         }
-        
+        }
         //playThroughFormations()
         
     }
@@ -345,12 +354,10 @@ class GameScene: SKScene {
     }
     
     func playThroughFormations(dancers: [Dancer], waitTime: Double, transitionTime: Double, formIndex: Int, totalForms: Int){
-        
-        //print("Curr Index", self.formationVM.currentIndex)
    
         let actionA = SKAction.run { [unowned self] in
             var currNodes: [DanceNode] = []
-                self.enumerateChildNodes(withName: "draggable") { (node, stop) in
+                self.enumerateChildNodes(withName: "dancer") { (node, stop) in
                 currNodes.append(node as! DanceNode)
             }
         
@@ -382,11 +389,7 @@ class GameScene: SKScene {
         arrayOfActions.append(wait)
         arrayOfActions.append(actionA)
         
-        print("Form Index ", formIndex)
-        print("Total ", totalForms)
         if formIndex + 2 == totalForms{
-            print("Form Indexxxxx ", formIndex)
-            print("Total;;; ", totalForms)
             arrayOfActions.append(SKAction.wait(forDuration: 2.0))
             self.endSong()
         }
