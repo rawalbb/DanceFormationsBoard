@@ -34,7 +34,7 @@ class FormationViewModel{
     }
     
     
-    func createNewFormation(formData: Data? = nil) -> Formation{
+    func createNewFormation(formData: Data? = nil){
         //var numFormation = formationArray.count
         let newFormation = Formation(context: context)
         newFormation.name = "Formation \(formationArray.count)"
@@ -45,7 +45,7 @@ class FormationViewModel{
         }
         if currentIndex != -1{
             print(currentIndex, "Current Formation Index")
-            var dancerObjects = getCurrentFormation().dancers as! Set<Dancer>
+            let dancerObjects = getCurrentFormation().dancers as! Set<Dancer>
             print("When creating new, checking dancer count of old ", dancerObjects.count)
             for dancer in dancerObjects{
                 danceVM.addDancer(dancer: dancer, selectedFormation: newFormation)
@@ -57,14 +57,7 @@ class FormationViewModel{
         }
         newFormation.uniqueId = UUID().uuidString
         newFormation.formationOwner = currentBoard
-        //TODO
-        //numFormation += 1
-        //self.formationArray.append(newFormation)
-        
-        //self.saveFormation() //**CALL FROM Controller
-        currentIndex += 1
         print("In Create ", newFormation.formationOwner.uniqueId)
-        return newFormation
     }
     
     func getCurrentFormation() -> Formation{
@@ -86,6 +79,16 @@ class FormationViewModel{
         //print(formationArray.count)
         if currentIndex < formationArray.count - 1{
             return formationArray[currentIndex + 1]
+        }
+        else{
+            return nil
+        }
+    }
+    
+    func getPrevFormation() -> Formation?{
+
+        if currentIndex > 0{
+            return formationArray[currentIndex - 1]
         }
         else{
             return nil

@@ -126,7 +126,7 @@ class GameScene: SKScene {
                 n.strokeColor = selectedNodeColor
                     //let n = SKShapeNode(rectOf: CGSize(width: 10.0, height: 10.0), cornerRadius: 3.0)
                 let label = SKLabelNode(text: "")
-                var nearest = getNearestIntersection(x: location.x, y: location.y)
+                let nearest = getNearestIntersection(x: location.x, y: location.y)
                 
                 label.fontSize = 14.0
                 //label.color = UIColor.red
@@ -177,7 +177,7 @@ class GameScene: SKScene {
                 childLabelNodes.append(node as! SKLabelNode)
             }
             if childLabelNodes.count != 0{
-            var a = childLabelNodes[0] as? SKLabelNode
+                let a = childLabelNodes[0] as? SKLabelNode
             if let childToUpdate = a{
                 childToUpdate.fontSize = 14
                 childToUpdate.fontName = "GillSans-SemiBold"
@@ -234,7 +234,7 @@ class GameScene: SKScene {
             }
             else{
             node.position = getNearestIntersection(x: touchLocation.x, y: touchLocation.y)
-            var id = node.nodeId
+                let id = node.nodeId
             self.myDelegate.dancerMoved(id: id, xPosition: Float(node.position.x), yPosition: Float(node.position.y))
             }
         }
@@ -344,20 +344,20 @@ class GameScene: SKScene {
     
     func endSong(){
 
-        
+        if backgroundMuisc != nil{
         let actionC = SKAction.run {
             self.backgroundMuisc.run(SKAction.stop())
         }
         
         arrayOfActions.append(actionC)
-
+        }
     }
     
     func playThroughFormations(dancers: [Dancer], waitTime: Double, transitionTime: Double, formIndex: Int, totalForms: Int){
    
         let actionA = SKAction.run { [unowned self] in
             var currNodes: [DanceNode] = []
-                self.enumerateChildNodes(withName: "dancer") { (node, stop) in
+                self.enumerateChildNodes(withName: "dancers") { (node, stop) in
                 currNodes.append(node as! DanceNode)
             }
         

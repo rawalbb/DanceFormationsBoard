@@ -9,8 +9,9 @@ class GameViewController: UIViewController{
     
     
     @IBOutlet weak var formsTableView: UITableView!
-
+    
     @IBOutlet weak var squareView: SKView!
+    @IBOutlet weak var formOptionsView: UIView!
     
     @IBOutlet weak var labelTextField: UITextField!
     @IBOutlet weak var nodeColorButton: UIButton!
@@ -23,16 +24,23 @@ class GameViewController: UIViewController{
     var currIndexPath: IndexPath?
     var enableText: Bool = false
     var selectedColor = UIColor.yellow
+    var colorPicker = UIColorPickerViewController()
     //let musicPlayer = MPMusicPlayerController.systemMusicPlayer
     
-
+    
     var scene1: GameScene!
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        print("Game View ", boardVM.currentBoardIndex) //ASSERT 0
+        
+        formOptionsView.layer.cornerRadius = 20
+        formOptionsView.backgroundColor = #colorLiteral(red: 0.1478704014, green: 0.1637916303, blue: 0.1738279326, alpha: 1)
+        formOptionsView.layer.borderWidth = 2
+        formOptionsView.layer.borderColor = #colorLiteral(red: 0.1478704014, green: 0.1637916303, blue: 0.1738279326, alpha: 1).cgColor
+        nodeColorButton.layer.cornerRadius = 10
+        
+        print("Game View ", boardVM.currentBoardIndex as Any) //ASSERT 0
         formationVM.currentBoard = boardVM.getCurrentBoard()
         scene1 = GameScene(size: squareView.bounds.size)
         scene1.scaleMode = .fill
@@ -46,60 +54,32 @@ class GameViewController: UIViewController{
         labelTextField.delegate = self
         nodeColorButton.backgroundColor =  UIColor.yellow
         scene1.selectedNodeColor = selectedColor
+        colorPicker.delegate = self
         formationVM.delegate = self
         
         squareView.presentScene(scene1)
         //squareView.backgroundColor = .blue
         
         formationArray = formationVM.loadFormations()
-               if formationArray.count == 0{
-                formationVM.createNewFormation(formData: nil)
-                allFormUpdates()
-               }
-               else{
-                formationVM.setCurrentSelection(index: 0)
-                var curr = formationVM.getCurrentFormation()
-                var dancers = dancerVM.loadDancers(selectedFormation: curr)
-                scene1.initial = dancers
-//                scene1.formationSelected(dancers: dancers)
-                //Set CELL SELECTION
-               }
-        
-        ////            //if Count is 0, create a new formation, with random image, when next is pressed, save current and create new
-        //                let image = dancerVM.imageToData(view: squareView)
-        //                formationVM.createNewFormation(formData: image)
-        //                formationArray = formationVM.loadFormations()
-        //            formationVM.setCurrentSelection(index: formationVM.currentIndex)
-        //                //var curr = formationVM.getCurrentFormation()
-        //                //dancerVM.loadDancers(selectedFormation: curr)
-        //            currIndexPath = IndexPath(row: 0, section: 0)
-        //            self.formsTableView.selectRow(at: currIndexPath, animated: true, scrollPosition: .top)
-        //        }
-        //        else{
-        //            formationVM.setCurrentSelection(index: 0)
-        //            dancerVM.loadDancers(selectedFormation: formationVM.getCurrentFormation())
-        //            currIndexPath = IndexPath(row: 0, section: 0)
-        //            self.formsTableView.selectRow(at: currIndexPath, animated: true, scrollPosition: .top)
-        //        }
-        
-        
-        
-        
-        
-        
-
-        
+        if formationArray.count == 0{
+            formationVM.createNewFormation(formData: nil)
+            formationVM.setCurrentSelection(index: 0)
         }
-    
-//    deinit {
-//         NotificationCenter.default.removeObserver(UIResponder.keyboardWillShowNotification)
-//         NotificationCenter.default.removeObserver(UIResponder.keyboardWillHideNotification)
-//         NotificationCenter.default.removeObserver(UIResponder.keyboardWillChangeFrameNotification)
-//     }
+        else{
+            formationVM.setCurrentSelection(index: 0)
+            let curr = formationVM.getCurrentFormation()
+            let dancers = dancerVM.loadDancers(selectedFormation: curr, current: true)
+            scene1.initial = dancers
+            //                scene1.formationSelected(dancers: dancers)
+            //Set CELL SELECTION
+        }
+        
+        allFormUpdates()
+        
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         squareView.presentScene(scene1)
     }
     
@@ -108,11 +88,11 @@ class GameViewController: UIViewController{
     override var prefersStatusBarHidden: Bool {
         return true
     }
-
+    
     
     @IBAction func nextFormationPressed(_ sender: Any) {
         
-        var imageData = dancerVM.imageToData(view: squareView)
+        let imageData = dancerVM.imageToData(view: squareView)
         formationVM.getCurrentFormation().image = imageData
         //dancerVM.saveDancer()
         //formationVM.saveFormation()
@@ -125,102 +105,103 @@ class GameViewController: UIViewController{
         //var curr = formationVM.getCurrentFormation()
         //dancerVM.loadDancers(selectedFormation: curr)
         
-//        if let currentPath = currIndexPath{
-//        self.formsTableView.deselectRow(at: currentPath, animated: true)
-//        var nextIndexPath = IndexPath(row: currentPath.row + 1, section: 0)
-//            self.formsTableView.selectRow(at: nextIndexPath, animated: true, scrollPosition: .top)
-//
-            
-            
-            
-            //        var imageData = dancerVM.imageToData(view: squareView)
-            //        formationVM.getCurrentFormation().image = imageData
-            //
-            //        //print("When Next is pressed, this is the #dancers there are ", formationVM.getCurrentFormation().dancers?.count)
-            //        dancerVM.saveDancer()
-            //        formationVM.saveFormation()
-            //        formationArray = formationVM.loadFormations()//Trying this out:
-            //        //print("When Next is pressed after Load , this is the #dancers there are ", formationVM.getCurrentFormation().dancers?.count)
-            //        formationVM.createNewFormation(formData: imageData)
-            //
-            //        formationArray = formationVM.loadFormations()
-            //        //print("After Creation is pressed after Load , this is the #dancers there are ", formationVM.formationArray[formationVM.currentIndex-1].dancers?.count)
-            //        //var curr = formationVM.getCurrentFormation()
-            //        //dancerVM.loadDancers(selectedFormation: curr)
-            //        self.formsTableView.reloadData()
-            //        if let currentPath = currIndexPath{
-            //        self.formsTableView.deselectRow(at: currentPath, animated: true)
-            //        var nextIndexPath = IndexPath(row: currentPath.row + 1, section: 0)
-            //            self.formsTableView.selectRow(at: nextIndexPath, animated: true, scrollPosition: .top)
-            //        }
-        }
+        //        if let currentPath = currIndexPath{
+        //        self.formsTableView.deselectRow(at: currentPath, animated: true)
+        //        var nextIndexPath = IndexPath(row: currentPath.row + 1, section: 0)
+        //            self.formsTableView.selectRow(at: nextIndexPath, animated: true, scrollPosition: .top)
+        //
+        
+        
+        
+        //        var imageData = dancerVM.imageToData(view: squareView)
+        //        formationVM.getCurrentFormation().image = imageData
+        //
+        //        //print("When Next is pressed, this is the #dancers there are ", formationVM.getCurrentFormation().dancers?.count)
+        //        dancerVM.saveDancer()
+        //        formationVM.saveFormation()
+        //        formationArray = formationVM.loadFormations()//Trying this out:
+        //        //print("When Next is pressed after Load , this is the #dancers there are ", formationVM.getCurrentFormation().dancers?.count)
+        //        formationVM.createNewFormation(formData: imageData)
+        //
+        //        formationArray = formationVM.loadFormations()
+        //        //print("After Creation is pressed after Load , this is the #dancers there are ", formationVM.formationArray[formationVM.currentIndex-1].dancers?.count)
+        //        //var curr = formationVM.getCurrentFormation()
+        //        //dancerVM.loadDancers(selectedFormation: curr)
+        //        self.formsTableView.reloadData()
+        //        if let currentPath = currIndexPath{
+        //        self.formsTableView.deselectRow(at: currentPath, animated: true)
+        //        var nextIndexPath = IndexPath(row: currentPath.row + 1, section: 0)
+        //            self.formsTableView.selectRow(at: nextIndexPath, animated: true, scrollPosition: .top)
+        //        }
+    }
     
     
     
     
     @IBAction func playFormationsPressed(_ sender: Any) {
         var waitT = 0.0
+        
         //player.play()
         //musicPlayer.play()
         
         ///The action is indeed cancelled(it actually finished when you start playing) but it will not stop the audio. Use SKAudioNode if you need to suddenly stop sounds
         self.scene1.playSong()
-
+        formationVM.setCurrentSelection(index: 0)
         
-                for i in formationVM.currentIndex..<formationVM.formationArray.count{
-                    
-                    if let currentPath = self.currIndexPath{
-
-                    print(formationVM.currentFormation?.name)
-                    if let nextFormation = formationVM.getNextFormation(){
-                    let nextDancerForms = dancerVM.loadNextDancers(nextFormation: nextFormation)
-                        formationVM.currentFormation = nextFormation
-                        
-                        
-                        //print("New Current Path ", currentPath.row)
-
+        for _ in 0..<formationVM.formationArray.count{
+            
+           
                 
-                        self.scene1.playThroughFormations(dancers: nextDancerForms, waitTime: waitT, transitionTime: 2.0, formIndex: formationVM.currentIndex, totalForms: formationArray.count)
+                print(formationVM.currentFormation?.name)
+                if let nextFormation = formationVM.getNextFormation(){
+                    let nextDancerForms = dancerVM.loadDancers(selectedFormation: nextFormation, current: false)
+                    formationVM.currentFormation = nextFormation
                     
-                        waitT = 4.0
-                
-                //for i in currentPath.row..<self.formationArray.count{
-                //self?.playFormations
-
-                        
+                    
+                    //print("New Current Path ", currentPath.row)
+                    
+                    
+                    self.scene1.playThroughFormations(dancers: nextDancerForms, waitTime: waitT, transitionTime: 2.0, formIndex: formationVM.currentIndex, totalForms: formationArray.count)
+                    
+                    waitT = 4.0
+                    
+                    //for i in currentPath.row..<self.formationArray.count{
+                    //self?.playFormations
+                    
+                    
                 }
-                    
-                    formationVM.currentIndex += 1
-       
-    }
-                    //currIndexPath = IndexPath(row: formationVM.currentIndex, section: 0)
-                    
-                    
-                    //self.scene1.endSong()
-
-                self.scene1.run(SKAction.sequence(self.scene1.arrayOfActions))
-                    
-                    let currNext = IndexPath(row: formationVM.currentIndex, section: 0)
-                    //self.scene1.arrayOfActions = []
-
-               
-    }
+                
+                formationVM.currentIndex += 1
+                
+            
+            //currIndexPath = IndexPath(row: formationVM.currentIndex, section: 0)
+            
+            
+            //self.scene1.endSong()
+            
+            self.scene1.run(SKAction.sequence(self.scene1.arrayOfActions))
+            
+            //let currNext = IndexPath(row: formationVM.currentIndex, section: 0)
+            //self.scene1.arrayOfActions = []
+            
+            
+        }
         //player.stop()
     }
     
-
+    
     @IBAction func labelTextFieldChanged(_ sender: UITextField) {
         print("Label changed")
         if let text = labelTextField.text{
             print(text)
             self.scene1.updateDancerLabel(label: text)
             if let nodeId = self.scene1.currentNode?.nodeId{
-            dancerVM.updateDancerLabel(id: nodeId, label: text)
-            var imageData = dancerVM.imageToData(view: squareView)
-            formationVM.getCurrentFormation().image = imageData
-            formationVM.saveFormation()
-            //formationArray = formationVM.loadFormations()
-            formsTableView.reloadData()
+                dancerVM.updateDancerLabel(id: nodeId, label: text)
+                let imageData = dancerVM.imageToData(view: squareView)
+                formationVM.getCurrentFormation().image = imageData
+                formationVM.saveFormation()
+                //formationArray = formationVM.loadFormations()
+                formsTableView.reloadData()
             }
             
         }
@@ -229,6 +210,54 @@ class GameViewController: UIViewController{
     
     @IBAction func colorPickerButton(_ sender: UIButton) {
         print("Pick Color")
+        colorPicker.supportsAlpha = true
+        //colorPicker.selectedColor = selectedColor
+        present(colorPicker, animated: true)
+        selectedColor = colorPicker.selectedColor
+    }
+    
+    @IBAction func removeFormation(_ sender: UIButton) {
+        
+        let toRemove = formationVM.getCurrentFormation()
+        
+            formationVM.removeFormation(form: toRemove)
+        formationVM.setCurrentSelection(index: formationVM.currentIndex - 1) //WHAT HAPPENS HERE?
+        //WHEN DELETED, formation on gamescene stays
+        if formationVM.currentIndex == -1{
+            formationVM.createNewFormation(formData: nil)
+        }
+            allFormUpdates()
+        
+        
+    }
+    
+    @IBAction func nextFormationPlay(_ sender: UIButton) {
+        self.scene1.arrayOfActions = []
+        if let nextFormation = formationVM.getNextFormation(){
+            let nextDancerForms = dancerVM.loadDancers(selectedFormation: nextFormation, current: false)
+            formationVM.currentFormation = nextFormation
+            
+            self.scene1.playThroughFormations(dancers: nextDancerForms, waitTime: 0.0, transitionTime: 2.0, formIndex: formationVM.currentIndex, totalForms: formationArray.count)
+        }
+        
+        
+        self.scene1.run(SKAction.sequence(self.scene1.arrayOfActions))
+        
+    }
+    
+    
+    @IBAction func prevFormationPlay(_ sender: UIButton) {
+     
+        self.scene1.arrayOfActions = []
+        if let nextFormation = formationVM.getPrevFormation(){
+            let nextDancerForms = dancerVM.loadDancers(selectedFormation: nextFormation, current: false)
+            formationVM.currentFormation = nextFormation
+            
+            self.scene1.playThroughFormations(dancers: nextDancerForms, waitTime: 0.0, transitionTime: 2.0, formIndex: formationVM.currentIndex, totalForms: formationArray.count)
+        }
+        
+        
+        self.scene1.run(SKAction.sequence(self.scene1.arrayOfActions))
     }
     
     
@@ -237,15 +266,15 @@ class GameViewController: UIViewController{
         
         formationVM.saveFormation()
         formationVM.loadFormations()
-
+        
     }
     
-
+    
 }
 
 extension GameViewController: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    
+        
         return formationArray.count
     }
     
@@ -254,11 +283,8 @@ extension GameViewController: UITableViewDataSource, UITableViewDelegate{
         let cell = self.formsTableView.dequeueReusableCell(withIdentifier: "ReusableCell") as! FormationSnapshotCell
         //cell.formationName.delegate = self
         let index = formationVM.currentIndex
-        if indexPath.row == index {
-            //cell.backgroundColor = UIColor.blue
-            //cell.setSelected(true, animated: true)
-            tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-        }
+        print("Current Index, ", index, "Current Path ", indexPath.row)
+        cell.setSelected(index == indexPath.row, animated: true)
         
         let item = formationArray[indexPath.row]
         if let formationData = item.image{
@@ -274,18 +300,13 @@ extension GameViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let currentCell = tableView.cellForRow(at: indexPath) as! FormationSnapshotCell
+        //let currentCell = tableView.cellForRow(at: indexPath) as! FormationSnapshotCell
         formationVM.setCurrentSelection(index: indexPath.row)
-        var curr = formationVM.getCurrentFormation()
-        var dancers = dancerVM.loadDancers(selectedFormation: curr)
+        let curr = formationVM.getCurrentFormation()
+        let dancers = dancerVM.loadDancers(selectedFormation: curr, current: true)
         scene1.formationSelected(dancers: dancers)
         currIndexPath = indexPath
     }
-    
-    
-    
-
-    
     
     
     
@@ -301,12 +322,12 @@ extension GameViewController: UITextFieldDelegate{
     }
     
     public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-      return enableText
+        return enableText
     }
     
-//    @objc func keyboardWillChange(notification: Notification) {
-//        view.frame.origin.y = -100
-//    }
+    //    @objc func keyboardWillChange(notification: Notification) {
+    //        view.frame.origin.y = -100
+    //    }
     
 }
 
@@ -316,11 +337,11 @@ extension GameViewController: GameSceneUpdatesDelegate{
     func dancerToAdd(xPosition: Float, yPosition: Float, id: String, color: String, label: String) {
         
         let curr = formationVM.getCurrentFormation()
-
+        
         dancerVM.addDancer(xPosition: xPosition, yPosition: yPosition, label: label, id: id, color: color, selectedFormation: curr)
         dancerVM.saveDancer()
-
-        var imageData = dancerVM.imageToData(view: squareView)
+        
+        let imageData = dancerVM.imageToData(view: squareView)
         formationVM.getCurrentFormation().image = imageData
         formationVM.saveFormation()
         //formationArray = formationVM.loadFormations()
@@ -330,11 +351,9 @@ extension GameViewController: GameSceneUpdatesDelegate{
     func dancerMoved(id: String, xPosition: Float, yPosition: Float) {
         dancerVM.updateDancerPosition(id: id, xPosition: xPosition, yPosition: yPosition)
         dancerVM.saveDancer()
-        var imageData = dancerVM.imageToData(view: squareView)
+        let imageData = dancerVM.imageToData(view: squareView)
         formationVM.getCurrentFormation().image = imageData
-        formationVM.saveFormation()
-        //formationArray = formationVM.loadFormations()
-        formsTableView.reloadData()
+        allFormUpdates()
     }
     
     func updateCellSelect() {
@@ -359,6 +378,7 @@ extension GameViewController: GameSceneUpdatesDelegate{
     }
     
     func updateNodeColor(color: UIColor) {
+        scene1.selectedNodeColor = color
         selectedColor = color
         nodeColorButton.backgroundColor = selectedColor
     }
@@ -366,15 +386,15 @@ extension GameViewController: GameSceneUpdatesDelegate{
     func removedDancer(id: String) {
         dancerVM.removeDancer(dancerId: id)
         dancerVM.saveDancer()
-        var imageData = dancerVM.imageToData(view: squareView)
+        let imageData = dancerVM.imageToData(view: squareView)
         formationVM.getCurrentFormation().image = imageData
         formationVM.saveFormation()
         //formationArray = formationVM.loadFormations()
         formsTableView.reloadData()
     }
- 
+    
 }
-
+  
 extension GameViewController: FormUpdatesDelegate{
     
     func formUpdated(formArray: [Formation]) {
@@ -388,5 +408,38 @@ extension GameViewController: FormUpdatesDelegate{
 }
 
 
+extension GameViewController: UIColorPickerViewControllerDelegate{
+
+    func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
+        print("Did Dismiss Controller")
+    }
+
+    func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
+        selectedColor = viewController.selectedColor
+        nodeColorButton.backgroundColor = selectedColor
+
+        let colorString = selectedColor.toHexString()
+        scene1.selectedNodeColor = selectedColor
+        self.scene1.updateDancerColor(color: colorString)
+
+        if let nodeId = self.scene1.currentNode?.nodeId{
+            dancerVM.updateDancerColor(id: nodeId, color: colorString)
+            let imageData = dancerVM.imageToData(view: squareView)
+        formationVM.getCurrentFormation().image = imageData
+        allFormUpdates()
+        }
+
+}
+}
 
 
+
+//TODO: - Next Formation Pressed
+
+//TODO: - Previous Formation Pressed
+
+//TODO: - Undo
+
+//TODO: - if there's a dancer already at that location, can't put it there
+
+//TODO: - when making changes to a dancer in one formation - make sure you're making those changes to the same dancers in ALL formations. Ex: in F1 - color blue, F2 - color yellow - should BE SAME

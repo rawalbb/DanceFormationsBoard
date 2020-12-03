@@ -6,8 +6,7 @@ import CoreData
 class DancerViewModel{
   
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    var dancerArray = [Dancer]()
-    var nextDancerArray = [Dancer]()
+    var currDancerArray = [Dancer]()
     
     func saveDancer(){
         
@@ -18,40 +17,38 @@ class DancerViewModel{
             }
     }
     
-    func loadDancers(selectedFormation: Formation) -> [Dancer]{
+    func loadDancers(selectedFormation: Formation, current: Bool) -> [Dancer]{
         
         let request : NSFetchRequest<Dancer> = Dancer.fetchRequest()
-        
-        print("In Load Dancers", selectedFormation.uniqueId)
+        var dancerArray : [Dancer] = []
         
         let predicate = NSPredicate(format: "owner.uniqueId = %@", selectedFormation.uniqueId)
         request.predicate = predicate
         do{
-            
             dancerArray = try context.fetch(request)
-            print(dancerArray.count)
-            for danc in dancerArray{
-                print(danc.owner?.uniqueId)
-            }
         }
         catch{
             print("Error Fetching Data from Context in Dancer ViewModel \(error)")
         }
         
+        if current{
+            currDancerArray = dancerArray
+        }
+       
         return dancerArray
     }
     
     func removeDancer(dancerId: String){
-        print("In remove dancer ", dancerArray.count)
-        if let deletedDancer = dancerArray.firstIndex(where: {$0.id == dancerId}){
+        print("In remove dancer ", currDancerArray.count)
+        if let deletedDancer = currDancerArray.firstIndex(where: {$0.id == dancerId}){
            
-            //dancerArray.remove(at: deletedDancer)
-            let dancerToRemove = dancerArray[deletedDancer]
+            //currDancerArray.remove(at: deletedDancer)
+            let dancerToRemove = currDancerArray[deletedDancer]
             context.delete(dancerToRemove)
         } else{
             print("Error in Deleting Dancer in DancerViewModel")
         }
-        print("In remove dancer ", dancerArray.count)
+        print("In remove dancer ", currDancerArray.count)
         
     }
     
@@ -66,7 +63,7 @@ class DancerViewModel{
         newDancer.id = id
         //selectedFormation.addToDancers(newDancer)
         newDancer.owner = selectedFormation
-        //self.dancerArray.append(newDancer)
+        //self.currDancerArray.append(newDancer)
         
         //Call Save everytime this is called
     }
@@ -81,18 +78,18 @@ class DancerViewModel{
         newDancer.color = dancer.color
         newDancer.id = dancer.id
         newDancer.owner = selectedFormation
-        //self.dancerArray.append(newDancer)
+        //self.currDancerArray.append(newDancer)
         
         //Call Save everytime this is called
     }
     
     func updateDancerPosition( id: String, xPosition: Float, yPosition: Float){
         //var toUpdate = [Dancer]()
-        if let toUpdateIndex = dancerArray.firstIndex(where: { $0.id == id }) {
+        if let toUpdateIndex = currDancerArray.firstIndex(where: { $0.id == id }) {
             print("TO UPDATE in dancerVM", xPosition, yPosition)
             
-            dancerArray[toUpdateIndex].xPos = xPosition
-            dancerArray[toUpdateIndex].yPos = yPosition
+            currDancerArray[toUpdateIndex].xPos = xPosition
+            currDancerArray[toUpdateIndex].yPos = yPosition
         }
         
         
@@ -101,18 +98,18 @@ class DancerViewModel{
     
     func updateDancerLabel( id: String, label: String){
 
-        if let toUpdateIndex = dancerArray.firstIndex(where: { $0.id == id }) {
+        if let toUpdateIndex = currDancerArray.firstIndex(where: { $0.id == id }) {
 
-            dancerArray[toUpdateIndex].label = label
+            currDancerArray[toUpdateIndex].label = label
         }
     }
     
     
     func updateDancerColor( id: String, color: String){
 
-        if let toUpdateIndex = dancerArray.firstIndex(where: { $0.id == id }) {
+        if let toUpdateIndex = currDancerArray.firstIndex(where: { $0.id == id }) {
 
-            dancerArray[toUpdateIndex].color = color
+            currDancerArray[toUpdateIndex].color = color
         }
         
     }
@@ -132,25 +129,5 @@ class DancerViewModel{
         }
     }
     
-    
-    func loadNextDancers(nextFormation: Formation) -> [Dancer]{
-        
-        let request : NSFetchRequest<Dancer> = Dancer.fetchRequest()
-        
-        print("In Load Dancers", nextFormation.name!)
-        
-        let predicate = NSPredicate(format: "owner.name = %@", nextFormation.name!)
-        request.predicate = predicate
-        do{
-            
-            nextDancerArray = try context.fetch(request)
-            print(nextDancerArray.count)
-        }
-        catch{
-            print("Error Fetching Data from Context in Dancer ViewModel \(error)")
-        }
-        
-        return nextDancerArray
-    }
  
 }
