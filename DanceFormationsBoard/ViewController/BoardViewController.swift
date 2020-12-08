@@ -6,108 +6,48 @@
 //
 
 import UIKit
-import HGPlaceholders
 
-class BoardViewController: UIViewController {
+class BoardViewController: KeyViewController {
     
+    @IBOutlet weak var boardTableView: UITableView!
     
-    @IBOutlet weak var boardTableView: TableView!
+    var boardVM = BoardViewModel()
+    var boardVMArray: [Board] = []
+    let defaultImageView:UIImageView = UIImageView()
+    let defaultLabel = UILabel()
     
-    
-    var boardVM = FormationBoardViewModel()
-    var boardVMArray: [FormationBoard] = []
-    var lastSelectedIndexPath:IndexPath?
-    
-    
-    
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //Sets tableview in inherited class KeyboardViewController
+        self.backgroundSV = boardTableView
         
-
-        
-        boardVMArray = boardVM.loadBoards()
         boardVM.delegate = self
         
+        //Sets tableview properties
         boardTableView.register(UINib(nibName: "BoardTableViewCell", bundle: nil), forCellReuseIdentifier: "BoardReusableCell")
         boardTableView.delegate = self
         boardTableView.dataSource = self
-        
+        boardTableView.backgroundColor = UIColor.clear
         boardTableView.rowHeight = UITableView.automaticDimension
         boardTableView.estimatedRowHeight = 120
         
-        DispatchQueue.main.async {
-            self.checkForNoFormations()
-        }
-
-        // Do any additional setup after loading the view.
-        
-        
-                NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-                       NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-                       NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
-                
-                }
-            
-            deinit {
-                 NotificationCenter.default.removeObserver(UIResponder.keyboardWillShowNotification)
-                 NotificationCenter.default.removeObserver(UIResponder.keyboardWillHideNotification)
-                 NotificationCenter.default.removeObserver(UIResponder.keyboardWillChangeFrameNotification)
-             }
+    }
+    
     
     override func viewWillAppear(_ animated: Bool) {
+        
+        //Loads boards
         boardVM.loadBoards()
-        //Added so that when Board View Controller is loaded back up, it loads the pictures on the tableview
+        boardVMArray = boardVM.getBoardArray()
+        //**Don't need to call DispatchQueue - check for formations b/c already called from load boards delegate method
+        
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-    
     
     @IBAction func addBoardPressed(_ sender: UIBarButtonItem) {
         
         boardVM.createNewBoard()
         allBoardUpdates()
-        //boardVMArray = boardVM.getBoardArray()
-        //boardsCollectionView.reloadData()
-        
-//        let alert = UIAlertController(title: "Name Your Dance Board",
-//                                message: nil,
-//                                preferredStyle: .alert)
-//
-//                alert.view.tintColor = UIColor.brown            // change text color of the buttons
-//                alert.view.backgroundColor = UIColor.lightGray  // change background color
-//                alert.view.layer.cornerRadius = 25              // change corner radius
-//
-//                alert.addTextField { (textField: UITextField) in
-//                    textField.keyboardAppearance = .dark
-//                    textField.keyboardType = .default
-//                    textField.autocorrectionType = .default
-//                    textField.placeholder = "Board Name"
-//                }
-//
-//        alert.addAction(UIAlertAction(title: "Create", style: .default, handler: { [weak self] action in
-//                    let brandName = alert.textFields![0]
-//            self?.boardVM.createNewBoard()
-////            self?.boardVMArray = self?.boardVM.getBoardArray()
-////            self?.boardTableView.reloadData()
-//                    print("Great! Let's Play with \(brandName.text!)!")
-//
-//                }))
-//                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { action in
-//                    print("Time to head home!")}))
-//
-//                self.present(alert, animated: true)
-//
-        
         
     }
     
@@ -117,9 +57,6 @@ class BoardViewController: UIViewController {
         boardVM.loadBoards()
     }
     
-    
-
-
 }
 
 
@@ -130,25 +67,29 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let df = DateFormatter()
-        df.dateFormat = "yyyy-MM-dd hh:mm:ss"
+        df.dateFormat = "yyyy-MM-dd"
         
         let cell = self.boardTableView.dequeueReusableCell(withIdentifier: "BoardReusableCell") as! BoardTableViewCell
+        
+        let board = boardVMArray[indexPath.row]
+        
         cell.boardNameTextField.delegate = self
-        cell.boardNameTextField.text = boardVMArray[indexPath.row].name
-        cell.boardDateTextField.text = "Last Updated: \(df.string(from: boardVMArray[indexPath.row].lastEdited))"
+        cell.boardNameTextField.text = board.name
+        cell.boardDateTextField.text = "Last Updated: \(df.string(from: board.lastEdited))"
+        cell.backgroundColor = UIColor.clear
         
-        if let subForm = boardVMArray[indexPath.row].subFormations?.allObjects as? [Formation]{
-        if subForm.count != 0{
-            if let a = subForm[0].image{
-            cell.boardImageField.image = UIImage(data: a)
-                cell.boardImageField.layer.borderWidth = 4
-                cell.boardImageField.layer.borderColor = #colorLiteral(red: 0.7568627451, green: 0.8392156863, blue: 0.8980392157, alpha: 1)
+        if let subForm = board.subFormations?.allObjects as? [Formation]{
+            if subForm.count != 0{
+                if let data = subForm[0].image{
+                    cell.boardImageField.image = UIImage(data: data)
+                }
             }
-        }
-        else{
-            cell.boardImageField.image = #imageLiteral(resourceName: "defaultFormImage")
-        }
-        
+            else{
+                cell.boardImageField.image = #imageLiteral(resourceName: "defaultFormImage")
+                cell.boardImageField.contentMode = .scaleAspectFill
+            }
+            cell.boardImageField.layer.borderWidth = 4
+            cell.boardImageField.layer.borderColor = #colorLiteral(red: 0.7568627451, green: 0.8392156863, blue: 0.8980392157, alpha: 1)
         }
         
         return cell
@@ -167,40 +108,18 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
         if let toRemove = boardVM.getCurrentBoard(){
             boardVM.removeBoard(board: toRemove)
             allBoardUpdates()
+            //Don't need to call checkFormations in DispatchQuueue, already called in delegate method
         }
         else{
             print("Error in Removing Board")
         }
         
-//        let alert = UIAlertController(title: "Are you sure you want to delete this Board?",
-//                                    message: "",
-//                                    preferredStyle: .alert)
-//
-//        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] action in
-//                                        if let toRemove = self?.boardVM.getCurrentBoard(){
-//                                            self?.boardVM.removeBoard(board: toRemove)
-//                                        }
-//                                        else{
-//                                            print("Error in Removing Board")
-//                                        }}))
-//        alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: { action in
-//            print("Time to head home!")}))
-//
-//        self.present(alert, animated: true)
-//
     }
-        
     
-    
-    
-    private func handleMarkAsFavourite() {
-        print("Marked as favourite")
+    private func handleSendBoard() {
+        print("Send board pressed")
     }
-
-    private func handleMarkAsUnread() {
-        print("Marked as unread")
-    }
-
+    
     private func addNotes() {
         let nextVC = storyboard?.instantiateViewController(identifier: "NotesViewController") as! NotesViewController
         nextVC.delegate = self
@@ -216,10 +135,10 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
         
         let action = UIContextualAction(style: .destructive,
                                         title: "") { [weak self] (action, view, completionHandler) in
-                                            self?.handleMoveToTrash()
-                                            completionHandler(true)
+            self?.handleMoveToTrash()
+            completionHandler(true)
         }
-        action.backgroundColor = .systemRed
+        action.backgroundColor = UIColor(hex: "F24E1D")
         action.image = UIImage(systemName: "trash.fill")
         
         return UISwipeActionsConfiguration(actions: [action])
@@ -228,98 +147,123 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
     
     
     func tableView(_ tableView: UITableView,
-                       trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+                   trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         boardVM.setCurrentBoard(index: indexPath.row)
         let notes = UIContextualAction(style: .normal,
-                                         title: "Add Notes") { [weak self] (action, view, completionHandler) in
-                                            self?.addNotes()
-                                            completionHandler(true)
+                                       title: "Add Notes") { [weak self] (action, view, completionHandler) in
+            self?.addNotes()
+            completionHandler(true)
         }
-        notes.backgroundColor = .systemGreen
-
+        notes.backgroundColor = UIColor(hex: "09CF84")
+        
         // Trash action
         let send = UIContextualAction(style: .normal,
-                                       title: "") { [weak self] (action, view, completionHandler) in
-            self?.handleMarkAsFavourite()
-                                        completionHandler(true)
+                                      title: "") { [weak self] (action, view, completionHandler) in
+            self?.handleSendBoard()
+            completionHandler(true)
         }
-        //send.image = UIImage(systemName: <#T##String#>)
-        send.backgroundColor = .systemPink
-
-        let configuration = UISwipeActionsConfiguration(actions: [send, notes])
-
-        return configuration
+        
+        send.image = UIImage(systemName: "arrowshape.turn.up.right.fill")
+        send.backgroundColor = UIColor(hex: "1BBCFE")
+        
+        return UISwipeActionsConfiguration(actions: [send, notes])
+        
     }
     
     
     func checkForNoFormations(){
         
-        if boardVM.getBoardArray().count < 0{
+        if boardVM.getBoardArray().count == 0{
             
-            boardTableView.showLoadingPlaceholder()
+            defaultImageView.isHidden = false
+            defaultLabel.isHidden = false
+            boardTableView.isHidden = true
+            
+            
+            defaultImageView.contentMode = UIView.ContentMode.scaleAspectFill
+            defaultImageView.frame.size.width = 200
+            defaultImageView.frame.size.height = 200
+            defaultImageView.center = self.view.center
+            
+            defaultImageView.image = UIImage(systemName: "plus.rectangle.fill.on.rectangle.fill")
+            defaultImageView.tintColor = #colorLiteral(red: 0.7568627451, green: 0.8392156863, blue: 0.8980392157, alpha: 1)
+            view.addSubview(defaultImageView)
+            imageViewAnimate(imageView: defaultImageView)
+            
+            let mid = self.view.center
+            defaultLabel.frame = CGRect(x: 0.0, y: 0.0, width: self.view.bounds.width, height: self.view.bounds.height/10)
+            defaultLabel.center = CGPoint(x: mid.x, y: mid.y + 148)
+            defaultLabel.textAlignment = .center
+            defaultLabel.text = "No formations yet :/. Select button at top-right to add"
+            defaultLabel.textColor = #colorLiteral(red: 0.7568627451, green: 0.8392156863, blue: 0.8980392157, alpha: 1)
+            self.view.addSubview(defaultLabel)
+            
+        }
+        else{
+            defaultImageView.isHidden = true
+            defaultLabel.isHidden = true
+            boardTableView.isHidden = false
+            self.boardTableView.reloadData()
         }
     }
     
+    func imageViewAnimate(imageView: UIImageView){
+        
+        let rotate = CGAffineTransform(rotationAngle: -0.2)
+        let stretchAndRotate = rotate.scaledBy(x: 0.5, y: 0.5)
+        imageView.transform = stretchAndRotate
+        imageView.alpha = 0.5
+        UIView.animate(withDuration: 1.5, delay: 0.0, usingSpringWithDamping:  0.45, initialSpringVelocity: 10.0, options:[.curveEaseOut], animations: {
+            imageView.alpha = 1.0
+            let rotate = CGAffineTransform(rotationAngle: 0.0)
+            let stretchAndRotate = rotate.scaledBy(x: 1.0, y: 1.0)
+            imageView.transform = stretchAndRotate
+            
+        }, completion: nil)
+    }
     
 }
-
-
 
 
 extension BoardViewController: UITextFieldDelegate{
     
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-
+        
         if let updateText = textField.text{
-            if updateText != "" {
-            boardVM.updateBoardName(boardName: updateText)
-            allBoardUpdates()
+            if updateText != ""{
+                boardVM.updateBoardName(boardName: updateText)
+                allBoardUpdates()
             }
             else{
-                boardVM.updateBoardName(boardName: "Board \(boardVM.currentBoardIndex)")
+                boardVM.updateBoardName(boardName: boardVM.getCurrentBoard()?.name ?? "Board \(String(describing: boardVM.currentBoardIndex))")
                 allBoardUpdates()
             }
         }
-
-        //boardsCollectionView.reloadData()
-
-
         textField.resignFirstResponder()
-        //view.frame.origin.y = 0
         return true
     }
     
     public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         
-        boardVM.setCurrentBoard(index: textField.tag)
-//        let pointInTable = textField.convert(textField.bounds.origin, to: self.boardsCollectionView)
-//        let textFieldIndexPath = self.boardsCollectionView.indexPathForItem(at: pointInTable)
-//
-//        //boardsCollectionView.deselectItem(at: lastSelectedIndexPath ?? IndexPath(row: 0, section: 0), animated: true)
-//
-//        //lastSelectedIndexPath = IndexPath(row: boardVM.currentBoardIndex, section: 0)
-//        boardsCollectionView.selectItem(at: textFieldIndexPath, animated: false, scrollPosition: .centeredHorizontally)
+        let cell: UITableViewCell = textField.superview?.superview?.superview?.superview as! BoardTableViewCell //TODO: REFACTOR
+        let table: UITableView = cell.superview as! UITableView
+        let path = table.indexPath(for: cell)
         
-      return true
+        boardVM.setCurrentBoard(index: path?.row ?? 0)
+        return true
     }
-    
-        @objc func keyboardWillChange(notification: Notification) {
-            //view.frame.origin.y = -100 //TODO:
-        }
     
 }
 
 
 extension BoardViewController: BoardUpdatesDelegate{
     
-    func boardUpdated(boardArray: [FormationBoard]) {
-        //self.boardVMArray = boardArray
+    func boardUpdated(boardArray: [Board]) {
         boardVMArray = boardVM.getBoardArray()
         
         DispatchQueue.main.async {
             self.checkForNoFormations()
-            self.boardTableView.reloadData()
         }
     }
 }

@@ -18,7 +18,7 @@ class GameViewController: UIViewController{
     
     @IBOutlet weak var labelToggleButton: UIButton!
     
-    var boardVM: FormationBoardViewModel!
+    var boardVM: BoardViewModel!
     var formationVM = FormationViewModel()
     var dancerVM = DancerViewModel()
     var formationArray: [Formation] = []
@@ -41,7 +41,7 @@ class GameViewController: UIViewController{
         formOptionsView.layer.borderColor = #colorLiteral(red: 0.1478704014, green: 0.1637916303, blue: 0.1738279326, alpha: 1).cgColor
         nodeColorButton.layer.cornerRadius = 10
         
-        print("Game View ", boardVM.currentBoardIndex as Any) //ASSERT 0
+       // print("Game View ", boardVM.currentBoardIndex as Any) //ASSERT 0
         formationVM.currentBoard = boardVM.getCurrentBoard()
         scene1 = GameScene(size: squareView.bounds.size)
         scene1.scaleMode = .fill
@@ -175,7 +175,7 @@ class GameViewController: UIViewController{
             
            
                 
-                print(formationVM.currentFormation?.name)
+               // print(formationVM.currentFormation?.name)
                 if let nextFormation = formationVM.getNextFormation(){
                     let nextDancerForms = dancerVM.loadDancers(selectedFormation: nextFormation, current: false)
                     formationVM.currentFormation = nextFormation
@@ -214,14 +214,14 @@ class GameViewController: UIViewController{
     
     
     @IBAction func labelTextFieldChanged(_ sender: UITextField) {
-        print("Label changed")
+        //print("Label changed")
         if let text = labelTextField.text{
-            print(text)
+            //print(text)
             self.scene1.updateDancerLabel(label: text)
             if let nodeId = self.scene1.currentNode?.nodeId{
                 dancerVM.updateDancerLabel(id: nodeId, label: text)
                 let imageData = dancerVM.imageToData(view: squareView)
-                formationVM.getCurrentFormation().image = imageData
+                formationVM.getCurrentFormation().image = imageData!
                 allFormUpdates()
             }
             
@@ -230,7 +230,7 @@ class GameViewController: UIViewController{
     
     
     @IBAction func colorPickerButton(_ sender: UIButton) {
-        print("Pick Color")
+        //print("Pick Color")
         colorPicker.supportsAlpha = true
         //colorPicker.selectedColor = selectedColor
         present(colorPicker, animated: true)
@@ -285,7 +285,7 @@ class GameViewController: UIViewController{
     @IBAction func labelTogglePressed(_ sender: UIButton) {
         
         sender.isSelected.toggle()
-        print(sender.isSelected)
+        //print(sender.isSelected)
         scene1.showLabel = sender.isSelected
         scene1.nodeLabelHelper()
     }
@@ -313,7 +313,7 @@ extension GameViewController: UITableViewDataSource, UITableViewDelegate{
         let cell = self.formsTableView.dequeueReusableCell(withIdentifier: "ReusableCell") as! FormationSnapshotCell
         //cell.formationName.delegate = self
         let index = formationVM.currentIndex
-        print("Current Index, ", index, "Current Path ", indexPath.row)
+       // print("Current Index, ", index, "Current Path ", indexPath.row)
         //cell.setSelected(index == indexPath.row, animated: true)
         //cell.setSelected(true, animated: true)
         
@@ -324,7 +324,7 @@ extension GameViewController: UITableViewDataSource, UITableViewDelegate{
         }
         
         cell.formationName?.text = item.name
-        print("Item Nem", item.name)
+        //print("Item Nem", item.name)
         return cell
         
     }

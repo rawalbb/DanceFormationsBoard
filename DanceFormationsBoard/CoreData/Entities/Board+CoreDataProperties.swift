@@ -1,8 +1,8 @@
 //
-//  FormationBoard+CoreDataProperties.swift
+//  Board+CoreDataProperties.swift
 //  DanceFormationsBoard
 //
-//  Created by Bansri Rawal on 11/29/20.
+//  Created by Bansri Rawal on 12/7/20.
 //
 //
 
@@ -10,23 +10,23 @@ import Foundation
 import CoreData
 
 
-extension FormationBoard {
+extension Board {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<FormationBoard> {
-        return NSFetchRequest<FormationBoard>(entityName: "FormationBoard")
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<Board> {
+        return NSFetchRequest<Board>(entityName: "Board")
     }
 
-    @NSManaged public var image: Data?
+    @NSManaged public var image: Data
     @NSManaged public var lastEdited: Date
-    @NSManaged public var name: String?
+    @NSManaged public var name: String
+    @NSManaged public var notes: String?
     @NSManaged public var uniqueId: String
     @NSManaged public var subFormations: NSSet?
-    @NSManaged public var notes: String
 
 }
 
 // MARK: Generated accessors for subFormations
-extension FormationBoard {
+extension Board {
 
     @objc(addSubFormationsObject:)
     @NSManaged public func addToSubFormations(_ value: Formation)
@@ -42,6 +42,6 @@ extension FormationBoard {
 
 }
 
-extension FormationBoard : Identifiable {
+extension Board : Identifiable {
 
 }

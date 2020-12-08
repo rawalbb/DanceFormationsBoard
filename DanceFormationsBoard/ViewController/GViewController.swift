@@ -434,3 +434,40 @@
 //
 //
 //
+
+
+
+//
+//        var gradient: CAGradientLayer = {
+//            let gradient = CAGradientLayer()
+//            gradient.type = .axial
+//            gradient.colors = [
+//                #colorLiteral(red: 0.1098039216, green: 0.1215686275, blue: 0.1294117647, alpha: 1).cgColor,
+//                #colorLiteral(red: 0.2693683384, green: 0.298371269, blue: 0.3166539141, alpha: 1).cgColor,
+//                #colorLiteral(red: 0.3892080132, green: 0.4268733048, blue: 0.4268733048, alpha: 1).cgColor
+//            ]
+//
+//
+//            gradient.locations = [0, 0.5, 0.75]
+//            return gradient
+//        }()
+//
+//
+//            gradient.frame = view.bounds
+//
+//        view.layer.insertSublayer(gradient, at: 0)
+
+
+
+
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+//               NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+//               NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChange(notification:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+//        
+//        }
+//    
+//    deinit {
+//         NotificationCenter.default.removeObserver(UIResponder.keyboardWillShowNotification)
+//         NotificationCenter.default.removeObserver(UIResponder.keyboardWillHideNotification)
+//         NotificationCenter.default.removeObserver(UIResponder.keyboardWillChangeFrameNotification)
+//     }

@@ -1,5 +1,5 @@
 //
-//  FormationBoardViewModel.swift
+//  BoardViewModel.swift
 //  DanceFormationsBoard
 //
 //  Created by Bansri Rawal on 11/29/20.
@@ -10,20 +10,22 @@ import UIKit
 import CoreData
 
 protocol BoardUpdatesDelegate{
-    func boardUpdated(boardArray: [FormationBoard])
+    func boardUpdated(boardArray: [Board])
 }
-class FormationBoardViewModel{
+
+
+class BoardViewModel{
     
-    var boardsArray = [FormationBoard]()
+    var boardsArray = [Board]()
     var currentBoardIndex: Int?
     var delegate: BoardUpdatesDelegate?
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     //Function: Load all Formation Dance Boards for Home Screen
-    func loadBoards() -> [FormationBoard]{
+    func loadBoards(){
         
-        let request : NSFetchRequest<FormationBoard> = FormationBoard.fetchRequest()
+        let request : NSFetchRequest<Board> = Board.fetchRequest()
         do{
             
             let tempBoardsArray = try context.fetch(request)
@@ -34,9 +36,8 @@ class FormationBoardViewModel{
         catch{
             print("Error Fetching Data from Context in Formation ViewModel \(error)")
         }
-
+        
         self.delegate?.boardUpdated(boardArray: boardsArray)
-        return boardsArray
     }
     
     //Function: Save the Board
@@ -46,50 +47,35 @@ class FormationBoardViewModel{
         } catch {
             print("Error saving context \(error)")
         }
-        //loadBoards()
-        //self.delegate.boardUpdated(boardArray: boardsArray)
     }
     
     //Function: Remove Board
-    func removeBoard(board: FormationBoard){
-        
+    func removeBoard(board: Board){
         do{
             try context.delete(board)
         } catch {
             print("Error deleting Board \(error)")
         }
-        //self.saveBoard()
-        
     }
     
     func createNewBoard(){
         
-        // When button on View Controller is placed, user is taken to the formations screen but when they hit back on Navigation (main boards are presented), which is where the image is updated.
-        //When + button is selected -> popup (enter formation name), cannot be nil, dismiss popupVC, default image = image not available
-        //when the initial formation is created, call this method
-        
-        let newBoard = FormationBoard(context: context)
+        let newBoard = Board(context: context)
         newBoard.name = "Board \(boardsArray.count)"
         newBoard.lastEdited = Date()
-        let newImage = #imageLiteral(resourceName: "defaultFormImage")
         
-        if let dataImage = imageToData(image: newImage){
-            newBoard.image = dataImage
+        if let data = ImageDataManager.imageToData(image: #imageLiteral(resourceName: "defaultFormImage")){
+            newBoard.image = data
         }
-        newBoard.notes = ""
+        newBoard.notes = nil
         newBoard.uniqueId = UUID().uuidString
-        self.boardsArray.append(newBoard)
-       // self.saveBoard()
-        
-        
     }
     
     //Function: Get current Board
-    func getCurrentBoard() -> FormationBoard?{
+    func getCurrentBoard() -> Board?{
         if let index = currentBoardIndex
         {
-            print("Board id", boardsArray[index].uniqueId)
-        return boardsArray[index]
+            return boardsArray[index]
         }
         else{
             print("Getting Current Board Error")
@@ -98,11 +84,12 @@ class FormationBoardViewModel{
         
     }
     
+    //Function: Get current Board Index
     func getCurrentBoardIndex() -> Int?{
         
         if let index = currentBoardIndex
         {
-        return index
+            return index
         }
         else{
             print("Getting Current Board Error")
@@ -110,8 +97,8 @@ class FormationBoardViewModel{
         }
     }
     
-    
-    func getBoardArray() -> [FormationBoard]{
+    //Function: Get array of boards
+    func getBoardArray() -> [Board]{
         return boardsArray
     }
     
@@ -125,14 +112,12 @@ class FormationBoardViewModel{
     func updateBoardImage(imageData: Data){
         
         getCurrentBoard()?.image = imageData
-        //self.saveBoard()
         
     }
     
     func updateBoardNotes(notes: String){
         
         getCurrentBoard()?.notes = notes
-       // self.saveBoard()
         
     }
     
@@ -141,24 +126,10 @@ class FormationBoardViewModel{
     func updateBoardName(boardName: String){
         
         getCurrentBoard()?.name = boardName
-       // self.saveBoard()
     }
     
     func updateBoardDate(date: Date){
         
         getCurrentBoard()?.lastEdited = date
-       // self.saveBoard()
-    }
-    
-    func imageToData(image: UIImage) -> Data?{
-        
-        if let data = image.jpegData(compressionQuality: 1.0){
-           return data
-        }
-        else{
-            return nil
-        }
-    }
-    
-    
+    }    
 }

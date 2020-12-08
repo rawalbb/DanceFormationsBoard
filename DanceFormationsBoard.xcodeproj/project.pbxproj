@@ -3,23 +3,26 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0CA224DA1F08E24A8AA88CB7 /* libPods-DanceFormationsBoard.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A8D9778ECAD9386A921035F /* libPods-DanceFormationsBoard.a */; };
 		43160D81255B9BB30038804F /* FormationTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43160D80255B9BB30038804F /* FormationTableView.swift */; };
 		4324B4672550976800B3060E /* FormationSnapshotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B4652550976800B3060E /* FormationSnapshotCell.swift */; };
 		4324B4682550976800B3060E /* FormationSnapshotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4324B4662550976800B3060E /* FormationSnapshotCell.xib */; };
 		4324B4DC255358A200B3060E /* FormationsData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4324B4D9255358A200B3060E /* FormationsData.xcdatamodeld */; };
 		4324B4FB2553B51900B3060E /* CoreDataUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B4FA2553B51900B3060E /* CoreDataUtil.swift */; };
-		4324B528255799F700B3060E /* Formation+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B524255799F700B3060E /* Formation+CoreDataClass.swift */; };
-		4324B529255799F700B3060E /* Formation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B525255799F700B3060E /* Formation+CoreDataProperties.swift */; };
-		4324B52A255799F700B3060E /* Dancer+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B526255799F700B3060E /* Dancer+CoreDataClass.swift */; };
-		4324B52B255799F700B3060E /* Dancer+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B527255799F700B3060E /* Dancer+CoreDataProperties.swift */; };
-		43608ED1257DF0D6002114C5 /* SongQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43608ED0257DF0D6002114C5 /* SongQuery.swift */; };
 		43608ED4257DF10F002114C5 /* MusicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43608ED3257DF10F002114C5 /* MusicViewController.swift */; };
+		43608EF8257F2DE4002114C5 /* Board+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43608EF6257F2DE4002114C5 /* Board+CoreDataClass.swift */; };
+		43608EF9257F2DE4002114C5 /* Board+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43608EF7257F2DE4002114C5 /* Board+CoreDataProperties.swift */; };
+		43608EFF257F2E1D002114C5 /* Formation+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43608EFB257F2E1D002114C5 /* Formation+CoreDataClass.swift */; };
+		43608F00257F2E1D002114C5 /* Formation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43608EFC257F2E1D002114C5 /* Formation+CoreDataProperties.swift */; };
+		43608F01257F2E1D002114C5 /* Dancer+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43608EFD257F2E1D002114C5 /* Dancer+CoreDataClass.swift */; };
+		43608F02257F2E1D002114C5 /* Dancer+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43608EFE257F2E1D002114C5 /* Dancer+CoreDataProperties.swift */; };
+		43608F0B257F3DC5002114C5 /* ImageDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43608F0A257F3DC5002114C5 /* ImageDataManager.swift */; };
+		43608F15257FD3BB002114C5 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43608F14257FD3BB002114C5 /* KeyboardViewController.swift */; };
 		43621CF4256EE3DB00D3B0DB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43621CF3256EE3DB00D3B0DB /* AVFoundation.framework */; };
-		43621D2B256F770100D3B0DB /* Bulleya.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 43621D2A256F770100D3B0DB /* Bulleya.mp3 */; };
 		43621D312571E2BD00D3B0DB /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43621D302571E2BD00D3B0DB /* UIColor+Extension.swift */; };
 		43621D37257354ED00D3B0DB /* BoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43621D36257354ED00D3B0DB /* BoardViewController.swift */; };
 		43A0A9D925505F5300394193 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0A9D825505F5300394193 /* AppDelegate.swift */; };
@@ -31,33 +34,31 @@
 		43A0A9FC2550600200394193 /* DancerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0A9FB2550600200394193 /* DancerViewModel.swift */; };
 		43A0AA052550601300394193 /* FormationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0AA042550601300394193 /* FormationViewModel.swift */; };
 		43A0AA0D255061AB00394193 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0AA0C255061AB00394193 /* GameScene.swift */; };
-		43AB36A4257447B1001F5DAB /* FormationBoard+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB36A2257447B1001F5DAB /* FormationBoard+CoreDataClass.swift */; };
-		43AB36A5257447B1001F5DAB /* FormationBoard+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB36A3257447B1001F5DAB /* FormationBoard+CoreDataProperties.swift */; };
-		43AB36A925744C57001F5DAB /* FormationBoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB36A825744C57001F5DAB /* FormationBoardViewModel.swift */; };
+		43AB36A925744C57001F5DAB /* BoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB36A825744C57001F5DAB /* BoardViewModel.swift */; };
 		43AB36B12576B0B1001F5DAB /* BoardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB36AF2576B0B1001F5DAB /* BoardTableViewCell.swift */; };
 		43AB36B22576B0B1001F5DAB /* BoardTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43AB36B02576B0B1001F5DAB /* BoardTableViewCell.xib */; };
 		43AB36B52576E509001F5DAB /* NotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB36B42576E508001F5DAB /* NotesViewController.swift */; };
 		43AB36BA25770200001F5DAB /* GViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB36B925770200001F5DAB /* GViewController.swift */; };
-		EB503D2DCEFBB0CFB3493314 /* Pods_DanceFormationsBoard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42AADB13F72D199A280629FA /* Pods_DanceFormationsBoard.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3FA09348ABEE91B2133810C8 /* Pods-DanceFormationsBoard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DanceFormationsBoard.debug.xcconfig"; path = "Target Support Files/Pods-DanceFormationsBoard/Pods-DanceFormationsBoard.debug.xcconfig"; sourceTree = "<group>"; };
-		42AADB13F72D199A280629FA /* Pods_DanceFormationsBoard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DanceFormationsBoard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43160D80255B9BB30038804F /* FormationTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormationTableView.swift; sourceTree = "<group>"; };
 		4324B4652550976800B3060E /* FormationSnapshotCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormationSnapshotCell.swift; sourceTree = "<group>"; };
 		4324B4662550976800B3060E /* FormationSnapshotCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FormationSnapshotCell.xib; sourceTree = "<group>"; };
 		4324B4DA255358A200B3060E /* DanceFormationsBoard.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DanceFormationsBoard.xcdatamodel; sourceTree = "<group>"; };
 		4324B4DB255358A200B3060E /* FormationsData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FormationsData.xcdatamodel; sourceTree = "<group>"; };
 		4324B4FA2553B51900B3060E /* CoreDataUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataUtil.swift; sourceTree = "<group>"; };
-		4324B524255799F700B3060E /* Formation+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Formation+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
-		4324B525255799F700B3060E /* Formation+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Formation+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
-		4324B526255799F700B3060E /* Dancer+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dancer+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
-		4324B527255799F700B3060E /* Dancer+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dancer+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
-		43608ED0257DF0D6002114C5 /* SongQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongQuery.swift; sourceTree = "<group>"; };
 		43608ED3257DF10F002114C5 /* MusicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicViewController.swift; sourceTree = "<group>"; };
+		43608EF6257F2DE4002114C5 /* Board+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Board+CoreDataClass.swift"; sourceTree = "<group>"; };
+		43608EF7257F2DE4002114C5 /* Board+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Board+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		43608EFB257F2E1D002114C5 /* Formation+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Formation+CoreDataClass.swift"; path = "../../../Formation+CoreDataClass.swift"; sourceTree = "<group>"; };
+		43608EFC257F2E1D002114C5 /* Formation+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Formation+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		43608EFD257F2E1D002114C5 /* Dancer+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Dancer+CoreDataClass.swift"; path = "../../../Dancer+CoreDataClass.swift"; sourceTree = "<group>"; };
+		43608EFE257F2E1D002114C5 /* Dancer+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dancer+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		43608F0A257F3DC5002114C5 /* ImageDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataManager.swift; sourceTree = "<group>"; };
+		43608F14257FD3BB002114C5 /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
 		43621CF3256EE3DB00D3B0DB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		43621D2A256F770100D3B0DB /* Bulleya.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Bulleya.mp3; path = "../../../../Music/iTunes/iTunes Media/Music/Unknown Artist/Unknown Album/Bulleya.mp3"; sourceTree = "<group>"; };
 		43621D302571E2BD00D3B0DB /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		43621D36257354ED00D3B0DB /* BoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewController.swift; sourceTree = "<group>"; };
 		43A0A9D525505F5300394193 /* DanceFormationsBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DanceFormationsBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -71,13 +72,12 @@
 		43A0A9FB2550600200394193 /* DancerViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DancerViewModel.swift; sourceTree = "<group>"; };
 		43A0AA042550601300394193 /* FormationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormationViewModel.swift; sourceTree = "<group>"; };
 		43A0AA0C255061AB00394193 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
-		43AB36A2257447B1001F5DAB /* FormationBoard+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "FormationBoard+CoreDataClass.swift"; path = "DanceFormationsBoard/CoreData/Entities/FormationBoard+CoreDataClass.swift"; sourceTree = "<group>"; };
-		43AB36A3257447B1001F5DAB /* FormationBoard+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "FormationBoard+CoreDataProperties.swift"; path = "DanceFormationsBoard/CoreData/Entities/FormationBoard+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		43AB36A825744C57001F5DAB /* FormationBoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormationBoardViewModel.swift; sourceTree = "<group>"; };
+		43AB36A825744C57001F5DAB /* BoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewModel.swift; sourceTree = "<group>"; };
 		43AB36AF2576B0B1001F5DAB /* BoardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardTableViewCell.swift; sourceTree = "<group>"; };
 		43AB36B02576B0B1001F5DAB /* BoardTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BoardTableViewCell.xib; sourceTree = "<group>"; };
 		43AB36B42576E508001F5DAB /* NotesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesViewController.swift; sourceTree = "<group>"; };
 		43AB36B925770200001F5DAB /* GViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GViewController.swift; sourceTree = "<group>"; };
+		7A8D9778ECAD9386A921035F /* libPods-DanceFormationsBoard.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DanceFormationsBoard.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAFE81DB4736C577CFA6B910 /* Pods-DanceFormationsBoard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DanceFormationsBoard.release.xcconfig"; path = "Target Support Files/Pods-DanceFormationsBoard/Pods-DanceFormationsBoard.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -87,7 +87,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				43621CF4256EE3DB00D3B0DB /* AVFoundation.framework in Frameworks */,
-				EB503D2DCEFBB0CFB3493314 /* Pods_DanceFormationsBoard.framework in Frameworks */,
+				0CA224DA1F08E24A8AA88CB7 /* libPods-DanceFormationsBoard.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,10 +97,13 @@
 		4324B4EA255399EA00B3060E /* Entities */ = {
 			isa = PBXGroup;
 			children = (
-				4324B524255799F700B3060E /* Formation+CoreDataClass.swift */,
-				4324B525255799F700B3060E /* Formation+CoreDataProperties.swift */,
-				4324B526255799F700B3060E /* Dancer+CoreDataClass.swift */,
-				4324B527255799F700B3060E /* Dancer+CoreDataProperties.swift */,
+				43608EF6257F2DE4002114C5 /* Board+CoreDataClass.swift */,
+				43608EF7257F2DE4002114C5 /* Board+CoreDataProperties.swift */,
+				43608EFB257F2E1D002114C5 /* Formation+CoreDataClass.swift */,
+				43608EFC257F2E1D002114C5 /* Formation+CoreDataProperties.swift */,
+				43608EFD257F2E1D002114C5 /* Dancer+CoreDataClass.swift */,
+				43608EFE257F2E1D002114C5 /* Dancer+CoreDataProperties.swift */,
+				4324B4FA2553B51900B3060E /* CoreDataUtil.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -109,16 +112,23 @@
 			isa = PBXGroup;
 			children = (
 				4324B4EA255399EA00B3060E /* Entities */,
-				4324B4FA2553B51900B3060E /* CoreDataUtil.swift */,
 			);
 			path = CoreData;
+			sourceTree = "<group>";
+		};
+		43608F09257F3DA6002114C5 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				43608F0A257F3DC5002114C5 /* ImageDataManager.swift */,
+			);
+			path = Manager;
 			sourceTree = "<group>";
 		};
 		43621CF2256EE3DB00D3B0DB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				43621CF3256EE3DB00D3B0DB /* AVFoundation.framework */,
-				42AADB13F72D199A280629FA /* Pods_DanceFormationsBoard.framework */,
+				7A8D9778ECAD9386A921035F /* libPods-DanceFormationsBoard.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -126,8 +136,6 @@
 		43A0A9CC25505F5300394193 = {
 			isa = PBXGroup;
 			children = (
-				43AB36A2257447B1001F5DAB /* FormationBoard+CoreDataClass.swift */,
-				43AB36A3257447B1001F5DAB /* FormationBoard+CoreDataProperties.swift */,
 				43A0A9D725505F5300394193 /* DanceFormationsBoard */,
 				43A0A9D625505F5300394193 /* Products */,
 				43621CF2256EE3DB00D3B0DB /* Frameworks */,
@@ -146,6 +154,7 @@
 		43A0A9D725505F5300394193 /* DanceFormationsBoard */ = {
 			isa = PBXGroup;
 			children = (
+				43608F09257F3DA6002114C5 /* Manager */,
 				4324B4F92553B4EB00B3060E /* CoreData */,
 				43A0A9FA25505FFA00394193 /* ViewModel */,
 				43A0A9F125505F7B00394193 /* View */,
@@ -154,7 +163,6 @@
 				43A0A9DA25505F5300394193 /* SceneDelegate.swift */,
 				43A0A9E425505F5800394193 /* Assets.xcassets */,
 				43A0A9E625505F5800394193 /* LaunchScreen.storyboard */,
-				43621D2A256F770100D3B0DB /* Bulleya.mp3 */,
 				43A0A9E925505F5800394193 /* Info.plist */,
 				4324B4D9255358A200B3060E /* FormationsData.xcdatamodeld */,
 			);
@@ -184,6 +192,7 @@
 				43AB36B42576E508001F5DAB /* NotesViewController.swift */,
 				43AB36B925770200001F5DAB /* GViewController.swift */,
 				43608ED3257DF10F002114C5 /* MusicViewController.swift */,
+				43608F14257FD3BB002114C5 /* KeyboardViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -193,8 +202,7 @@
 			children = (
 				43A0A9FB2550600200394193 /* DancerViewModel.swift */,
 				43A0AA042550601300394193 /* FormationViewModel.swift */,
-				43AB36A825744C57001F5DAB /* FormationBoardViewModel.swift */,
-				43608ED0257DF0D6002114C5 /* SongQuery.swift */,
+				43AB36A825744C57001F5DAB /* BoardViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -205,7 +213,6 @@
 				3FA09348ABEE91B2133810C8 /* Pods-DanceFormationsBoard.debug.xcconfig */,
 				CAFE81DB4736C577CFA6B910 /* Pods-DanceFormationsBoard.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -220,7 +227,6 @@
 				43A0A9D125505F5300394193 /* Sources */,
 				43A0A9D225505F5300394193 /* Frameworks */,
 				43A0A9D325505F5300394193 /* Resources */,
-				0C82B5678A2DB70C44A620E2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -254,9 +260,6 @@
 				Base,
 			);
 			mainGroup = 43A0A9CC25505F5300394193;
-			packageReferences = (
-				43483FD92563319F009A1CB7 /* RemoteSwiftPackageReference */,
-			);
 			productRefGroup = 43A0A9D625505F5300394193 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -275,7 +278,6 @@
 				43A0A9E825505F5800394193 /* LaunchScreen.storyboard in Resources */,
 				4324B4682550976800B3060E /* FormationSnapshotCell.xib in Resources */,
 				43A0A9E525505F5800394193 /* Assets.xcassets in Resources */,
-				43621D2B256F770100D3B0DB /* Bulleya.mp3 in Resources */,
 				43A0A9E025505F5400394193 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -283,23 +285,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0C82B5678A2DB70C44A620E2 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DanceFormationsBoard/Pods-DanceFormationsBoard-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DanceFormationsBoard/Pods-DanceFormationsBoard-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DanceFormationsBoard/Pods-DanceFormationsBoard-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		F08C4B5218547894307A714E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -329,29 +314,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43608EF8257F2DE4002114C5 /* Board+CoreDataClass.swift in Sources */,
+				43608F0B257F3DC5002114C5 /* ImageDataManager.swift in Sources */,
 				43621D37257354ED00D3B0DB /* BoardViewController.swift in Sources */,
 				43A0AA0D255061AB00394193 /* GameScene.swift in Sources */,
+				43608F02257F2E1D002114C5 /* Dancer+CoreDataProperties.swift in Sources */,
 				43AB36B52576E509001F5DAB /* NotesViewController.swift in Sources */,
-				4324B529255799F700B3060E /* Formation+CoreDataProperties.swift in Sources */,
 				4324B4FB2553B51900B3060E /* CoreDataUtil.swift in Sources */,
 				43AB36BA25770200001F5DAB /* GViewController.swift in Sources */,
 				43A0A9DD25505F5400394193 /* GameViewController.swift in Sources */,
-				4324B52B255799F700B3060E /* Dancer+CoreDataProperties.swift in Sources */,
+				43608EFF257F2E1D002114C5 /* Formation+CoreDataClass.swift in Sources */,
 				43A0A9D925505F5300394193 /* AppDelegate.swift in Sources */,
 				43621D312571E2BD00D3B0DB /* UIColor+Extension.swift in Sources */,
 				4324B4672550976800B3060E /* FormationSnapshotCell.swift in Sources */,
-				43AB36A4257447B1001F5DAB /* FormationBoard+CoreDataClass.swift in Sources */,
+				43608F00257F2E1D002114C5 /* Formation+CoreDataProperties.swift in Sources */,
+				43608F01257F2E1D002114C5 /* Dancer+CoreDataClass.swift in Sources */,
+				43608EF9257F2DE4002114C5 /* Board+CoreDataProperties.swift in Sources */,
+				43608F15257FD3BB002114C5 /* KeyboardViewController.swift in Sources */,
 				43608ED4257DF10F002114C5 /* MusicViewController.swift in Sources */,
 				43160D81255B9BB30038804F /* FormationTableView.swift in Sources */,
 				43A0AA052550601300394193 /* FormationViewModel.swift in Sources */,
 				43A0A9DB25505F5300394193 /* SceneDelegate.swift in Sources */,
-				4324B528255799F700B3060E /* Formation+CoreDataClass.swift in Sources */,
-				43AB36A5257447B1001F5DAB /* FormationBoard+CoreDataProperties.swift in Sources */,
 				43AB36B12576B0B1001F5DAB /* BoardTableViewCell.swift in Sources */,
 				43A0A9FC2550600200394193 /* DancerViewModel.swift in Sources */,
-				43AB36A925744C57001F5DAB /* FormationBoardViewModel.swift in Sources */,
-				43608ED1257DF0D6002114C5 /* SongQuery.swift in Sources */,
-				4324B52A255799F700B3060E /* Dancer+CoreDataClass.swift in Sources */,
+				43AB36A925744C57001F5DAB /* BoardViewModel.swift in Sources */,
 				4324B4DC255358A200B3060E /* FormationsData.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -558,17 +544,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		43483FD92563319F009A1CB7 /* RemoteSwiftPackageReference */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.1.1;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCVersionGroup section */
 		4324B4D9255358A200B3060E /* FormationsData.xcdatamodeld */ = {

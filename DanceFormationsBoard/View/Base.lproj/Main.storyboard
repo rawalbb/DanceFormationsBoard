@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <skView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K0L-qv-hQn" userLabel="stageView">
-                                <rect key="frame" x="44" y="0.0" width="650" height="343"/>
+                                <rect key="frame" x="44" y="0.0" width="650" height="352"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </skView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="AXB-O6-l8i" userLabel="rightStackView">
@@ -118,10 +118,10 @@
                                 </constraints>
                             </stackView>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CTd-Iw-4qb" userLabel="DetailView">
-                                <rect key="frame" x="68" y="351" width="602" height="47"/>
+                                <rect key="frame" x="68" y="360" width="602" height="38"/>
                                 <subviews>
                                     <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="pzS-aj-Tfg">
-                                        <rect key="frame" x="16" y="4" width="570" height="43"/>
+                                        <rect key="frame" x="16" y="4" width="570" height="34"/>
                                         <subviews>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t8c-kT-pJd">
                                                 <rect key="frame" x="0.0" y="0.0" width="24" height="30"/>
@@ -194,7 +194,6 @@
                         <color key="backgroundColor" name="formsBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="CTd-Iw-4qb" firstAttribute="leading" secondItem="K0L-qv-hQn" secondAttribute="leading" constant="24" id="15N-hq-kwC"/>
-                            <constraint firstItem="nno-Um-1to" firstAttribute="bottom" secondItem="K0L-qv-hQn" secondAttribute="bottom" constant="50" id="CXw-w6-1h0"/>
                             <constraint firstItem="AXB-O6-l8i" firstAttribute="top" secondItem="nno-Um-1to" secondAttribute="top" id="ChO-KW-MCN"/>
                             <constraint firstItem="AXB-O6-l8i" firstAttribute="leading" secondItem="K0L-qv-hQn" secondAttribute="trailing" constant="8" id="De4-TH-5bb"/>
                             <constraint firstItem="CTd-Iw-4qb" firstAttribute="top" secondItem="K0L-qv-hQn" secondAttribute="bottom" constant="8" id="Jm4-1n-MUV"/>
@@ -273,12 +272,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jwa-um-nFm" customClass="TableView">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" contentViewInsetsToSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jwa-um-nFm">
                                 <rect key="frame" x="0.0" y="44" width="896" height="349"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <color key="separatorColor" red="0.16862745583057404" green="0.17647059261798859" blue="0.25882354378700256" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="separatorColor" red="0.16788321733474731" green="0.18220698833465576" blue="0.25288712978363037" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" indentationWidth="10" reuseIdentifier="BoardReusableCell" id="2sg-uZ-pMF" customClass="BoardTableViewCell" customModule="DanceFormationsBoard" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" indentationWidth="10" reuseIdentifier="BoardReusableCell" id="2sg-uZ-pMF" customClass="BoardTableViewCell" customModule="DanceFormationsBoard" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="896" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2sg-uZ-pMF" id="tRg-HP-4J9">
@@ -291,6 +290,7 @@
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="of2-6l-Jmx"/>
+                        <color key="backgroundColor" name="formsBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="jwa-um-nFm" firstAttribute="leading" secondItem="kR6-a2-LNZ" secondAttribute="leading" id="GjI-qG-W0U"/>
                             <constraint firstItem="jwa-um-nFm" firstAttribute="top" secondItem="of2-6l-Jmx" secondAttribute="top" id="OPZ-fd-gpj"/>
@@ -361,6 +361,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="notesScrollView" destination="r3d-EV-aml" id="LeT-nW-ifw"/>
                         <outlet property="notesTextView" destination="sGf-i3-eaX" id="oWC-Wf-IYI"/>
                     </connections>
                 </viewController>

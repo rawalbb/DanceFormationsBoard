@@ -19,7 +19,7 @@ class FormationViewModel{
     var currentFormation: Formation?
     var nextFormation: Formation?
     var danceVM = DancerViewModel()
-    var currentBoard: FormationBoard!
+    var currentBoard: Board!
     var delegate: FormUpdatesDelegate?
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext

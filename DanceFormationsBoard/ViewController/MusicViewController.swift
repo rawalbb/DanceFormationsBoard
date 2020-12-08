@@ -21,8 +21,7 @@ class MusicViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet var tableView : UITableView?
     let myTableView: UITableView = UITableView( frame: CGRect.zero, style: .grouped )
 
-    var albums: [AlbumInfo] = []
-    var songQuery: SongQuery = SongQuery()
+
     var audio: AVAudioPlayer?
     var finalSongsArray: [MPMediaItem] = []
     var delegate: MusicChosenDelegate? = nil

@@ -10,10 +10,12 @@ import UIKit
 protocol NotesUpdatedDelegate{
     func updateNotes(notes: String)
 }
-class NotesViewController: UIViewController {
+class NotesViewController: KeyboardViewController {
 
     
     @IBOutlet weak var notesTextView: UITextView!
+    
+    @IBOutlet weak var notesScrollView: UIScrollView!
     
     var notes: String?
     var delegate: NotesUpdatedDelegate? = nil
@@ -22,6 +24,7 @@ class NotesViewController: UIViewController {
         super.viewDidLoad()
         notesTextView.delegate = self
         notesTextView.text = notes
+        self.backgroundSV = notesScrollView
 
         // Do any additional setup after loading the view.
     }
@@ -56,7 +59,7 @@ class NotesViewController: UIViewController {
     @IBAction func donePressed(_ sender: Any) {
         
         notesTextView.resignFirstResponder()
-        self.view.frame.origin.y = 0
+        //self.view.frame.origin.y = 0
     }
     
     

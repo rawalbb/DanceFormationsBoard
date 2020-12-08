@@ -2,7 +2,7 @@
 //  Dancer+CoreDataProperties.swift
 //  DanceFormationsBoard
 //
-//  Created by Bansri Rawal on 11/4/20.
+//  Created by Bansri Rawal on 12/7/20.
 //
 //
 
@@ -16,10 +16,12 @@ extension Dancer {
         return NSFetchRequest<Dancer>(entityName: "Dancer")
     }
 
-    @NSManaged public var color: String?
+    @NSManaged public var color: String
+    @NSManaged public var id: String
     @NSManaged public var label: String?
     @NSManaged public var xPos: Float
     @NSManaged public var yPos: Float
+    @NSManaged public var owner: Formation
 
 }
 

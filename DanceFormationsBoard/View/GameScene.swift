@@ -35,15 +35,23 @@ class GameScene: SKScene {
     
     override func sceneDidLoad() {
 
-
     }
     override func didMove(to view: SKView) {
         // 2
-
+        print("W H", view.bounds.width, view.bounds.height)
         backgroundColor = #colorLiteral(red: 0.1843137294, green: 0.2039215714, blue: 0.2156862766, alpha: 1)
         gridWidth = view.bounds.width
         gridHeight = view.bounds.height
-
+        var gridArray: [SKNode] = []
+        self.enumerateChildNodes(withName: "grid") { (gridNode, stop) in
+            //dancerNode.removeFromParent()
+            gridArray.append(gridNode as! SKNode)
+        }
+        
+        guard gridArray.count == 0 else{
+            print("Error in Initializing Grid")
+            return
+        }
         drawGrid()
         formationSelected(dancers: initial)
         
@@ -314,7 +322,7 @@ class GameScene: SKScene {
             let n = DanceNode(circleOfRadius: 10)
             n.fillColor = UIColor(hex: dancer.color)
             n.strokeColor = UIColor(hex: dancer.color)
-            n.nodeId = dancer.id!
+            n.nodeId = dancer.id
             let label = SKLabelNode(text: dancer.label)
             
             ////When text is changed it should get the currently selected Node and change it's text

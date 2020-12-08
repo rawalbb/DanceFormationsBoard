@@ -1,5 +1,5 @@
 //
-//  Formation+CoreDataClass.swift
+//  Board+CoreDataClass.swift
 //  DanceFormationsBoard
 //
 //  Created by Bansri Rawal on 12/7/20.
@@ -10,6 +10,6 @@ import Foundation
 import CoreData
 
 
-public class Formation: NSManagedObject {
+public class Board: NSManagedObject {
 
 }
