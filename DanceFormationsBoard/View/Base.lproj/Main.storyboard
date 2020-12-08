@@ -213,6 +213,7 @@
                     <connections>
                         <outlet property="formOptionsView" destination="CTd-Iw-4qb" id="pLs-cU-1EH"/>
                         <outlet property="formsTableView" destination="1lt-HL-pxQ" id="obn-Y0-dTc"/>
+                        <outlet property="hieracrchyView" destination="XmL-ea-QKr" id="9FR-BM-mVE"/>
                         <outlet property="labelTextField" destination="H2Q-8d-X0A" id="hM8-iU-fJ2"/>
                         <outlet property="labelToggleButton" destination="6Q1-Tz-DJH" id="JD4-Kp-N8z"/>
                         <outlet property="nodeColorButton" destination="t8c-kT-pJd" id="sgW-j2-ESG"/>

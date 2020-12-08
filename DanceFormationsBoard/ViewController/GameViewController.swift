@@ -5,7 +5,10 @@ import CoreData
 import AVFoundation
 import MediaPlayer
 
-class GameViewController: UIViewController{
+class GameViewController: KeyUIViewController{
+    
+    
+    @IBOutlet var hieracrchyView: UIView!
     
     
     @IBOutlet weak var formsTableView: UITableView!
@@ -34,6 +37,8 @@ class GameViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.backgroundSV = hieracrchyView
         
         formOptionsView.layer.cornerRadius = 20
         formOptionsView.backgroundColor = #colorLiteral(red: 0.1478704014, green: 0.1637916303, blue: 0.1738279326, alpha: 1)
@@ -91,6 +96,10 @@ class GameViewController: UIViewController{
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
+        
+        //Don't need to update boards
+        //don't need to update label
+        //don't need to update board properties
         boardVM.updateBoardDate(date: Date())
     }
     
@@ -215,17 +224,18 @@ class GameViewController: UIViewController{
     
     @IBAction func labelTextFieldChanged(_ sender: UITextField) {
         //print("Label changed")
-        if let text = labelTextField.text{
-            //print(text)
-            self.scene1.updateDancerLabel(label: text)
-            if let nodeId = self.scene1.currentNode?.nodeId{
-                dancerVM.updateDancerLabel(id: nodeId, label: text)
-                let imageData = dancerVM.imageToData(view: squareView)
-                formationVM.getCurrentFormation().image = imageData!
-                allFormUpdates()
-            }
-            
-        }
+                if let text = labelTextField.text{
+                    //print(text)
+                    self.scene1.updateDancerLabel(label: text)
+                    if let nodeId = self.scene1.currentNode?.nodeId{
+                        dancerVM.updateDancerLabel(id: nodeId, label: text)
+                        let imageData = dancerVM.imageToData(view: squareView)
+                        formationVM.getCurrentFormation().image = imageData!
+                        //allFormUpdates()
+                    }
+        
+                }
+
     }
     
     
@@ -348,19 +358,18 @@ extension GameViewController: UITextFieldDelegate{
     
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         //print("In Return")
-        view.frame.origin.y = 0
+        
         textField.resignFirstResponder()
+        view.frame.origin.y = 0
+    
+
         return true
     }
     
     public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        view.frame.origin.y = -120
+
         return enableText
     }
-    
-    //    @objc func keyboardWillChange(notification: Notification) {
-    //        view.frame.origin.y = -100
-    //    }
     
 }
 
