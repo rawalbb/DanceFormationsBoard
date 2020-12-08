@@ -6,11 +6,12 @@
 //
 
 import UIKit
+import HGPlaceholders
 
 class BoardViewController: UIViewController {
     
     
-    @IBOutlet weak var boardTableView: UITableView!
+    @IBOutlet weak var boardTableView: TableView!
     
     
     var boardVM = FormationBoardViewModel()
@@ -23,6 +24,7 @@ class BoardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
 
         
         boardVMArray = boardVM.loadBoards()
@@ -34,6 +36,10 @@ class BoardViewController: UIViewController {
         
         boardTableView.rowHeight = UITableView.automaticDimension
         boardTableView.estimatedRowHeight = 120
+        
+        DispatchQueue.main.async {
+            self.checkForNoFormations()
+        }
 
         // Do any additional setup after loading the view.
         
@@ -127,6 +133,7 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
         df.dateFormat = "yyyy-MM-dd hh:mm:ss"
         
         let cell = self.boardTableView.dequeueReusableCell(withIdentifier: "BoardReusableCell") as! BoardTableViewCell
+        cell.boardNameTextField.delegate = self
         cell.boardNameTextField.text = boardVMArray[indexPath.row].name
         cell.boardDateTextField.text = "Last Updated: \(df.string(from: boardVMArray[indexPath.row].lastEdited))"
         
@@ -246,6 +253,13 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     
+    func checkForNoFormations(){
+        
+        if boardVM.getBoardArray().count < 0{
+            
+            boardTableView.showLoadingPlaceholder()
+        }
+    }
     
     
 }
@@ -272,7 +286,7 @@ extension BoardViewController: UITextFieldDelegate{
 
 
         textField.resignFirstResponder()
-        view.frame.origin.y = 0
+        //view.frame.origin.y = 0
         return true
     }
     
@@ -302,7 +316,9 @@ extension BoardViewController: BoardUpdatesDelegate{
     func boardUpdated(boardArray: [FormationBoard]) {
         //self.boardVMArray = boardArray
         boardVMArray = boardVM.getBoardArray()
+        
         DispatchQueue.main.async {
+            self.checkForNoFormations()
             self.boardTableView.reloadData()
         }
     }

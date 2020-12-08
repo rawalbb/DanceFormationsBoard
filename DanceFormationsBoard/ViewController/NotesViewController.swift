@@ -52,17 +52,22 @@ class NotesViewController: UIViewController {
     */
 
 }
+    
+    @IBAction func donePressed(_ sender: Any) {
+        
+        notesTextView.resignFirstResponder()
+        self.view.frame.origin.y = 0
+    }
+    
+    
 }
 
+
+
 extension NotesViewController: UITextViewDelegate{
+
+//    func textViewDidBeginEditing(_ textView: UITextView) {
+//        self.view.frame.origin.y = -100
+//    }
     
-    
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        if text == "\n"
-            {
-                textView.resignFirstResponder()
-                return false
-            }
-            return true
-    }
 }

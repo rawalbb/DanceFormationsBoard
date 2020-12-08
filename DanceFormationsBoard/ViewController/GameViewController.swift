@@ -16,6 +16,7 @@ class GameViewController: UIViewController{
     @IBOutlet weak var labelTextField: UITextField!
     @IBOutlet weak var nodeColorButton: UIButton!
     
+    @IBOutlet weak var labelToggleButton: UIButton!
     
     var boardVM: FormationBoardViewModel!
     var formationVM = FormationViewModel()
@@ -45,7 +46,11 @@ class GameViewController: UIViewController{
         scene1 = GameScene(size: squareView.bounds.size)
         scene1.scaleMode = .fill
         
+        let config = UIImage.SymbolConfiguration(scale: .large)
         
+        labelToggleButton.setImage(UIImage(systemName: "person.fill.checkmark"),
+                                   for: [.highlighted, .selected])
+        labelToggleButton.setPreferredSymbolConfiguration(config, forImageIn: [.highlighted, .selected])
         
         formsTableView.register(UINib(nibName: "FormationSnapshotCell", bundle: nil), forCellReuseIdentifier: "ReusableCell")
         formsTableView.dataSource = self
@@ -82,6 +87,13 @@ class GameViewController: UIViewController{
         super.viewWillAppear(animated)
         squareView.presentScene(scene1)
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        boardVM.updateBoardDate(date: Date())
+    }
+    
     
     
     
@@ -136,9 +148,20 @@ class GameViewController: UIViewController{
     }
     
     
+    @IBAction func addMusicPressed(_ sender: UIButton) {
+        
+        let nextVC = storyboard?.instantiateViewController(identifier: "MusicViewController") as! MusicViewController
+        nextVC.delegate = self
+        self.navigationController?.pushViewController(nextVC, animated: true)
+        
+        
+    }
+    
     
     
     @IBAction func playFormationsPressed(_ sender: Any) {
+        
+        self.scene1.removeAllActions()
         var waitT = 0.0
         
         //player.play()
@@ -199,9 +222,7 @@ class GameViewController: UIViewController{
                 dancerVM.updateDancerLabel(id: nodeId, label: text)
                 let imageData = dancerVM.imageToData(view: squareView)
                 formationVM.getCurrentFormation().image = imageData
-                formationVM.saveFormation()
-                //formationArray = formationVM.loadFormations()
-                formsTableView.reloadData()
+                allFormUpdates()
             }
             
         }
@@ -261,12 +282,21 @@ class GameViewController: UIViewController{
     }
     
     
+    @IBAction func labelTogglePressed(_ sender: UIButton) {
+        
+        sender.isSelected.toggle()
+        print(sender.isSelected)
+        scene1.showLabel = sender.isSelected
+        scene1.nodeLabelHelper()
+    }
+    
+    
+    
     
     func allFormUpdates(){
         
         formationVM.saveFormation()
         formationVM.loadFormations()
-        
     }
     
     
@@ -284,7 +314,8 @@ extension GameViewController: UITableViewDataSource, UITableViewDelegate{
         //cell.formationName.delegate = self
         let index = formationVM.currentIndex
         print("Current Index, ", index, "Current Path ", indexPath.row)
-        cell.setSelected(index == indexPath.row, animated: true)
+        //cell.setSelected(index == indexPath.row, animated: true)
+        //cell.setSelected(true, animated: true)
         
         let item = formationArray[indexPath.row]
         if let formationData = item.image{
@@ -317,11 +348,13 @@ extension GameViewController: UITextFieldDelegate{
     
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         //print("In Return")
+        view.frame.origin.y = 0
         textField.resignFirstResponder()
         return true
     }
     
     public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        view.frame.origin.y = -120
         return enableText
     }
     
@@ -372,8 +405,14 @@ extension GameViewController: GameSceneUpdatesDelegate{
         }
     }
     
-    func enableTextField(enable: Bool) {
+    func enableTextField(enable: Bool, id: String) {
         enableText = enable
+        if enableText{
+            labelTextField.text = dancerVM.getDancer(id: id)?.label ?? ""
+        }
+        else{
+            labelTextField.text = ""
+        }
         //print(enableText)
     }
     
@@ -403,6 +442,9 @@ extension GameViewController: FormUpdatesDelegate{
         print("In Form Updated, Game Controller ", formationArray.count)
         DispatchQueue.main.async {
             self.formsTableView.reloadData()
+            let currIndex = self.formationVM.currentIndex
+            let newPath = IndexPath(row: currIndex, section: 0)
+            self.formsTableView.selectRow(at: newPath, animated: true, scrollPosition: .top)
         }
     }
 }
@@ -424,6 +466,7 @@ extension GameViewController: UIColorPickerViewControllerDelegate{
 
         if let nodeId = self.scene1.currentNode?.nodeId{
             dancerVM.updateDancerColor(id: nodeId, color: colorString)
+            dancerVM.saveDancer()
             let imageData = dancerVM.imageToData(view: squareView)
         formationVM.getCurrentFormation().image = imageData
         allFormUpdates()
@@ -432,11 +475,20 @@ extension GameViewController: UIColorPickerViewControllerDelegate{
 }
 }
 
+extension GameViewController: MusicChosenDelegate{
+    
+    func musicChosen(url: URL) {
+        scene1.musicUrl = url
+    }
+}
 
 
-//TODO: - Next Formation Pressed
 
-//TODO: - Previous Formation Pressed
+//TODO: - Next Formation Pressed - DONE
+
+//TODO: - Previous Formation Pressed - DONE
+
+//TODO: - Play Formations all way
 
 //TODO: - Undo
 

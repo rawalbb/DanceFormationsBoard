@@ -95,22 +95,65 @@ class DancerViewModel{
         
     }
     
+    func getDancer(id: String) -> Dancer?{
+        
+        let request : NSFetchRequest<Dancer> = Dancer.fetchRequest()
+        var dancerArray : [Dancer] = []
+        
+        let predicate = NSPredicate(format: "id == %@", id)
+        request.predicate = predicate
+        do{
+            dancerArray = try context.fetch(request)
+        }
+        catch{
+            print("Error Fetching Data from Context in Dancer ViewModel \(error)")
+        }
+        
+        return dancerArray.first
+    }
+    
     
     func updateDancerLabel( id: String, label: String){
 
-        if let toUpdateIndex = currDancerArray.firstIndex(where: { $0.id == id }) {
-
-            currDancerArray[toUpdateIndex].label = label
+        let request : NSFetchRequest<Dancer> = Dancer.fetchRequest()
+        var dancerArray : [Dancer] = []
+        
+        let predicate = NSPredicate(format: "id == %@", id)
+        request.predicate = predicate
+        do{
+            dancerArray = try context.fetch(request)
+        }
+        catch{
+            print("Error Fetching Data from Context in Dancer ViewModel \(error)")
+        }
+        
+        for dancer in dancerArray{
+            dancer.label = label
         }
     }
     
     
     func updateDancerColor( id: String, color: String){
-
-        if let toUpdateIndex = currDancerArray.firstIndex(where: { $0.id == id }) {
-
-            currDancerArray[toUpdateIndex].color = color
+        
+        let request : NSFetchRequest<Dancer> = Dancer.fetchRequest()
+        var dancerArray : [Dancer] = []
+        
+        let predicate = NSPredicate(format: "id == %@", id)
+        request.predicate = predicate
+        do{
+            dancerArray = try context.fetch(request)
         }
+        catch{
+            print("Error Fetching Data from Context in Dancer ViewModel \(error)")
+        }
+        
+        for dancer in dancerArray{
+            dancer.color = color
+        }
+//        if let toUpdateIndex = currDancerArray.firstIndex(where: { $0.id == id }) {
+//
+//            currDancerArray[toUpdateIndex].color = color
+//        }
         
     }
     

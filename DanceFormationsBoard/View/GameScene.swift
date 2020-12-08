@@ -9,7 +9,7 @@ protocol GameSceneUpdatesDelegate {
     //func updateDancerLabel(id: String, label: String)
     func updateCellSelect()
     func updateCellDeselect()
-    func enableTextField(enable: Bool)
+    func enableTextField(enable: Bool, id: String)
     func updateNodeColor(color: UIColor)
     func removedDancer(id: String)
 }
@@ -27,6 +27,9 @@ class GameScene: SKScene {
     var backgroundMuisc: SKAudioNode!
     var selectedNodeColor: UIColor!
     var initial: [Dancer]!
+    var showLabel: Bool = false
+    let highlightedNode = SKShapeNode(circleOfRadius: 6)
+    var musicUrl: URL? = URL(string: "")
     //let font = UIFont(name: "GillSans-SemiBold", size: .14)!
     
     
@@ -94,7 +97,7 @@ class GameScene: SKScene {
             
             let lineNode = SKShapeNode(path: path.cgPath)
             if num == 0 || num == yNumLines{
-                lineNode.strokeColor = #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)
+                lineNode.strokeColor = #colorLiteral(red: 0.7568627451, green: 0.8392156863, blue: 0.8980392157, alpha: 1)
                 lineNode.lineWidth = 3
             }
             else{
@@ -134,6 +137,7 @@ class GameScene: SKScene {
                 label.fontName = "GillSans-SemiBold"
                 
                 n.position = nearest
+                n.zPosition = 1
                 label.name = "labelName"
                 label.position = CGPoint(x: 20, y: 20 )
                 //label.color = UIColor.blue
@@ -150,13 +154,21 @@ class GameScene: SKScene {
                 let dancerId = n.nodeId
                 self.myDelegate.dancerToAdd(xPosition: xPos, yPosition: yPos, id: dancerId, color: color, label: label.text ?? "")
                 //self.saveDancers()
-                
-                
-                
+    
             }
             else{
+               
+                highlightedNode.position = touchedNodes[0].position
+                highlightedNode.fillColor = UIColor.black
+                highlightedNode.lineWidth = 1
+                highlightedNode.strokeColor = UIColor.black
+                highlightedNode.glowWidth = 4
+                highlightedNode.zPosition = 0
+                highlightedNode.name = "highlight"
+                self.addChild(highlightedNode)
+                
                 self.currentNode = self.nodes(at: location).first as? DanceNode
-                self.myDelegate.enableTextField(enable: true)
+                self.myDelegate.enableTextField(enable: true, id: currentNode?.nodeId ?? "")
                 self.myDelegate.updateNodeColor(color: currentNode?.fillColor ?? UIColor.white)
             }
 //            for node in touchedNodes.reversed() {
@@ -219,8 +231,13 @@ class GameScene: SKScene {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.enumerateChildNodes(withName: "highlight") { (dancerNode, stop) in
+            dancerNode.removeFromParent()
+            //**Keeps Grid**
+        }
         if let touch = touches.first, let node = currentNode {
             let touchLocation = touch.location(in: self)
+
             if node.position.x < 0.0 || node.position.x >= gridWidth{
                 node.removeFromParent()
                 self.myDelegate.removedDancer(id: node.nodeId)
@@ -240,11 +257,12 @@ class GameScene: SKScene {
         }
         //currentNode = nil
         //self.myDelegate.enableTextField(enable: false)
+
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.currentNode = nil
-        self.myDelegate.enableTextField(enable: false)
+        self.myDelegate.enableTextField(enable: false, id: "")
     }
     
     
@@ -310,12 +328,17 @@ class GameScene: SKScene {
             //closestNode!.lineWidth = 20
             
             n.position = CGPoint(x: CGFloat(dancer.xPos), y: CGFloat(dancer.yPos))
+            n.zPosition = 1
             label.name = "labelName"
             label.position = CGPoint(x: 0, y: 16 )
             
             n.name = "dancers"
             n.addChild(label)
+            
+            
             self.addChild(n)
+            
+            nodeLabelHelper()
             //self.addChild(label)
             
             
@@ -327,8 +350,16 @@ class GameScene: SKScene {
     
     func playSong(){
         
-        if let musicURL = Bundle.main.url(forResource: "Bulleya", withExtension: "mp3") {
+        if let musicURL = musicUrl{
             backgroundMuisc = SKAudioNode(url: musicURL)
+            print("selected")
+        }
+        else if let musicURL = Bundle.main.url(forResource: "Bulleya", withExtension: "mp3"){
+            backgroundMuisc = SKAudioNode(url: musicURL)
+            print("bulleya")
+        }
+        else{
+            print("Error")
         }
         
         backgroundMuisc.name = "music"
@@ -395,6 +426,39 @@ class GameScene: SKScene {
         }
         
 }
+    
+    
+    //Create function where if switch is on - then add child labels, if not remove chid labels
+    
+    func nodeLabelHelper(){
+        
+        if showLabel{
+        self.enumerateChildNodes(withName: "dancers") { (dancerNode, stop) in
+            
+            dancerNode.enumerateChildNodes(withName: "labelName") { (node, stop) in
+                print("A")
+                node.isHidden = true
+            }
+
+        }
+            
+        }
+        else{
+         
+            self.enumerateChildNodes(withName: "dancers") { (dancerNode, stop) in
+                
+                dancerNode.enumerateChildNodes(withName: "labelName") { (node, stop) in
+                    
+                    print("B")
+                    node.isHidden = false
+                }
+
+            }
+            
+        }
+        
+        
+    }
     
 }
 

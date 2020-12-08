@@ -16,6 +16,8 @@
 		4324B529255799F700B3060E /* Formation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B525255799F700B3060E /* Formation+CoreDataProperties.swift */; };
 		4324B52A255799F700B3060E /* Dancer+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B526255799F700B3060E /* Dancer+CoreDataClass.swift */; };
 		4324B52B255799F700B3060E /* Dancer+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B527255799F700B3060E /* Dancer+CoreDataProperties.swift */; };
+		43608ED1257DF0D6002114C5 /* SongQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43608ED0257DF0D6002114C5 /* SongQuery.swift */; };
+		43608ED4257DF10F002114C5 /* MusicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43608ED3257DF10F002114C5 /* MusicViewController.swift */; };
 		43621CF4256EE3DB00D3B0DB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43621CF3256EE3DB00D3B0DB /* AVFoundation.framework */; };
 		43621D2B256F770100D3B0DB /* Bulleya.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 43621D2A256F770100D3B0DB /* Bulleya.mp3 */; };
 		43621D312571E2BD00D3B0DB /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43621D302571E2BD00D3B0DB /* UIColor+Extension.swift */; };
@@ -36,9 +38,12 @@
 		43AB36B22576B0B1001F5DAB /* BoardTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43AB36B02576B0B1001F5DAB /* BoardTableViewCell.xib */; };
 		43AB36B52576E509001F5DAB /* NotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB36B42576E508001F5DAB /* NotesViewController.swift */; };
 		43AB36BA25770200001F5DAB /* GViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB36B925770200001F5DAB /* GViewController.swift */; };
+		EB503D2DCEFBB0CFB3493314 /* Pods_DanceFormationsBoard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42AADB13F72D199A280629FA /* Pods_DanceFormationsBoard.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3FA09348ABEE91B2133810C8 /* Pods-DanceFormationsBoard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DanceFormationsBoard.debug.xcconfig"; path = "Target Support Files/Pods-DanceFormationsBoard/Pods-DanceFormationsBoard.debug.xcconfig"; sourceTree = "<group>"; };
+		42AADB13F72D199A280629FA /* Pods_DanceFormationsBoard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DanceFormationsBoard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43160D80255B9BB30038804F /* FormationTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormationTableView.swift; sourceTree = "<group>"; };
 		4324B4652550976800B3060E /* FormationSnapshotCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormationSnapshotCell.swift; sourceTree = "<group>"; };
 		4324B4662550976800B3060E /* FormationSnapshotCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FormationSnapshotCell.xib; sourceTree = "<group>"; };
@@ -49,6 +54,8 @@
 		4324B525255799F700B3060E /* Formation+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Formation+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		4324B526255799F700B3060E /* Dancer+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dancer+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
 		4324B527255799F700B3060E /* Dancer+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dancer+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		43608ED0257DF0D6002114C5 /* SongQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongQuery.swift; sourceTree = "<group>"; };
+		43608ED3257DF10F002114C5 /* MusicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicViewController.swift; sourceTree = "<group>"; };
 		43621CF3256EE3DB00D3B0DB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		43621D2A256F770100D3B0DB /* Bulleya.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Bulleya.mp3; path = "../../../../Music/iTunes/iTunes Media/Music/Unknown Artist/Unknown Album/Bulleya.mp3"; sourceTree = "<group>"; };
 		43621D302571E2BD00D3B0DB /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
@@ -71,6 +78,7 @@
 		43AB36B02576B0B1001F5DAB /* BoardTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BoardTableViewCell.xib; sourceTree = "<group>"; };
 		43AB36B42576E508001F5DAB /* NotesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesViewController.swift; sourceTree = "<group>"; };
 		43AB36B925770200001F5DAB /* GViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GViewController.swift; sourceTree = "<group>"; };
+		CAFE81DB4736C577CFA6B910 /* Pods-DanceFormationsBoard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DanceFormationsBoard.release.xcconfig"; path = "Target Support Files/Pods-DanceFormationsBoard/Pods-DanceFormationsBoard.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +87,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				43621CF4256EE3DB00D3B0DB /* AVFoundation.framework in Frameworks */,
+				EB503D2DCEFBB0CFB3493314 /* Pods_DanceFormationsBoard.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				43621CF3256EE3DB00D3B0DB /* AVFoundation.framework */,
+				42AADB13F72D199A280629FA /* Pods_DanceFormationsBoard.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -121,6 +131,7 @@
 				43A0A9D725505F5300394193 /* DanceFormationsBoard */,
 				43A0A9D625505F5300394193 /* Products */,
 				43621CF2256EE3DB00D3B0DB /* Frameworks */,
+				8614D359B2A95E0FBF72FA3B /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -172,6 +183,7 @@
 				43621D36257354ED00D3B0DB /* BoardViewController.swift */,
 				43AB36B42576E508001F5DAB /* NotesViewController.swift */,
 				43AB36B925770200001F5DAB /* GViewController.swift */,
+				43608ED3257DF10F002114C5 /* MusicViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -182,8 +194,19 @@
 				43A0A9FB2550600200394193 /* DancerViewModel.swift */,
 				43A0AA042550601300394193 /* FormationViewModel.swift */,
 				43AB36A825744C57001F5DAB /* FormationBoardViewModel.swift */,
+				43608ED0257DF0D6002114C5 /* SongQuery.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		8614D359B2A95E0FBF72FA3B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3FA09348ABEE91B2133810C8 /* Pods-DanceFormationsBoard.debug.xcconfig */,
+				CAFE81DB4736C577CFA6B910 /* Pods-DanceFormationsBoard.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -193,17 +216,17 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 43A0A9EC25505F5800394193 /* Build configuration list for PBXNativeTarget "DanceFormationsBoard" */;
 			buildPhases = (
+				F08C4B5218547894307A714E /* [CP] Check Pods Manifest.lock */,
 				43A0A9D125505F5300394193 /* Sources */,
 				43A0A9D225505F5300394193 /* Frameworks */,
 				43A0A9D325505F5300394193 /* Resources */,
+				0C82B5678A2DB70C44A620E2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = DanceFormationsBoard;
-			packageProductDependencies = (
-			);
 			productName = DanceFormationsBoard;
 			productReference = 43A0A9D525505F5300394193 /* DanceFormationsBoard.app */;
 			productType = "com.apple.product-type.application";
@@ -232,7 +255,7 @@
 			);
 			mainGroup = 43A0A9CC25505F5300394193;
 			packageReferences = (
-				43483FD92563319F009A1CB7 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				43483FD92563319F009A1CB7 /* RemoteSwiftPackageReference */,
 			);
 			productRefGroup = 43A0A9D625505F5300394193 /* Products */;
 			projectDirPath = "";
@@ -259,6 +282,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		0C82B5678A2DB70C44A620E2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DanceFormationsBoard/Pods-DanceFormationsBoard-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DanceFormationsBoard/Pods-DanceFormationsBoard-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DanceFormationsBoard/Pods-DanceFormationsBoard-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F08C4B5218547894307A714E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DanceFormationsBoard-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		43A0A9D125505F5300394193 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -276,6 +341,7 @@
 				43621D312571E2BD00D3B0DB /* UIColor+Extension.swift in Sources */,
 				4324B4672550976800B3060E /* FormationSnapshotCell.swift in Sources */,
 				43AB36A4257447B1001F5DAB /* FormationBoard+CoreDataClass.swift in Sources */,
+				43608ED4257DF10F002114C5 /* MusicViewController.swift in Sources */,
 				43160D81255B9BB30038804F /* FormationTableView.swift in Sources */,
 				43A0AA052550601300394193 /* FormationViewModel.swift in Sources */,
 				43A0A9DB25505F5300394193 /* SceneDelegate.swift in Sources */,
@@ -284,6 +350,7 @@
 				43AB36B12576B0B1001F5DAB /* BoardTableViewCell.swift in Sources */,
 				43A0A9FC2550600200394193 /* DancerViewModel.swift in Sources */,
 				43AB36A925744C57001F5DAB /* FormationBoardViewModel.swift in Sources */,
+				43608ED1257DF0D6002114C5 /* SongQuery.swift in Sources */,
 				4324B52A255799F700B3060E /* Dancer+CoreDataClass.swift in Sources */,
 				4324B4DC255358A200B3060E /* FormationsData.xcdatamodeld in Sources */,
 			);
@@ -429,6 +496,7 @@
 		};
 		43A0A9ED25505F5800394193 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3FA09348ABEE91B2133810C8 /* Pods-DanceFormationsBoard.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -449,6 +517,7 @@
 		};
 		43A0A9EE25505F5800394193 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CAFE81DB4736C577CFA6B910 /* Pods-DanceFormationsBoard.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -491,7 +560,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		43483FD92563319F009A1CB7 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+		43483FD92563319F009A1CB7 /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
 			requirement = {

@@ -144,6 +144,12 @@ class FormationBoardViewModel{
        // self.saveBoard()
     }
     
+    func updateBoardDate(date: Date){
+        
+        getCurrentBoard()?.lastEdited = date
+       // self.saveBoard()
+    }
+    
     func imageToData(image: UIImage) -> Data?{
         
         if let data = image.jpegData(compressionQuality: 1.0){
