@@ -13,18 +13,15 @@ protocol FormUpdatesDelegate{
 
 class FormationViewModel{
     
-    
-    var currentIndex = -1
+    var currentIndex: Int? //Initially nil
     var formationArray = [Formation]()
-    var currentFormation: Formation?
-    var nextFormation: Formation?
     var danceVM = DancerViewModel()
     var currentBoard: Board!
     var delegate: FormUpdatesDelegate?
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
-    
+    //Saves Formation
     func saveFormation(){
         do{
             try context.save()
@@ -33,119 +30,182 @@ class FormationViewModel{
         }
     }
     
-    
+    //Creates New Formation - if no image data given, create default, else create with image data
     func createNewFormation(formData: Data? = nil){
-        //var numFormation = formationArray.count
+        
         let newFormation = Formation(context: context)
-        newFormation.name = "Formation \(formationArray.count)"
-        if formData == nil{
-            newFormation.image = UIImage(named: "defaultFormImage")?.jpegData(compressionQuality: 1.0)
-        } else{
-            newFormation.image = formData
+        
+        if let data = formData{
+            newFormation.image = data
         }
-        if currentIndex != -1{
-            print(currentIndex, "Current Formation Index")
-            let dancerObjects = getCurrentFormation().dancers as! Set<Dancer>
-            print("When creating new, checking dancer count of old ", dancerObjects.count)
+        else{
+            newFormation.image = UIImage(named: "defaultFormImage")?.jpegData(compressionQuality: 1.0)
+        }
+
+            
+        if formationArray.count > 0 && currentIndex != nil
+        {
+            let dancerObjects = getFormation(type: FormationType.current)?.dancers as! Set<Dancer>
+            
             for dancer in dancerObjects{
                 danceVM.addDancer(dancer: dancer, selectedFormation: newFormation)
+            }
+            if let currIndex = getCurrentIndex(){
+                newFormation.position = Int16(currIndex + 1)
             }
             
         }
         else{
             newFormation.dancers = nil
+            newFormation.position = 0
         }
         newFormation.uniqueId = UUID().uuidString
         newFormation.formationOwner = currentBoard
-        print("In Create ", newFormation.formationOwner.uniqueId)
     }
     
-    func getCurrentFormation() -> Formation{
-        print("Current Index", currentIndex)
-        print("Formation Array Count", formationArray.count)
-        currentFormation = formationArray[currentIndex]
+    func getFormation(type: FormationType) -> Formation?{
+        var returnVal: Formation? = nil
+        switch type{
         
-        //print("Current Index", currentIndex)
-        return formationArray[currentIndex]
+        case .current:
+            if let current = self.getCurrentIndex()
+            {
+                returnVal = formationArray[current]
+            }
+            else{
+                print("Getting Current Formation Error")
+                returnVal = nil
+            }
+    
+        case .previous:
+            if let current = self.getCurrentIndex(){
+                if current > 0{
+                    returnVal = formationArray[current - 1]
+                }
+                else{
+                    returnVal = nil
+                }
+            }
+
+        case .next:
+                
+            if let current = self.getCurrentIndex(){
+                if current < formationArray.count - 1{
+                    returnVal = formationArray[current + 1]
+                }
+            }
+            else{
+                returnVal = nil
+            }
         
+        case .atLocation(let index):
+            print("a)")
+            if index < formationArray.count{
+                returnVal = formationArray[index]
+            }
+            else{
+                return nil
+            }
+            
+    }
+        return returnVal
+    }
+    
+    func getCurrentIndex() -> Int?{
+        
+        return currentIndex
     }
     
     func setCurrentSelection(index: Int){
         currentIndex = index
     }
     
-    func getNextFormation() -> Formation?{
-        //print(currentIndex)
-        //print(formationArray.count)
-        if currentIndex < formationArray.count - 1{
-            return formationArray[currentIndex + 1]
-        }
-        else{
-            return nil
-        }
-    }
-    
-    func getPrevFormation() -> Formation?{
-
-        if currentIndex > 0{
-            return formationArray[currentIndex - 1]
-        }
-        else{
-            return nil
-        }
-    }
-    
     func updateSelected(name: String, formArray: [Formation]){
         //Called in tableview didSelectRow
         //and Initially
-        currentFormation = formArray.filter({ $0.name == name }).first
-    }
-    
-    func updateFormImage(){
+        var currentFormation = getFormation(type: FormationType.current)
+        
+        if currentFormation != nil{
+            currentFormation = formArray.filter({ $0.name == name }).first
+        }
+        
+        
         
     }
     
-    func updateFormLabel(){
+    func updateFormImage(data: Data){
         
+        if let curr = getFormation(type: FormationType.current){
+            curr.image = data
+        }
     }
     
-    func updateDancerInFormation(dancer: Dancer){
+    func updateFormLabel(label: String?){
         
-
+        if let curr = getFormation(type: FormationType.current){
+            curr.name = label ?? ""
+        }
     }
     
-    func drawInitialGrid(width: CGFloat, height: CGFloat){
-        
-    }
     
     func removeFormation(form: Formation){
         
-        context.delete(form) //removes all Dancers associated with it
-        //formationArray.remove(at: row)
-        //Make sure to call save after
+        context.delete(form)
         
     }
     
     func loadFormations() -> [Formation]{
-        //Should be called in viewDidLoad
-        //print(boardVM.currentBoardIndex)
-        //let currentBoard = boardVM.getCurrentBoard()!
+
         let request : NSFetchRequest<Formation> = Formation.fetchRequest()
-        print("Current Board Unique Id ", currentBoard.uniqueId)
+
         let predicate = NSPredicate(format: "formationOwner.uniqueId == %@", currentBoard.uniqueId)
         request.predicate = predicate
         do{
             
-            formationArray = try context.fetch(request)
-            //print(formationArray[0].formationOwner.uniqueId, "DFGSDFGDDFG" )
+            let tempArray = try context.fetch(request)
+            formationArray = tempArray.sorted(by: {
+                $0.position < $1.position
+            })
+        
         }
         catch{
             print("Error Fetching Data from Context in Formation ViewModel \(error)")
         }
         self.delegate?.formUpdated(formArray: formationArray)
-        //TODO - return might be double if using formUpdates
+
         return formationArray
     }
     
     
+    func updatePosition(type: PositionType){
+        if let curr = getCurrentIndex(){
+            let updateStart = curr + 1
+        switch type{
+        
+        case .add:
+            for i in updateStart..<formationArray.count{
+                
+                formationArray[i].position += 1
+            }
+            //For each formation greater than "current formation", increase position count
+        case .remove:
+            for i in updateStart..<formationArray.count{
+                
+                formationArray[i].position -= 1
+            }
+        }
+        
+    }
+    }
+    
+}
+
+enum FormationType{
+    
+    case current, previous, next, atLocation(Int)
+}
+
+enum PositionType{
+    
+    case add, remove
 }

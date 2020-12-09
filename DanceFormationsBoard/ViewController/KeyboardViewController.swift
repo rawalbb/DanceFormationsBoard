@@ -164,15 +164,14 @@ private extension KeyUIViewController {
 
         if let view = backgroundSV, let userInfo = notification.userInfo, let endValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey], let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey], let curveValue = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] {
             // Transform the keyboard's frame into our view's coordinate system
-            let endRect = view.convert((endValue as AnyObject).cgRectValue, from: view.window)
+            _ = view.convert((endValue as AnyObject).cgRectValue, from: view.window)
             // Find out how much the keyboard overlaps the scroll view
             // We can do this because our scroll view's frame is already in our view's coordinate system
-            let keyboardOverlap = view.frame.maxY - endRect.origin.y
             
             if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
                     let keyboardRectangle = keyboardFrame.cgRectValue
                     let keyboardHeight = keyboardRectangle.height
-                print(".....", -(view.frame.maxY - keyboardHeight))
+                
                 view.frame.origin.y = -(view.frame.maxY - keyboardHeight)
                 
                 
@@ -180,11 +179,11 @@ private extension KeyUIViewController {
             else{
                 view.frame.origin.y = 0
             }
-            print("Frame Max EndREct Origin", view.frame.maxY, endRect.origin.y)
+            
             // Set the scroll view's content inset to avoid the keyboard
             // Don't forget the scroll indicator too!
             
-            print("Keyboard overlap", keyboardOverlap)
+           
             //view.largeContentImageInsets.bottom = keyboardOverlap
            // tableView.scrollIndicatorInsets.bottom = keyboardOverlap
             let duration = (durationValue as AnyObject).doubleValue

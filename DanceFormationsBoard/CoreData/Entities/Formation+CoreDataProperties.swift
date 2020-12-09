@@ -17,10 +17,11 @@ extension Formation {
     }
 
     @NSManaged public var image: Data?
-    @NSManaged public var name: String
+    @NSManaged public var name: String?
     @NSManaged public var uniqueId: String
     @NSManaged public var dancers: NSSet?
     @NSManaged public var formationOwner: Board
+    @NSManaged public var position: Int16
 
 }
 

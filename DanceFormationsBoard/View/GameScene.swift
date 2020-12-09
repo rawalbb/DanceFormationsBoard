@@ -7,8 +7,6 @@ protocol GameSceneUpdatesDelegate {
     func dancerToAdd(xPosition: Float, yPosition: Float, id: String, color: String, label: String)
     func dancerMoved(id: String, xPosition: Float, yPosition: Float)
     //func updateDancerLabel(id: String, label: String)
-    func updateCellSelect()
-    func updateCellDeselect()
     func enableTextField(enable: Bool, id: String)
     func updateNodeColor(color: UIColor)
     func removedDancer(id: String)
@@ -25,7 +23,7 @@ class GameScene: SKScene {
     var myDelegate : GameSceneUpdatesDelegate!
     var arrayOfActions: [SKAction] = []
     var backgroundMuisc: SKAudioNode!
-    var selectedNodeColor: UIColor!
+    var selectedColor: UIColor!
     var initial: [Dancer]!
     var showLabel: Bool = false
     let highlightedNode = SKShapeNode(circleOfRadius: 6)
@@ -126,16 +124,18 @@ class GameScene: SKScene {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
             let location = touch.location(in: self)
+            //let gridLocation = getNearestIntersection(x: location.x, y: location.y)
             
             let touchedNodes = self.nodes(at: location)
+            
             if (touchedNodes.count == 0){
                 
                 
                 //let n = DanceNode(imageNamed: "circle")
                 let n = DanceNode(circleOfRadius: 10.5)
-                n.fillColor = selectedNodeColor
-                n.strokeColor = selectedNodeColor
-                    //let n = SKShapeNode(rectOf: CGSize(width: 10.0, height: 10.0), cornerRadius: 3.0)
+                n.fillColor = selectedColor
+                n.strokeColor = selectedColor
+ 
                 let label = SKLabelNode(text: "")
                 let nearest = getNearestIntersection(x: location.x, y: location.y)
                 
@@ -158,7 +158,7 @@ class GameScene: SKScene {
                 let xPos = Float(n.position.x)
                 let yPos = Float(n.position.y)
                 n.nodeId = UUID().uuidString
-                let color = selectedNodeColor.toHexString()
+                let color = selectedColor.toHexString()
                 let dancerId = n.nodeId
                 self.myDelegate.dancerToAdd(xPosition: xPos, yPosition: yPos, id: dancerId, color: color, label: label.text ?? "")
                 //self.saveDancers()
@@ -177,13 +177,9 @@ class GameScene: SKScene {
                 
                 self.currentNode = self.nodes(at: location).first as? DanceNode
                 self.myDelegate.enableTextField(enable: true, id: currentNode?.nodeId ?? "")
-                self.myDelegate.updateNodeColor(color: currentNode?.fillColor ?? UIColor.white)
+                self.myDelegate.updateNodeColor(color: currentNode?.fillColor ?? selectedColor)
             }
-//            for node in touchedNodes.reversed() {
-//                if node.name == "draggable" {
-//                    self.currentNode = (node as! DanceNode)
-//                }
-//            }
+
         }
         
         
