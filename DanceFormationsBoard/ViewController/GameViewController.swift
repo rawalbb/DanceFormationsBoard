@@ -17,6 +17,7 @@ class GameViewController: KeyUIViewController{
     @IBOutlet weak var nodeLabelTextField: UITextField!
     @IBOutlet weak var nodeColorButton: UIButton!
     @IBOutlet weak var labelToggleButton: UIButton!
+    @IBOutlet weak var formCellNameTextfield: UITextField!
     
     var boardVM: BoardViewModel!
     var formationVM = FormationViewModel()
@@ -32,7 +33,6 @@ class GameViewController: KeyUIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.backgroundSV = hieracrchyView
         
         //Formation Options Properties
         formOptionsView.layer.cornerRadius = 20
@@ -217,22 +217,40 @@ class GameViewController: KeyUIViewController{
         
         if let toRemove = formationVM.getFormation(type: FormationType.current){
             formationVM.updatePosition(type: PositionType.remove)
- 
-            formationVM.removeFormation(form: toRemove)
+            print("Formation VM remove", toRemove.uniqueId)
+            
         
             if let currIndex = formationVM.getCurrentIndex(){
                 if currIndex - 1 == -1{
                     formationVM.createNewFormation(formData: nil)
                 }
-                else if currIndex - 1 != -1 && currIndex + 1 != formationArray.count{
+                else if currIndex - 1 != -1 && currIndex + 2 != formationArray.count{
                     formationVM.setCurrentSelection(index: currIndex+1)
+                }
+                else if currIndex - 1 != -1 && currIndex + 2 == formationArray.count{
+                    formationVM.setCurrentSelection(index: currIndex)
                 }
                 else{
                     formationVM.setCurrentSelection(index: currIndex - 1)
                 }
                 
             }
+            
+            formationVM.removeFormation(form: toRemove)
             allFormUpdates()
+            
+            
+            if let curr = formationVM.getFormation(type: FormationType.current){
+                let dancers = dancerVM.loadDancers(selectedFormation: curr, current: true)
+                print(dancers.count, "Dancers Count")
+                stage.formationSelected(dancers: dancers)
+            }
+            else{
+                print("Error loading in didSelect")
+            }
+            
+            allFormUpdates()
+            
     }
     }
     
@@ -304,14 +322,21 @@ extension GameViewController: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = self.formsTableView.dequeueReusableCell(withIdentifier: "ReusableCell") as! FormationSnapshotCell
-        //cell.formationName.delegate = self
-        let item = formationArray[indexPath.row]
-        if let formationData = item.image{
-            let cellImage = UIImage(data: formationData)
-            cell.formationImage?.image = cellImage
+        cell.formNameTextfield.delegate = self
+        //print("Index Path row", indexPath.row)
+        if let item = formationVM.getFormation(type: FormationType.atLocation(indexPath.row)){
+            if let formationData = item.image{
+                let cellImage = UIImage(data: formationData)
+                cell.formationImage?.image = cellImage
+            }
+            if let name = item.name{
+                if name != ""{
+                    print("Index Path Name", indexPath.row, item.name)
+                    cell.formNameTextfield?.text = item.name
+                }
+            }
         }
-        
-        cell.formationName?.text = item.name
+
         return cell
         
     }
@@ -340,17 +365,41 @@ extension GameViewController: UITextFieldDelegate{
     
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         //print("In Return")
+        switch textField {
+        case nodeLabelTextField:
+            print()
+        default:
+            formationVM.updateFormLabel(label: textField.text)
+        }
         
         textField.resignFirstResponder()
         view.frame.origin.y = 0
-    
+        allFormUpdates()
 
         return true
     }
     
     public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-
-        return enableText
+        switch textField {
+            case nodeLabelTextField:
+                self.backgroundSV = hieracrchyView
+                return enableText
+            default:
+                let cell: UITableViewCell = textField.superview?.superview as! FormationSnapshotCell //TODO: REFACTOR
+                let table: UITableView = cell.superview as! UITableView
+                let path = table.indexPath(for: cell)
+                var retVal = false
+                if let currIndex = formationVM.getCurrentIndex(){
+                    if currIndex == path?.row{
+                        retVal = true
+                    }
+                    else{
+                        retVal = false
+                    }
+                }
+                return retVal
+        }
+        //return enableText
     }
     
 }

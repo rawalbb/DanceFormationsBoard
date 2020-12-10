@@ -30,7 +30,7 @@
                         <constraints>
                             <constraint firstAttribute="height" constant="32" id="PfU-he-i7N"/>
                         </constraints>
-                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="textColor" name="formsBackgroundColor"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits"/>
                     </textField>
@@ -48,8 +48,8 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="formNameTextfield" destination="oDK-1R-4sg" id="plM-ED-Olw"/>
                 <outlet property="formationImage" destination="jCZ-yF-exb" id="U8R-m4-JYP"/>
-                <outlet property="formationName" destination="oDK-1R-4sg" id="plM-ED-Olw"/>
             </connections>
             <point key="canvasLocation" x="46.376811594202906" y="130.91517857142856"/>
         </tableViewCell>

@@ -12,7 +12,7 @@ class FormationSnapshotCell: UITableViewCell {
     
     @IBOutlet weak var formationImage: UIImageView!
     
-    @IBOutlet weak var formationName: UITextField!
+    @IBOutlet weak var formNameTextfield: UITextField!
     
     override func awakeFromNib() {
         super.awakeFromNib()
