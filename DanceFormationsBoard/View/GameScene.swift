@@ -10,6 +10,7 @@ protocol GameSceneUpdatesDelegate {
     func enableTextField(enable: Bool, id: String)
     func updateNodeColor(color: UIColor)
     func removedDancer(id: String)
+    func updateFormationSelected(index: IndexPath)
 }
 
 class GameScene: SKScene {
@@ -24,7 +25,6 @@ class GameScene: SKScene {
     var arrayOfActions: [SKAction] = []
     var backgroundMuisc: SKAudioNode!
     var selectedColor: UIColor!
-    var initial: [Dancer]!
     var showLabel: Bool = false
     let highlightedNode = SKShapeNode(circleOfRadius: 6)
     var musicUrl: URL? = URL(string: "")
@@ -51,8 +51,6 @@ class GameScene: SKScene {
             return
         }
         drawGrid()
-        formationSelected(dancers: initial)
-        
     }
     
     //Only want to
@@ -304,7 +302,7 @@ class GameScene: SKScene {
     }
     
     
-    func formationSelected(dancers: [Dancer]?){
+    func formationSelected(dancers: [Dancer]? = nil, index: IndexPath? = nil){
         
         self.enumerateChildNodes(withName: "dancers") { (dancerNode, stop) in
             dancerNode.removeFromParent()
@@ -349,6 +347,9 @@ class GameScene: SKScene {
         }
         }
         //playThroughFormations()
+        if let path = index{
+            self.myDelegate.updateFormationSelected(index: path)
+        }
         
     }
     
@@ -440,7 +441,7 @@ class GameScene: SKScene {
         self.enumerateChildNodes(withName: "dancers") { (dancerNode, stop) in
             
             dancerNode.enumerateChildNodes(withName: "labelName") { (node, stop) in
-                print("A")
+
                 node.isHidden = true
             }
 
@@ -452,8 +453,7 @@ class GameScene: SKScene {
             self.enumerateChildNodes(withName: "dancers") { (dancerNode, stop) in
                 
                 dancerNode.enumerateChildNodes(withName: "labelName") { (node, stop) in
-                    
-                    print("B")
+
                     node.isHidden = false
                 }
 

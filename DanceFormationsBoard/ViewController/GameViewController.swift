@@ -77,7 +77,7 @@ class GameViewController: KeyUIViewController{
             formationVM.setCurrentSelection(index: 0)
             if let curr = formationVM.getFormation(type: FormationType.current){
                 let dancers = dancerVM.loadDancers(selectedFormation: curr, current: true)
-                stage.initial = dancers //When stage scene loaods up, has dancers ready
+                stage.formationSelected(dancers: dancers)
             }
         }
         
@@ -119,13 +119,21 @@ class GameViewController: KeyUIViewController{
                     formationVM.updatePosition(type: PositionType.add)
                 }
             }
+            
             formationVM.createNewFormation(formData: imageData)
             
             if let curr = formationVM.getCurrentIndex(){
                     formationVM.setCurrentSelection(index: curr + 1)
+                print("Setting Current selection to ", curr + 1)
             }
-            
-            allFormUpdates() //TODO *** check to see where/when all form updates is called b/c everytime its called selection is set
+             //TODO *** check to see where/when all form updates is called b/c everytime its called selection is set
+            allFormUpdates()
+            if let currForm = formationVM.getFormation(type: FormationType.current){
+                dancerVM.loadDancers(selectedFormation: currForm, current: true)
+            }
+            else{
+                print("Error finding current formation in load dancers")
+            }
             
             }
         else{
@@ -310,14 +318,14 @@ extension GameViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        //let currentCell = tableView.cellForRow(at: indexPath) as! FormationSnapshotCell
+        let currentCell = tableView.cellForRow(at: indexPath) as! FormationSnapshotCell
+        //currentCell.se
         formationVM.setCurrentSelection(index: indexPath.row)
         if let curr = formationVM.getFormation(type: FormationType.current){
             let dancers = dancerVM.loadDancers(selectedFormation: curr, current: true)
-            stage.formationSelected(dancers: dancers)
+            stage.formationSelected(dancers: dancers, index: indexPath)
         }
         else{
-            
             print("Error loading in didSelect")
         }
         
@@ -349,10 +357,12 @@ extension GameViewController: UITextFieldDelegate{
 
 //MARK: - GAMESCENE Delegate/Protocols
 extension GameViewController: GameSceneUpdatesDelegate{
+
     
     func dancerToAdd(xPosition: Float, yPosition: Float, id: String, color: String, label: String) {
         
         if let curr = formationVM.getFormation(type: FormationType.current){
+            print("Current Index", formationVM.getCurrentIndex()!)
         
         dancerVM.addDancer(xPosition: xPosition, yPosition: yPosition, label: label, id: id, color: color, selectedFormation: curr)
         }
@@ -365,7 +375,14 @@ extension GameViewController: GameSceneUpdatesDelegate{
     }
     
     func dancerMoved(id: String, xPosition: Float, yPosition: Float) {
-        dancerVM.updateDancerPosition(id: id, xPosition: xPosition, yPosition: yPosition)
+        if let curr = formationVM.getFormation(type: FormationType.current){
+            dancerVM.updateDancerPosition(id: id, xPosition: xPosition, yPosition: yPosition, owner: curr)
+        }
+        else{
+            print("Cannot Find Curr Formation")
+        }
+        
+        
         dancerVM.saveDancer()
         if let imageData = dancerVM.imageToData(view: stageView) {
         formationVM.updateFormImage(data: imageData)
@@ -397,6 +414,12 @@ extension GameViewController: GameSceneUpdatesDelegate{
             formationVM.updateFormImage(data: imageData)
         }
         allFormUpdates()
+    }
+    
+    func updateFormationSelected(index: IndexPath) {
+        DispatchQueue.main.async {
+            self.formsTableView.selectRow(at: index, animated: true, scrollPosition: .top)
+        }
     }
     
 }

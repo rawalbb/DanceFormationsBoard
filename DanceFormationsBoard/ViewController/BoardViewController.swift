@@ -96,6 +96,8 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! BoardTableViewCell
+        cell.boardNameTextField.resignFirstResponder()
         
         boardVM.setCurrentBoard(index: indexPath.row)
         let nextVC = storyboard?.instantiateViewController(identifier: "GameViewController") as! GameViewController
