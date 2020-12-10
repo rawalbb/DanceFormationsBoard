@@ -120,19 +120,6 @@ class FormationViewModel{
         currentIndex = index
     }
     
-    func updateSelected(name: String, formArray: [Formation]){
-        //Called in tableview didSelectRow
-        //and Initially
-        var currentFormation = getFormation(type: FormationType.current)
-        
-        if currentFormation != nil{
-            currentFormation = formArray.filter({ $0.name == name }).first
-        }
-        
-        
-        
-    }
-    
     func updateFormImage(data: Data){
         
         if let curr = getFormation(type: FormationType.current){
@@ -143,7 +130,12 @@ class FormationViewModel{
     func updateFormLabel(label: String?){
         
         if let curr = getFormation(type: FormationType.current){
-            curr.name = label ?? ""
+            if label != nil && label != ""{
+            curr.name = label
+            }
+            else{
+                curr.name = "Enter Name:"
+            }
         }
     }
     

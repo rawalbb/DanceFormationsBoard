@@ -17,7 +17,6 @@ class GameViewController: KeyUIViewController{
     @IBOutlet weak var nodeLabelTextField: UITextField!
     @IBOutlet weak var nodeColorButton: UIButton!
     @IBOutlet weak var labelToggleButton: UIButton!
-    @IBOutlet weak var formCellNameTextfield: UITextField!
     
     var boardVM: BoardViewModel!
     var formationVM = FormationViewModel()
@@ -225,7 +224,7 @@ class GameViewController: KeyUIViewController{
                     formationVM.createNewFormation(formData: nil)
                 }
                 else if currIndex - 1 != -1 && currIndex + 2 != formationArray.count{
-                    formationVM.setCurrentSelection(index: currIndex+1)
+                    formationVM.setCurrentSelection(index: currIndex)
                 }
                 else if currIndex - 1 != -1 && currIndex + 2 == formationArray.count{
                     formationVM.setCurrentSelection(index: currIndex)
@@ -323,7 +322,7 @@ extension GameViewController: UITableViewDataSource, UITableViewDelegate{
         
         let cell = self.formsTableView.dequeueReusableCell(withIdentifier: "ReusableCell") as! FormationSnapshotCell
         cell.formNameTextfield.delegate = self
-        //print("Index Path row", indexPath.row)
+        cell.formNameTextfield.text = ""
         if let item = formationVM.getFormation(type: FormationType.atLocation(indexPath.row)){
             if let formationData = item.image{
                 let cellImage = UIImage(data: formationData)
@@ -468,7 +467,10 @@ extension GameViewController: GameSceneUpdatesDelegate{
     func updateFormationSelected(index: IndexPath) {
         DispatchQueue.main.async {
             self.formsTableView.selectRow(at: index, animated: true, scrollPosition: .top)
+            self.enableText = false
+            self.nodeLabelTextField.text = ""
         }
+        
     }
     
 }
