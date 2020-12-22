@@ -43,7 +43,7 @@ class GameScene: SKScene {
         var gridArray: [SKNode] = []
         self.enumerateChildNodes(withName: "grid") { (gridNode, stop) in
             //dancerNode.removeFromParent()
-            gridArray.append(gridNode as! SKNode)
+            gridArray.append(gridNode )
         }
         
         guard gridArray.count == 0 else{
@@ -191,12 +191,12 @@ class GameScene: SKScene {
                 childLabelNodes.append(node as! SKLabelNode)
             }
             if childLabelNodes.count != 0{
-                let a = childLabelNodes[0] as? SKLabelNode
-            if let childToUpdate = a{
+                let a = childLabelNodes[0] as! SKLabelNode
+            let childToUpdate = a
                 childToUpdate.fontSize = 14
                 childToUpdate.fontName = "GillSans-SemiBold"
                 childToUpdate.text = label
-            }
+            
         }
             else{
                 print("No childnodes found")
@@ -467,7 +467,7 @@ class GameScene: SKScene {
             
             for nodes in currNodes{
                 
-                if let toUpdateIndex = dancers.firstIndex(where: { $0.id == nodes.nodeId }) {
+                if dancers.firstIndex(where: { $0.id == nodes.nodeId }) != nil {
 
             }
                 else{

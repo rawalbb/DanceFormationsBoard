@@ -42,7 +42,7 @@ class MusicViewController: UIViewController, UITableViewDelegate, UITableViewDat
                // print("mediaCollectionItems: \(String(describing: mediaCollection.items[0].title))") //It's alwa
                 if mediaCollection.items.count > 0{
                      let item = mediaCollection.items[0]
-                     let pathURL = item.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
+                    _ = item.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
         
         
                 //let sound = NSURL(fileURLWithPath: Bundle.main.path(forResource: "Bulleya", ofType: "mp3")!)
@@ -72,7 +72,7 @@ class MusicViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
         let cell = tableView.dequeueReusableCell(
             withIdentifier: "MusicPlayerCell",
-            for: indexPath) as! UITableViewCell
+            for: indexPath) 
         cell.textLabel?.text = finalSongsArray[indexPath.row].title
         print("Text", finalSongsArray[indexPath.row].title)
         //cell.labelMusicTitle?.text = albums[indexPath.section].songs[indexPath.row].songTitle

@@ -11,8 +11,9 @@ class ViewController: UIViewController {
 
     var wformView: ASWaveformPlayerView!
     let timeLabel = UILabel()
+    var songStr: String = ""
 
-    let audioURL = Bundle.main.url(forResource: "Chand", withExtension: "mp3")!
+    var audioURL = Bundle.main.url(forResource: "Chand", withExtension: "mp3")!
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0CA224DA1F08E24A8AA88CB7 /* libPods-DanceFormationsBoard.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A8D9778ECAD9386A921035F /* libPods-DanceFormationsBoard.a */; };
 		43160D81255B9BB30038804F /* FormationTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43160D80255B9BB30038804F /* FormationTableView.swift */; };
 		4324B4672550976800B3060E /* FormationSnapshotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B4652550976800B3060E /* FormationSnapshotCell.swift */; };
 		4324B4682550976800B3060E /* FormationSnapshotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4324B4662550976800B3060E /* FormationSnapshotCell.xib */; };
@@ -26,9 +25,7 @@
 		43621D312571E2BD00D3B0DB /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43621D302571E2BD00D3B0DB /* UIColor+Extension.swift */; };
 		43621D37257354ED00D3B0DB /* BoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43621D36257354ED00D3B0DB /* BoardViewController.swift */; };
 		4365F072258860DC002C366B /* ASWaveformPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4365F071258860DC002C366B /* ASWaveformPlayerView.swift */; };
-		4365F07C258861BF002C366B /* piano.caf in Resources */ = {isa = PBXBuildFile; fileRef = 4365F07B258861BE002C366B /* piano.caf */; };
 		4365F08325886CEE002C366B /* AudioAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4365F08225886CEE002C366B /* AudioAnalyzer.swift */; };
-		4365F08725886DE7002C366B /* Chand.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4365F08625886DE7002C366B /* Chand.mp3 */; };
 		4365F08B25886E60002C366B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4365F08A25886E60002C366B /* ViewController.swift */; };
 		43A0A9D925505F5300394193 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0A9D825505F5300394193 /* AppDelegate.swift */; };
 		43A0A9DB25505F5300394193 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0A9DA25505F5300394193 /* SceneDelegate.swift */; };
@@ -43,11 +40,9 @@
 		43AB36B12576B0B1001F5DAB /* BoardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB36AF2576B0B1001F5DAB /* BoardTableViewCell.swift */; };
 		43AB36B22576B0B1001F5DAB /* BoardTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43AB36B02576B0B1001F5DAB /* BoardTableViewCell.xib */; };
 		43AB36B52576E509001F5DAB /* NotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB36B42576E508001F5DAB /* NotesViewController.swift */; };
-		43AB36BA25770200001F5DAB /* GViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB36B925770200001F5DAB /* GViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3FA09348ABEE91B2133810C8 /* Pods-DanceFormationsBoard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DanceFormationsBoard.debug.xcconfig"; path = "Target Support Files/Pods-DanceFormationsBoard/Pods-DanceFormationsBoard.debug.xcconfig"; sourceTree = "<group>"; };
 		43160D80255B9BB30038804F /* FormationTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormationTableView.swift; sourceTree = "<group>"; };
 		4324B4652550976800B3060E /* FormationSnapshotCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormationSnapshotCell.swift; sourceTree = "<group>"; };
 		4324B4662550976800B3060E /* FormationSnapshotCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FormationSnapshotCell.xib; sourceTree = "<group>"; };
@@ -67,9 +62,7 @@
 		43621D302571E2BD00D3B0DB /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		43621D36257354ED00D3B0DB /* BoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewController.swift; sourceTree = "<group>"; };
 		4365F071258860DC002C366B /* ASWaveformPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ASWaveformPlayerView.swift; sourceTree = "<group>"; };
-		4365F07B258861BE002C366B /* piano.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = piano.caf; sourceTree = "<group>"; };
 		4365F08225886CEE002C366B /* AudioAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAnalyzer.swift; sourceTree = "<group>"; };
-		4365F08625886DE7002C366B /* Chand.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Chand.mp3; sourceTree = "<group>"; };
 		4365F08A25886E60002C366B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		43A0A9D525505F5300394193 /* DanceFormationsBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DanceFormationsBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43A0A9D825505F5300394193 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -86,9 +79,6 @@
 		43AB36AF2576B0B1001F5DAB /* BoardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardTableViewCell.swift; sourceTree = "<group>"; };
 		43AB36B02576B0B1001F5DAB /* BoardTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BoardTableViewCell.xib; sourceTree = "<group>"; };
 		43AB36B42576E508001F5DAB /* NotesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesViewController.swift; sourceTree = "<group>"; };
-		43AB36B925770200001F5DAB /* GViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GViewController.swift; sourceTree = "<group>"; };
-		7A8D9778ECAD9386A921035F /* libPods-DanceFormationsBoard.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DanceFormationsBoard.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CAFE81DB4736C577CFA6B910 /* Pods-DanceFormationsBoard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DanceFormationsBoard.release.xcconfig"; path = "Target Support Files/Pods-DanceFormationsBoard/Pods-DanceFormationsBoard.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,7 +87,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				43621CF4256EE3DB00D3B0DB /* AVFoundation.framework in Frameworks */,
-				0CA224DA1F08E24A8AA88CB7 /* libPods-DanceFormationsBoard.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,7 +127,6 @@
 			isa = PBXGroup;
 			children = (
 				43621CF3256EE3DB00D3B0DB /* AVFoundation.framework */,
-				7A8D9778ECAD9386A921035F /* libPods-DanceFormationsBoard.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -149,7 +137,6 @@
 				43A0A9D725505F5300394193 /* DanceFormationsBoard */,
 				43A0A9D625505F5300394193 /* Products */,
 				43621CF2256EE3DB00D3B0DB /* Frameworks */,
-				8614D359B2A95E0FBF72FA3B /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -202,11 +189,8 @@
 				43621D302571E2BD00D3B0DB /* UIColor+Extension.swift */,
 				43621D36257354ED00D3B0DB /* BoardViewController.swift */,
 				43AB36B42576E508001F5DAB /* NotesViewController.swift */,
-				43AB36B925770200001F5DAB /* GViewController.swift */,
 				43608ED3257DF10F002114C5 /* MusicViewController.swift */,
 				43608F14257FD3BB002114C5 /* KeyboardViewController.swift */,
-				4365F07B258861BE002C366B /* piano.caf */,
-				4365F08625886DE7002C366B /* Chand.mp3 */,
 				4365F08A25886E60002C366B /* ViewController.swift */,
 			);
 			path = ViewController;
@@ -222,15 +206,6 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		8614D359B2A95E0FBF72FA3B /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				3FA09348ABEE91B2133810C8 /* Pods-DanceFormationsBoard.debug.xcconfig */,
-				CAFE81DB4736C577CFA6B910 /* Pods-DanceFormationsBoard.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -238,7 +213,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 43A0A9EC25505F5800394193 /* Build configuration list for PBXNativeTarget "DanceFormationsBoard" */;
 			buildPhases = (
-				F08C4B5218547894307A714E /* [CP] Check Pods Manifest.lock */,
 				43A0A9D125505F5300394193 /* Sources */,
 				43A0A9D225505F5300394193 /* Frameworks */,
 				43A0A9D325505F5300394193 /* Resources */,
@@ -289,8 +263,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4365F07C258861BF002C366B /* piano.caf in Resources */,
-				4365F08725886DE7002C366B /* Chand.mp3 in Resources */,
 				43AB36B22576B0B1001F5DAB /* BoardTableViewCell.xib in Resources */,
 				43A0A9E825505F5800394193 /* LaunchScreen.storyboard in Resources */,
 				4324B4682550976800B3060E /* FormationSnapshotCell.xib in Resources */,
@@ -300,31 +272,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		F08C4B5218547894307A714E /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-DanceFormationsBoard-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		43A0A9D125505F5300394193 /* Sources */ = {
@@ -338,7 +285,6 @@
 				43608F02257F2E1D002114C5 /* Dancer+CoreDataProperties.swift in Sources */,
 				43AB36B52576E509001F5DAB /* NotesViewController.swift in Sources */,
 				4324B4FB2553B51900B3060E /* CoreDataUtil.swift in Sources */,
-				43AB36BA25770200001F5DAB /* GViewController.swift in Sources */,
 				43A0A9DD25505F5400394193 /* GameViewController.swift in Sources */,
 				43608EFF257F2E1D002114C5 /* Formation+CoreDataClass.swift in Sources */,
 				43A0A9D925505F5300394193 /* AppDelegate.swift in Sources */,
@@ -502,7 +448,6 @@
 		};
 		43A0A9ED25505F5800394193 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3FA09348ABEE91B2133810C8 /* Pods-DanceFormationsBoard.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -523,7 +468,6 @@
 		};
 		43A0A9EE25505F5800394193 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CAFE81DB4736C577CFA6B910 /* Pods-DanceFormationsBoard.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

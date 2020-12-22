@@ -95,8 +95,25 @@ class GameViewController: KeyUIViewController{
         
         allFormUpdates()
         
-    
-        
+    //Check if there is music,
+
+        do{
+            if let a = boardVM.getCurrentBoard()?.song{
+                let path = Bundle.main.path(forResource: "\(a)", ofType:nil)!
+                let music = URL(fileURLWithPath: path)
+                    _ = try AVAudioPlayer(contentsOf: music)
+                musicUrl = music
+                musicToggleButton.isEnabled = true
+            }
+            else{
+                print("No song")
+                
+            }
+            
+        }
+        catch{
+            print("Error ")
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -142,7 +159,7 @@ class GameViewController: KeyUIViewController{
              //TODO *** check to see where/when all form updates is called b/c everytime its called selection is set
             allFormUpdates()
             if let currForm = formationVM.getFormation(type: FormationType.current){
-                dancerVM.loadDancers(selectedFormation: currForm, current: true)
+               _ = dancerVM.loadDancers(selectedFormation: currForm, current: true)
             }
             else{
                 print("Error finding current formation in load dancers")
@@ -168,6 +185,7 @@ class GameViewController: KeyUIViewController{
     @IBAction func formTimingPressed(_ sender: UIButton) {
         let nextVC = storyboard?.instantiateViewController(identifier: "ViewController") as! ViewController
         //nextVC.delegate = self
+        nextVC.audioURL = musicUrl!
         self.navigationController?.pushViewController(nextVC, animated: true)
         
         
@@ -345,7 +363,7 @@ class GameViewController: KeyUIViewController{
     func allFormUpdates(){
         
         formationVM.saveFormation()
-        formationVM.loadFormations()
+        _ = formationVM.loadFormations()
     }
     
     
@@ -370,7 +388,7 @@ extension GameViewController: UITableViewDataSource, UITableViewDelegate{
             }
             if let name = item.name{
                 if name != ""{
-                    print("Index Path Name", indexPath.row, item.name)
+                    print("Index Path Name", indexPath.row, item.name ?? "Error")
                     cell.formNameTextfield?.text = item.name
                 }
             }
@@ -382,7 +400,7 @@ extension GameViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let currentCell = tableView.cellForRow(at: indexPath) as! FormationSnapshotCell
+        _ = tableView.cellForRow(at: indexPath) as! FormationSnapshotCell
         //currentCell.se
         formationVM.setCurrentSelection(index: indexPath.row)
         if let curr = formationVM.getFormation(type: FormationType.current){
@@ -579,8 +597,8 @@ extension GameViewController{
     func updateWaitTime(time: Float64){
         //Calculate time - formation before wait time
         //if cannot load music - default all to 3.0
-        if let prev = formationVM.getFormation(type: FormationType.previous){
-            let currWait = 3 - 2
+        if formationVM.getFormation(type: FormationType.previous) != nil{
+            _ = 3 - 2
             //Timing of previous - timing of current selected - meaning save song times
             
             

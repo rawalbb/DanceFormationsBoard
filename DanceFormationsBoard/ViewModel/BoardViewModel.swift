@@ -52,9 +52,7 @@ class BoardViewModel{
     //Function: Remove Board
     func removeBoard(board: Board){
         do{
-            try context.delete(board)
-        } catch {
-            print("Error deleting Board \(error)")
+            context.delete(board)
         }
     }
     
@@ -69,6 +67,7 @@ class BoardViewModel{
         }
         newBoard.notes = nil
         newBoard.uniqueId = UUID().uuidString
+        newBoard.song = nil
     }
     
     //Function: Get current Board
