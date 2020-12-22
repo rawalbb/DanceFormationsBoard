@@ -26,8 +26,9 @@ class GameScene: SKScene {
     var backgroundMuisc: SKAudioNode!
     var selectedColor: UIColor!
     var showLabel: Bool = false
+    var playMusic: Bool = false
     let highlightedNode = SKShapeNode(circleOfRadius: 6)
-    var musicUrl: URL? = URL(string: "")
+    var musicEnabled: Bool = false
     //let font = UIFont(name: "GillSans-SemiBold", size: .14)!
     
     
@@ -35,8 +36,7 @@ class GameScene: SKScene {
 
     }
     override func didMove(to view: SKView) {
-        // 2
-        print("W H", view.bounds.width, view.bounds.height)
+
         backgroundColor = #colorLiteral(red: 0.1843137294, green: 0.2039215714, blue: 0.2156862766, alpha: 1)
         gridWidth = view.bounds.width
         gridHeight = view.bounds.height
@@ -120,13 +120,14 @@ class GameScene: SKScene {
     
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        currentNode = nil
         if let touch = touches.first {
             let location = touch.location(in: self)
-            //let gridLocation = getNearestIntersection(x: location.x, y: location.y)
+            let gridLocation = getNearestIntersection(x: location.x, y: location.y)
             
-            let touchedNodes = self.nodes(at: location)
+            let touchedNodes = self.nodes(at: gridLocation)
             
-            if (touchedNodes.count == 0){
+            if (touchedNodes.count == 2){
                 
                 
                 //let n = DanceNode(imageNamed: "circle")
@@ -163,7 +164,6 @@ class GameScene: SKScene {
     
             }
             else{
-               
                 highlightedNode.position = touchedNodes[0].position
                 highlightedNode.fillColor = UIColor.black
                 highlightedNode.lineWidth = 1
@@ -227,8 +227,7 @@ class GameScene: SKScene {
         if let touch = touches.first, let node = currentNode {
             let touchLocation = touch.location(in: self)
             node.position = touchLocation
-            
-            
+  
         }
     }
     
@@ -304,13 +303,8 @@ class GameScene: SKScene {
     
     func formationSelected(dancers: [Dancer]? = nil, index: IndexPath? = nil){
         
-        self.enumerateChildNodes(withName: "dancers") { (dancerNode, stop) in
-            dancerNode.removeFromParent()
-            //**Keeps Grid**
-        }
-
-        //self.removeAllChildren()
-        //print("DAncer ", dancers.count)
+        endActionsHelper()
+        
         if let dancers = dancers{
         for dancer in dancers{
             let n = DanceNode(circleOfRadius: 10)
@@ -332,7 +326,7 @@ class GameScene: SKScene {
             n.position = CGPoint(x: CGFloat(dancer.xPos), y: CGFloat(dancer.yPos))
             n.zPosition = 1
             label.name = "labelName"
-            label.position = CGPoint(x: 0, y: 16 )
+            label.position = CGPoint(x: 0, y: 14 )
             
             n.name = "dancers"
             n.addChild(label)
@@ -353,32 +347,33 @@ class GameScene: SKScene {
         
     }
     
-    func playSong(){
-        
-        if let musicURL = musicUrl{
-            backgroundMuisc = SKAudioNode(url: musicURL)
-            print("selected")
+    func playSong(musicLink: URL? = nil){
+
+        self.enumerateChildNodes(withName: "music") { (musicNode, stop) in
+            musicNode.removeAllActions()
+            musicNode.removeFromParent()
         }
-        else if let musicURL = Bundle.main.url(forResource: "Bulleya", withExtension: "mp3"){
+        if let musicURL = musicLink{
             backgroundMuisc = SKAudioNode(url: musicURL)
-            print("bulleya")
+            
+            backgroundMuisc.name = "music"
+            self.addChild(backgroundMuisc)
+            
+            let actionB = SKAction.run {
+                self.backgroundMuisc.run(SKAction.play())
+            }
+            
+            arrayOfActions.append(actionB)
         }
+
         else{
-            print("Error")
+            print("Error in selecting music")
         }
-        
-        backgroundMuisc.name = "music"
-        self.addChild(backgroundMuisc)
-        
-        let actionB = SKAction.run {
-            self.backgroundMuisc.run(SKAction.play())
-        }
-        
-        arrayOfActions.append(actionB)
 
     }
     
     func endSong(){
+        //var musicNodeArray : [SKNode] = []
 
         if backgroundMuisc != nil{
         let actionC = SKAction.run {
@@ -387,17 +382,41 @@ class GameScene: SKScene {
         
         arrayOfActions.append(actionC)
         }
+        else{
+            print("Error in stopping music")
+        }
+    }
+    func endActionsHelper(removeDancers: Bool = true){
+        
+        self.enumerateChildNodes(withName: "music") { (musicNode, stop) in
+            musicNode.removeAllActions()
+            musicNode.removeFromParent()
+        }
+        self.removeAllActions()
+        
+
+        self.enumerateChildNodes(withName: "dancers") { (danceNode, stop) in
+           
+                danceNode.removeFromParent()
+            
+            danceNode.removeAllActions()
+ 
+    }
     }
     
     func playThroughFormations(dancers: [Dancer], waitTime: Double, transitionTime: Double, formIndex: Int, totalForms: Int){
    
         let actionA = SKAction.run { [unowned self] in
+            //THIS IS THE PROBLEM
             var currNodes: [DanceNode] = []
                 self.enumerateChildNodes(withName: "dancers") { (node, stop) in
                 currNodes.append(node as! DanceNode)
             }
         
         for dancer in dancers{
+            
+            //IF there isn't a dancer at that position - not found, add that node
+            
 
             if let toUpdateIndex = currNodes.firstIndex(where: { $0.nodeId == dancer.id }) {
                 
@@ -405,16 +424,58 @@ class GameScene: SKScene {
 
                 let action = SKAction.move(to: next , duration: 2.0)
 
-                
-
                 currNodes[toUpdateIndex].run(action)
                 
         }
             else{
-                print("Node not found")
+
+                let n = DanceNode(circleOfRadius: 10)
+                n.fillColor = UIColor(hex: dancer.color)
+                n.strokeColor = UIColor(hex: dancer.color)
+                n.nodeId = dancer.id
+                let label = SKLabelNode(text: dancer.label)
+                
+                ////When text is changed it should get the currently selected Node and change it's text
+                
+                label.fontSize = 14.0
+                label.fontName = "GillSans-SemiBold"
+                label.fontColor = UIColor.red
+                
+                
+                
+                //closestNode!.lineWidth = 20
+                
+                //n.position = CGPoint(x: CGFloat(dancer.xPos), y: CGFloat(dancer.yPos))
+                n.position = CGPoint(x: 0.0, y: 0.0)
+                n.zPosition = 1
+                label.name = "labelName"
+                label.position = CGPoint(x: 0, y: 14 )
+                
+                n.name = "dancers"
+                n.addChild(label)
+                
+                
+                self.addChild(n)
+                currNodes.append(n)
+                let next = CGPoint(x: CGFloat(dancer.xPos), y: CGFloat(dancer.yPos))
+                let action = SKAction.move(to: next , duration: 2.0)
+                n.run(action)
             }
+            //TODO - handle case when dancers are removed from one formation
 
         }
+            
+            for nodes in currNodes{
+                
+                if let toUpdateIndex = dancers.firstIndex(where: { $0.id == nodes.nodeId }) {
+
+            }
+                else{
+  
+                    nodes.removeFromParent()
+                }
+                
+            }
                     //self.formationVM.currentIndex += 1
        
     }
@@ -424,8 +485,7 @@ class GameScene: SKScene {
             let wait = SKAction.wait(forDuration: waitTime)
         arrayOfActions.append(wait)
         arrayOfActions.append(actionA)
-        
-        if formIndex + 2 == totalForms{
+        if formIndex + 2 == totalForms && musicEnabled == true{
             arrayOfActions.append(SKAction.wait(forDuration: 2.0))
             self.endSong()
         }

@@ -5,6 +5,7 @@
         <attribute name="lastEdited" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="notes" optional="YES" attributeType="String"/>
+        <attribute name="song" optional="YES" attributeType="String"/>
         <attribute name="uniqueId" attributeType="String"/>
         <relationship name="subFormations" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Formation" inverseName="formationOwner" inverseEntity="Formation"/>
     </entity>
@@ -21,12 +22,13 @@
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="position" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="uniqueId" attributeType="String"/>
+        <attribute name="waitTime" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="dancers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Dancer" inverseName="owner" inverseEntity="Dancer"/>
         <relationship name="formationOwner" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Board" inverseName="subFormations" inverseEntity="Board"/>
     </entity>
     <elements>
-        <element name="Board" positionX="-27" positionY="54" width="128" height="133"/>
+        <element name="Board" positionX="-27" positionY="54" width="128" height="148"/>
         <element name="Dancer" positionX="-45" positionY="0" width="128" height="133"/>
-        <element name="Formation" positionX="-18" positionY="27" width="128" height="133"/>
+        <element name="Formation" positionX="-18" positionY="27" width="128" height="148"/>
     </elements>
 </model>

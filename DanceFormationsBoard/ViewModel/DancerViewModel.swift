@@ -39,7 +39,6 @@ class DancerViewModel{
     }
     
     func removeDancer(dancerId: String){
-        print("In remove dancer ", currDancerArray.count)
         if let deletedDancer = currDancerArray.firstIndex(where: {$0.id == dancerId}){
            
             //currDancerArray.remove(at: deletedDancer)
@@ -48,7 +47,6 @@ class DancerViewModel{
         } else{
             print("Error in Deleting Dancer in DancerViewModel")
         }
-        print("In remove dancer ", currDancerArray.count)
         
     }
     

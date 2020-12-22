@@ -59,6 +59,7 @@ class FormationViewModel{
             newFormation.dancers = nil
             newFormation.position = 0
         }
+        newFormation.waitTime = 3
         newFormation.uniqueId = UUID().uuidString
         newFormation.formationOwner = currentBoard
     }
@@ -99,7 +100,6 @@ class FormationViewModel{
             }
         
         case .atLocation(let index):
-            print("a)")
             if index < formationArray.count{
                 returnVal = formationArray[index]
             }
@@ -136,6 +136,15 @@ class FormationViewModel{
             else{
                 curr.name = "Enter Name:"
             }
+        }
+    }
+    
+    func updateFormWaitTime(time: Int){
+        if let curr = getFormation(type: FormationType.current){
+            
+            curr.waitTime = Int16(time)
+            
+
         }
     }
     

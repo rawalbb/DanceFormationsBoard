@@ -131,5 +131,9 @@ class BoardViewModel{
     func updateBoardDate(date: Date){
         
         getCurrentBoard()?.lastEdited = date
-    }    
+    }
+    
+    func updateBoardSong(songUrl: String){
+        getCurrentBoard()?.song = songUrl
+    }
 }

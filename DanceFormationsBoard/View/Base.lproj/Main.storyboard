@@ -102,7 +102,10 @@
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aUV-y0-MRO">
                                                         <rect key="frame" x="64" y="0.0" width="24" height="22"/>
                                                         <color key="tintColor" name="navBarColor"/>
-                                                        <state key="normal" image="trash" catalog="system"/>
+                                                        <state key="normal" image="timer" catalog="system"/>
+                                                        <connections>
+                                                            <action selector="formTimingPressed:" destination="6mI-VL-OAy" eventType="touchUpInside" id="ski-as-0l2"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                             </stackView>
@@ -118,13 +121,13 @@
                                 </constraints>
                             </stackView>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CTd-Iw-4qb" userLabel="DetailView">
-                                <rect key="frame" x="68" y="360" width="602" height="38"/>
+                                <rect key="frame" x="108" y="360" width="522" height="38"/>
                                 <subviews>
-                                    <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="pzS-aj-Tfg">
-                                        <rect key="frame" x="16" y="4" width="570" height="34"/>
+                                    <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="pzS-aj-Tfg" userLabel="detailStackView">
+                                        <rect key="frame" x="72" y="4" width="378" height="34"/>
                                         <subviews>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t8c-kT-pJd">
-                                                <rect key="frame" x="0.0" y="0.0" width="24" height="30"/>
+                                                <rect key="frame" x="0.0" y="2" width="24" height="30"/>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="24" id="C16-qA-xZT"/>
@@ -135,10 +138,11 @@
                                                 </connections>
                                             </button>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="H2Q-8d-X0A">
-                                                <rect key="frame" x="24" y="0.0" width="126" height="34"/>
+                                                <rect key="frame" x="63" y="0.0" width="112" height="34"/>
                                                 <color key="backgroundColor" red="0.16788321733474731" green="0.18220698833465576" blue="0.25288712978363037" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="34" id="5zV-cw-DqC"/>
+                                                    <constraint firstAttribute="width" constant="112" id="zMc-vZ-Stp"/>
                                                 </constraints>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -148,7 +152,8 @@
                                                 </connections>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Q1-Tz-DJH">
-                                                <rect key="frame" x="150" y="0.0" width="119.5" height="22"/>
+                                                <rect key="frame" x="214" y="6" width="30.5" height="22"/>
+                                                <color key="tintColor" name="textColor"/>
                                                 <state key="normal">
                                                     <imageReference key="image" image="person.fill.checkmark" catalog="system" symbolScale="large"/>
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
@@ -163,15 +168,20 @@
                                                     <action selector="labelTogglePressed:" destination="6mI-VL-OAy" eventType="touchUpInside" id="j8x-mU-BdJ"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5lC-EW-fIw" userLabel="add Music">
-                                                <rect key="frame" x="269.5" y="0.0" width="112" height="23.5"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5lC-EW-fIw" userLabel="musicToggle">
+                                                <rect key="frame" x="283" y="1" width="32" height="32"/>
+                                                <color key="tintColor" red="0.80946868660000004" green="0.98561614750000004" blue="0.88523191209999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <state key="normal">
-                                                    <imageReference key="image" image="music.quarternote.3" catalog="system" symbolScale="large"/>
+                                                    <imageReference key="image" image="musicDeselectionIcon" symbolScale="large"/>
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
                                                 </state>
+                                                <state key="selected" image="musicSelectionIcon"/>
+                                                <connections>
+                                                    <action selector="musicTogglePressed:" destination="6mI-VL-OAy" eventType="touchUpInside" id="d32-SL-3tn"/>
+                                                </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="foS-3t-kg9">
-                                                <rect key="frame" x="381.5" y="0.0" width="188.5" height="24"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="foS-3t-kg9" userLabel="addMusic">
+                                                <rect key="frame" x="354" y="5" width="24" height="24"/>
                                                 <state key="normal" image="addMusicIcon">
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="small"/>
                                                 </state>
@@ -184,8 +194,8 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="pzS-aj-Tfg" firstAttribute="top" secondItem="CTd-Iw-4qb" secondAttribute="top" constant="4" id="BOf-a0-v53"/>
-                                    <constraint firstItem="pzS-aj-Tfg" firstAttribute="leading" secondItem="CTd-Iw-4qb" secondAttribute="leading" constant="16" id="YDD-vi-V1t"/>
-                                    <constraint firstAttribute="trailing" secondItem="pzS-aj-Tfg" secondAttribute="trailing" constant="16" id="e61-FU-Orz"/>
+                                    <constraint firstItem="pzS-aj-Tfg" firstAttribute="leading" secondItem="CTd-Iw-4qb" secondAttribute="leading" constant="72" id="YDD-vi-V1t"/>
+                                    <constraint firstAttribute="trailing" secondItem="pzS-aj-Tfg" secondAttribute="trailing" constant="72" id="e61-FU-Orz"/>
                                     <constraint firstAttribute="bottom" secondItem="pzS-aj-Tfg" secondAttribute="bottom" id="l4s-zm-JM2"/>
                                 </constraints>
                             </view>
@@ -193,13 +203,13 @@
                         <viewLayoutGuide key="safeArea" id="nno-Um-1to"/>
                         <color key="backgroundColor" name="formsBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="CTd-Iw-4qb" firstAttribute="leading" secondItem="K0L-qv-hQn" secondAttribute="leading" constant="24" id="15N-hq-kwC"/>
+                            <constraint firstItem="CTd-Iw-4qb" firstAttribute="leading" secondItem="K0L-qv-hQn" secondAttribute="leading" constant="64" id="15N-hq-kwC"/>
                             <constraint firstItem="AXB-O6-l8i" firstAttribute="top" secondItem="nno-Um-1to" secondAttribute="top" id="ChO-KW-MCN"/>
                             <constraint firstItem="AXB-O6-l8i" firstAttribute="leading" secondItem="K0L-qv-hQn" secondAttribute="trailing" constant="8" id="De4-TH-5bb"/>
                             <constraint firstItem="CTd-Iw-4qb" firstAttribute="top" secondItem="K0L-qv-hQn" secondAttribute="bottom" constant="8" id="Jm4-1n-MUV"/>
                             <constraint firstItem="K0L-qv-hQn" firstAttribute="leading" secondItem="nno-Um-1to" secondAttribute="leading" id="KbP-FC-AXJ"/>
                             <constraint firstItem="nno-Um-1to" firstAttribute="bottom" secondItem="AXB-O6-l8i" secondAttribute="bottom" constant="50" id="Rbv-Ab-Kro"/>
-                            <constraint firstItem="K0L-qv-hQn" firstAttribute="trailing" secondItem="CTd-Iw-4qb" secondAttribute="trailing" constant="24" id="cv2-DG-01J"/>
+                            <constraint firstItem="K0L-qv-hQn" firstAttribute="trailing" secondItem="CTd-Iw-4qb" secondAttribute="trailing" constant="64" id="cv2-DG-01J"/>
                             <constraint firstItem="K0L-qv-hQn" firstAttribute="top" secondItem="nno-Um-1to" secondAttribute="top" id="d0v-wZ-lOi"/>
                             <constraint firstAttribute="bottom" secondItem="CTd-Iw-4qb" secondAttribute="bottom" constant="16" id="eCW-ou-rMH"/>
                             <constraint firstItem="nno-Um-1to" firstAttribute="trailing" secondItem="AXB-O6-l8i" secondAttribute="trailing" id="tyZ-Ff-lu9"/>
@@ -215,6 +225,7 @@
                         <outlet property="formsTableView" destination="1lt-HL-pxQ" id="obn-Y0-dTc"/>
                         <outlet property="hieracrchyView" destination="XmL-ea-QKr" id="IhQ-B9-LCX"/>
                         <outlet property="labelToggleButton" destination="6Q1-Tz-DJH" id="JD4-Kp-N8z"/>
+                        <outlet property="musicToggleButton" destination="5lC-EW-fIw" id="Zj1-s4-ntW"/>
                         <outlet property="nodeColorButton" destination="t8c-kT-pJd" id="sgW-j2-ESG"/>
                         <outlet property="nodeLabelTextField" destination="H2Q-8d-X0A" id="hM8-iU-fJ2"/>
                         <outlet property="stageView" destination="K0L-qv-hQn" id="JPL-lZ-0ju"/>
@@ -223,6 +234,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kGy-Gg-DbK" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1288" y="829"/>
+        </scene>
+        <!--Formation Music Selection-->
+        <scene sceneID="X4Y-pI-Jjt">
+            <objects>
+                <viewController storyboardIdentifier="ViewController" id="qaU-a9-LzJ" customClass="ViewController" customModule="DanceFormationsBoard" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="fZo-tD-MgT">
+                        <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="x60-Is-eit"/>
+                        <color key="backgroundColor" name="formsBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Formation Music Selection" id="wqH-D7-Zde">
+                        <barButtonItem key="rightBarButtonItem" title="Done" id="neG-C9-Hbg"/>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Z8O-ea-UbE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2031.0267857142856" y="-328.98550724637681"/>
         </scene>
         <!--Music View Controller-->
         <scene sceneID="EHH-IW-A8M">
@@ -324,10 +353,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="251" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r3d-EV-aml">
-                                <rect key="frame" x="44" y="44" width="808" height="349"/>
+                                <rect key="frame" x="44" y="0.0" width="808" height="393"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sGf-i3-eaX">
-                                        <rect key="frame" x="20" y="20" width="1048" height="507.5"/>
+                                        <rect key="frame" x="20" y="20" width="1048" height="571.5"/>
                                         <color key="backgroundColor" name="boardBackgroundColor"/>
                                         <color key="textColor" systemColor="labelColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -391,36 +420,20 @@
             </objects>
             <point key="canvasLocation" x="-427.23214285714283" y="828.98550724637687"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="cw1-uT-csc">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="K86-4E-sFK" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Mx2-lL-qOp">
-                        <rect key="frame" x="0.0" y="0.0" width="896" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="FAy-EC-sk5" kind="relationship" relationship="rootViewController" id="9pg-ks-nHU"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="6Zz-Wd-C4h" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-427" y="2075"/>
-        </scene>
     </scenes>
     <resources>
         <image name="addMusicIcon" width="24" height="24"/>
         <image name="chevron.backward.square" catalog="system" width="128" height="114"/>
         <image name="chevron.right.square" catalog="system" width="128" height="114"/>
         <image name="info.circle.fill" catalog="system" width="128" height="121"/>
-        <image name="music.quarternote.3" catalog="system" width="128" height="103"/>
+        <image name="musicDeselectionIcon" width="32" height="32"/>
+        <image name="musicSelectionIcon" width="32" height="32"/>
         <image name="person.fill.checkmark" catalog="system" width="128" height="88"/>
         <image name="person.fill.xmark.rtl" catalog="system" width="128" height="88"/>
         <image name="play.rectangle" catalog="system" width="128" height="93"/>
         <image name="plus.rectangle.fill.on.rectangle.fill" catalog="system" width="128" height="96"/>
         <image name="plus.viewfinder" catalog="system" width="128" height="115"/>
+        <image name="timer" catalog="system" width="128" height="121"/>
         <image name="trash" catalog="system" width="121" height="128"/>
         <namedColor name="AccentColor">
             <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
