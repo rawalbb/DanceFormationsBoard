@@ -13,37 +13,32 @@
         <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ReusableCell" rowHeight="227" id="KGk-i7-Jjw" customClass="FormationSnapshotCell" customModule="DanceFormationsBoard" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="344" height="227"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
                 <rect key="frame" x="0.0" y="0.0" width="344" height="227"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="square.and.arrow.up" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="jCZ-yF-exb">
-                        <rect key="frame" x="6" y="2" width="332" height="106"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="100" id="3c3-lg-0sU"/>
-                        </constraints>
+                        <rect key="frame" x="6" y="2" width="332" height="165"/>
                         <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
                     </imageView>
                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Enter Name:" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oDK-1R-4sg">
-                        <rect key="frame" x="6" y="106" width="332" height="32"/>
-                        <color key="backgroundColor" name="navBarColor"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="32" id="PfU-he-i7N"/>
-                        </constraints>
-                        <color key="textColor" name="formsBackgroundColor"/>
+                        <rect key="frame" x="6" y="171" width="332" height="50"/>
+                        <color key="backgroundColor" red="0.29411764705882354" green="0.49411764705882355" blue="0.51764705882352935" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="textColor" name="textColor"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits"/>
                     </textField>
                 </subviews>
-                <color key="backgroundColor" name="formsBackgroundColor"/>
+                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
-                    <constraint firstItem="jCZ-yF-exb" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="6" id="1ZS-98-Bc8"/>
-                    <constraint firstAttribute="trailing" secondItem="oDK-1R-4sg" secondAttribute="trailing" constant="6" id="83f-hS-mjX"/>
-                    <constraint firstItem="oDK-1R-4sg" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="6" id="Imj-Z9-jCS"/>
-                    <constraint firstItem="oDK-1R-4sg" firstAttribute="top" secondItem="jCZ-yF-exb" secondAttribute="bottom" id="Uz7-jy-KPw"/>
-                    <constraint firstAttribute="trailing" secondItem="jCZ-yF-exb" secondAttribute="trailing" constant="6" id="dsr-g6-ces"/>
-                    <constraint firstAttribute="bottom" secondItem="oDK-1R-4sg" secondAttribute="bottom" constant="4" id="raf-JQ-jFf"/>
-                    <constraint firstItem="jCZ-yF-exb" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="6" id="zr9-wx-P2c"/>
+                    <constraint firstItem="oDK-1R-4sg" firstAttribute="trailing" secondItem="jCZ-yF-exb" secondAttribute="trailing" id="4XH-p3-IBM"/>
+                    <constraint firstItem="jCZ-yF-exb" firstAttribute="height" secondItem="H2p-sc-9uM" secondAttribute="height" multiplier="0.7" id="QWp-84-wLW"/>
+                    <constraint firstAttribute="trailing" secondItem="jCZ-yF-exb" secondAttribute="trailing" priority="999" constant="6" id="SDK-BD-dQk"/>
+                    <constraint firstAttribute="bottom" secondItem="oDK-1R-4sg" secondAttribute="bottom" priority="999" constant="6" id="TrV-YM-ZlI"/>
+                    <constraint firstItem="oDK-1R-4sg" firstAttribute="top" secondItem="jCZ-yF-exb" secondAttribute="bottom" priority="999" constant="6" id="Zff-2n-ZRW"/>
+                    <constraint firstItem="jCZ-yF-exb" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" priority="999" constant="6" id="bDT-g3-mro"/>
+                    <constraint firstItem="oDK-1R-4sg" firstAttribute="leading" secondItem="jCZ-yF-exb" secondAttribute="leading" id="chY-yJ-VoX"/>
+                    <constraint firstItem="jCZ-yF-exb" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="6" id="wc8-BR-D4K"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -56,11 +51,8 @@
     </objects>
     <resources>
         <image name="square.and.arrow.up" catalog="system" width="115" height="128"/>
-        <namedColor name="formsBackgroundColor">
-            <color red="0.18400000035762787" green="0.20399999618530273" blue="0.21600000560283661" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="navBarColor">
-            <color red="1" green="0.90200001001358032" blue="0.3449999988079071" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="textColor">
+            <color red="0.75686274509803919" green="0.83921568627450982" blue="0.89803921568627454" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

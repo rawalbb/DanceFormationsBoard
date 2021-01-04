@@ -60,6 +60,7 @@ class FormationViewModel{
             newFormation.position = 0
         }
         newFormation.waitTime = 3
+        newFormation.songTime = -1.0
         newFormation.uniqueId = UUID().uuidString
         newFormation.formationOwner = currentBoard
     }
@@ -198,6 +199,24 @@ class FormationViewModel{
         
     }
     }
+    
+    func setSongTime(time: Float){
+        
+        if let curr = getFormation(type: FormationType.current){
+           
+            curr.songTime = time
+
+        }
+    }
+    
+    func getFollowingForms() -> [Formation]?{
+        let filtered = formationArray.filter{ forms in
+            guard let index = currentIndex else { return false}
+                return forms.position > index
+        }
+        return filtered
+    }
+    
     
 }
 

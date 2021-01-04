@@ -30,7 +30,7 @@ class BoardViewController: KeyViewController {
         boardTableView.dataSource = self
         boardTableView.backgroundColor = UIColor.clear
         boardTableView.rowHeight = UITableView.automaticDimension
-        boardTableView.estimatedRowHeight = 120
+        //boardTableView.estimatedRowHeight = 120
         
     }
     
@@ -86,9 +86,9 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
             }
             else{
                 cell.boardImageField.image = #imageLiteral(resourceName: "defaultFormImage")
-                cell.boardImageField.contentMode = .scaleAspectFill
+                cell.boardImageField.contentMode = .scaleToFill
             }
-            cell.boardImageField.layer.borderWidth = 4
+            cell.boardImageField.layer.borderWidth = 2
             cell.boardImageField.layer.borderColor = #colorLiteral(red: 0.7568627451, green: 0.8392156863, blue: 0.8980392157, alpha: 1)
         }
         
@@ -225,6 +225,15 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
         }, completion: nil)
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        print(self.view.frame.size.height * 0.2)
+        return self.view.frame.size.height * 0.2
+    }
+
+     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return self.view.frame.size.height * 0.2
+    }
+    
 }
 
 
@@ -246,9 +255,23 @@ extension BoardViewController: UITextFieldDelegate{
         return true
     }
     
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        // get the current text, or use an empty string if that failed
+        let currentText = textField.text ?? ""
+
+        // attempt to read the range they are trying to change, or exit if we can't
+        guard let stringRange = Range(range, in: currentText) else { return false }
+
+        // add their new text to the existing text
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+
+        // make sure the result is under 16 characters
+        return updatedText.count <= 30
+    }
+    
     public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         
-        let cell: UITableViewCell = textField.superview?.superview?.superview?.superview as! BoardTableViewCell //TODO: REFACTOR
+        let cell: UITableViewCell = textField.superview?.superview?.superview as! BoardTableViewCell //TODO: REFACTOR
         let table: UITableView = cell.superview as! UITableView
         let path = table.indexPath(for: cell)
         

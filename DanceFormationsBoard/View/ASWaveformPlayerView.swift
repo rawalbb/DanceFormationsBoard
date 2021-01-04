@@ -2,7 +2,7 @@ import UIKit
 import AVFoundation
 
 protocol TimeDelegate{
-    func updateTime(time: Float64)
+    func updateTime(time: Float)
 }
 
 public class ASWaveformPlayerView: UIView {
@@ -18,7 +18,7 @@ public class ASWaveformPlayerView: UIView {
     
     private var playerToken: Any?
     
-    private var audioPlayer: AVPlayer!
+    public var audioPlayer: AVPlayer!
     
     private var audioAnalyzer = AudioAnalyzer()
     
@@ -26,7 +26,11 @@ public class ASWaveformPlayerView: UIView {
     
     private var waveforms = [CALayer]()
     
-    private var currentPlaybackTime: CMTime?
+    public var currentPlaybackTime: CMTime = CMTimeMake(value: 0, timescale: 1)
+    public var  imageThumbnail = #imageLiteral(resourceName: "musicSelectionIcon")
+    private let trackLayer = CALayer()
+    //private var mySlider = UISlider()
+    public var prevPlaybackTime: CMTime = CMTimeMake(value: 0, timescale: 1)
     
     private var shouldAutoUpdateWaveform = true
     var delegate: TimeDelegate?
@@ -37,7 +41,7 @@ public class ASWaveformPlayerView: UIView {
     
     public init(audioURL: URL,
                 sampleCount: Int,
-                amplificationFactor: Float) throws {
+                amplificationFactor: Float, prevTime: CMTime, currTime: CMTime) throws {
         
         //Throws error if sample count isn't greater than 0
         guard sampleCount > 0 else {
@@ -53,13 +57,22 @@ public class ASWaveformPlayerView: UIView {
         audioPlayer = AVPlayer(url: audioURL)
         
         super.init(frame: .zero)
+        prevPlaybackTime = prevTime
+        currentPlaybackTime = currTime
+        audioPlayer.seek(to: currentPlaybackTime, completionHandler: { [weak self] (_) in
+            print("Current Play Back Time when initially seeking", self?.currentPlaybackTime)
+            self?.shouldAutoUpdateWaveform = true
+        })
         
+        self.updateOriginalPlot(prevTime)
         playerToken = audioPlayer.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 1, timescale: 60),queue: .main) { [weak self] time in
-            
+            //print(self?.mySlider.maximumValue, "Max Val")
             // Update waveform with current playback time value.
+            print(CMTimeGetSeconds(time), "observer")
             
             self?.updatePlotWith(time)
         }
+
         
         // Tap gesture for play - pause support.
         let tapGestureRecornizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
@@ -93,7 +106,8 @@ public class ASWaveformPlayerView: UIView {
         
         if audioPlayer.rate == 0 && currentPlaybackTime != nil {
             // When orientation changes, update plot with currentPlaybackTime value.
-            updatePlotWith(currentPlaybackTime!)
+            print("Current Playback Time", currentPlaybackTime)
+            updatePlotWith(currentPlaybackTime)
         }
     }
     
@@ -125,8 +139,11 @@ public class ASWaveformPlayerView: UIView {
             
             let scrubbedDutation = totalAudioDurationSeconds * percentageInSelf
             
-            let scrubbedDutationMediaTime = CMTimeMakeWithSeconds(scrubbedDutation, preferredTimescale: 1000)
-            
+            var scrubbedDutationMediaTime = CMTimeMakeWithSeconds(scrubbedDutation, preferredTimescale: 1000)
+            if scrubbedDutationMediaTime <= prevPlaybackTime{
+                scrubbedDutationMediaTime = prevPlaybackTime
+            }
+            updatePlotWith(scrubbedDutationMediaTime)
             audioPlayer.seek(to: scrubbedDutationMediaTime, completionHandler: { [weak self] (_) in
                 self?.shouldAutoUpdateWaveform = true
             })
@@ -140,6 +157,46 @@ public class ASWaveformPlayerView: UIView {
             audioPlayer.play()
         } else {
             audioPlayer.pause()
+        }
+    }
+
+
+
+    @objc func sliderValueChanged(_ sender:UISlider!, event: UIEvent) {
+
+        
+        let roundedValue = sender.value.rounded()
+        guard let touchEvent = event.allTouches?.first else { return }
+        
+        switch touchEvent.phase {
+            
+            case .began:
+                audioPlayer.pause()
+                //print("Began")
+                
+            case .moved:
+                print("Slider moved")
+
+            case .ended:
+                guard let totalAudioDuration = audioPlayer.currentItem?.asset.duration else {
+                    return
+                }
+                let roundedValue = sender.value.rounded()
+                //let xLocation = recognizer.location(in: self).x
+                
+                //let percentageInSelf = Double(xLocation / bounds.width)
+                
+                let totalAudioDurationSeconds = CMTimeGetSeconds(totalAudioDuration)
+                
+                //let scrubbedDutation = totalAudioDurationSeconds * percentageInSelf
+                
+                let scrubbedDutationMediaTime = CMTimeMakeWithSeconds(Float64(roundedValue), preferredTimescale: 1000)
+                
+                audioPlayer.seek(to: scrubbedDutationMediaTime, completionHandler: { [weak self] (_) in
+                    self?.shouldAutoUpdateWaveform = true
+                })
+                audioPlayer.play()
+            default: ()
         }
     }
     
@@ -209,9 +266,10 @@ public class ASWaveformPlayerView: UIView {
         }
         
         let currentTimeSeconds = CMTimeGetSeconds(currentTime)
+        print(currentTimeSeconds, "Current Time")
         
         self.currentPlaybackTime = currentTime // Track current time value. This is needed to keep waveform playback progress when device orientaion changes and waveform needs to be redrawn.
-        self.delegate?.updateTime(time: currentTimeSeconds)
+        self.delegate?.updateTime(time: Float(currentTimeSeconds))
         let totalAudioDurationSeconds = CMTimeGetSeconds(totalAudioDuration)
         
         let percentagePlayed = currentTimeSeconds / totalAudioDurationSeconds
@@ -219,7 +277,42 @@ public class ASWaveformPlayerView: UIView {
         let waveformBarsToBeUpdated = lrint(Double(waveforms.count) * percentagePlayed)
         
         for (i, item) in waveforms.enumerated() {
-            
+            if waveformBarsToBeUpdated > 0{
+            if (0..<waveformBarsToBeUpdated).contains(i) {
+                item.backgroundColor = progressColor.cgColor
+            } else {
+                item.backgroundColor = normalColor.cgColor
+            }
+            }
+        }
+        
+//        DispatchQueue.main.async {
+//            self.mySlider.setValue(Float(currentTimeSeconds), animated: true)
+//        }
+
+        
+    }
+    
+    private func updateOriginalPlot(_ prevTime: CMTime) {
+        
+        guard shouldAutoUpdateWaveform,
+            let totalAudioDuration = audioPlayer.currentItem?.asset.duration else {
+                return
+        }
+        
+        let prevTimeSeconds = CMTimeGetSeconds(prevTime)
+        print(prevTimeSeconds, "Previous Time")
+        
+        //self.currentPlaybackTime = prevTime // Track current time value. This is needed to keep waveform playback progress when device orientaion changes and waveform needs to be redrawn.
+        //self.delegate?.updateTime(time: Float(currentTimeSeconds))
+        let totalAudioDurationSeconds = CMTimeGetSeconds(totalAudioDuration)
+        
+        let percentagePlayed = prevTimeSeconds / totalAudioDurationSeconds
+        
+        let waveformBarsToBeUpdated = lrint(Double(waveforms.count) * percentagePlayed)
+        
+        for (i, item) in waveforms.enumerated() {
+            print("In WaveForms")
             if (0..<waveformBarsToBeUpdated).contains(i) {
                 item.backgroundColor = progressColor.cgColor
             } else {
@@ -235,29 +328,73 @@ public class ASWaveformPlayerView: UIView {
         
         let upperOverlayLayer = CALayer()
         let bottomOverlayLayer = CALayer()
+        let uppePrevLayer = CALayer()
+        let bottomPrevLayer = CALayer()
         
         upperOverlayLayer.backgroundColor = UIColor.black.cgColor
         bottomOverlayLayer.backgroundColor = UIColor.black.cgColor
+        uppePrevLayer.backgroundColor = UIColor.black.cgColor
+        bottomPrevLayer.backgroundColor = UIColor.black.cgColor
         
         upperOverlayLayer.opacity = 1
-        bottomOverlayLayer.opacity = 0.75
+        bottomOverlayLayer.opacity = 1
+        uppePrevLayer.opacity = 0.5
+        bottomPrevLayer.opacity = 0.5
         
         maskLayer.addSublayer(upperOverlayLayer)
         maskLayer.addSublayer(bottomOverlayLayer)
+        maskLayer.addSublayer(uppePrevLayer)
+        maskLayer.addSublayer(bottomPrevLayer)
+        
+                guard let totalAudioDuration = audioPlayer.currentItem?.asset.duration else {
+                    return
+                }
+                let totalAudioDurationSeconds = CMTimeGetSeconds(totalAudioDuration)
+        
+                let percentagePlayed = CMTimeGetSeconds(prevPlaybackTime) / totalAudioDurationSeconds
+        
+        let prevWidth = maskLayer.bounds.width * CGFloat(percentagePlayed)
+        let remainingWidth = maskLayer.bounds.width - prevWidth
+        
         
         let height1 = (maskLayer.bounds.height / 2) - 0.25
-        let size1 = CGSize(width: maskLayer.bounds.width,
+        let origin1 = CGPoint(x: prevWidth, y: 0)
+        let size1 = CGSize(width: remainingWidth,
                            height: height1)
-        upperOverlayLayer.frame = CGRect(origin: .zero,
+        upperOverlayLayer.frame = CGRect(origin: origin1,
                                          size: size1)
         
-        let origin2 = CGPoint(x: 0, y: (maskLayer.bounds.height / 2) + 0.25)
-        let size2 = CGSize(width: maskLayer.bounds.width,
+        let origin2 = CGPoint(x: prevWidth, y: (maskLayer.bounds.height / 2) + 0.25)
+        let size2 = CGSize(width: remainingWidth,
                            height: maskLayer.bounds.height / 2)
         bottomOverlayLayer.frame = CGRect(origin: origin2,
                                           size: size2)
+        
+        let size3 = CGSize(width: prevWidth, height: height1)
+        uppePrevLayer.frame = CGRect(origin: .zero,
+                                        size: size3)
+        
+        let size4 = CGSize(width: prevWidth, height: maskLayer.bounds.height / 2)
+        let origin3 = CGPoint(x: 0, y: (maskLayer.bounds.height / 2) + 0.25)
+        bottomPrevLayer.frame = CGRect(origin: origin3, size: size4)
+        
+
+//         mySlider = UISlider(frame:CGRect(x: bounds.minX, y: 100, width: bounds.width, height: 20))
+//                mySlider.minimumValue = 0
+//
+//        if let duration = audioPlayer.currentItem?.asset.duration{
+//            print("Next Changing Max Value")
+//            mySlider.maximumValue = Float(CMTimeGetSeconds(duration))
+//        }
+//
+//                mySlider.isContinuous = true
+//                mySlider.tintColor = UIColor.orange
+//
+//        mySlider.addTarget(self, action: #selector(self.sliderValueChanged(_:event:)), for: .allEvents)
+//                addSubview(mySlider)
         layer.mask = maskLayer
     }
+
     
     /// Reset progress of playback and waveform
     public func reset() {

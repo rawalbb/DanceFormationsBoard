@@ -37,7 +37,7 @@ class StageScene: SKScene {
     }
     override func didMove(to view: SKView) {
 
-        backgroundColor = #colorLiteral(red: 0.1843137294, green: 0.2039215714, blue: 0.2156862766, alpha: 1)
+        backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         gridWidth = view.bounds.width
         gridHeight = view.bounds.height
         var gridArray: [SKNode] = []
@@ -82,8 +82,8 @@ class StageScene: SKScene {
                 xArray.append(xCounter)
             }
             
-                lineNode.strokeColor = #colorLiteral(red: 0.5587006807, green: 0.6035502553, blue: 0.6746274233, alpha: 1)
-                lineNode.lineWidth = 2
+                lineNode.strokeColor = #colorLiteral(red: 0.5568627451, green: 0.6039215686, blue: 0.6745098039, alpha: 1)
+                lineNode.lineWidth = 1
                 xArray.append(xCounter)
             
             lineNode.name = "grid"
@@ -102,11 +102,11 @@ class StageScene: SKScene {
             let lineNode = SKShapeNode(path: path.cgPath)
             if num == 0 || num == yNumLines{
                 lineNode.strokeColor = #colorLiteral(red: 0.7568627451, green: 0.8392156863, blue: 0.8980392157, alpha: 1)
-                lineNode.lineWidth = 3
+                lineNode.lineWidth = 2
             }
             else{
                 lineNode.strokeColor = #colorLiteral(red: 0.5587006807, green: 0.6035502553, blue: 0.6746274233, alpha: 1)
-                lineNode.lineWidth = 2
+                lineNode.lineWidth = 1
                 yArray.append(yCounter)
             }
            

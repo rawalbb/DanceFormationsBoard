@@ -134,5 +134,6 @@ class BoardViewModel{
     
     func updateBoardSong(songUrl: String){
         getCurrentBoard()?.song = songUrl
+        print("Setting Board Song URL ", songUrl)
     }
 }

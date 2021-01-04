@@ -11,6 +11,7 @@ class GameViewController: KeyUIViewController{
     @IBOutlet var hieracrchyView: UIView!
     @IBOutlet weak var formsTableView: UITableView!
     
+    @IBOutlet weak var detailView: UIView!
     @IBOutlet weak var stageView: SKView!
     @IBOutlet weak var formOptionsView: UIView!
     
@@ -32,30 +33,37 @@ class GameViewController: KeyUIViewController{
     var selectedColor = #colorLiteral(red: 1, green: 0.9019607902, blue: 0.3450980484, alpha: 1)
     var colorPicker = UIColorPickerViewController()
     var musicUrl: URL? = nil
-    var stage: GameScene!
+    var stage: StageScene!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+//        navigationItem.backBarButtonItem = UIBarButtonItem(
+//            title: "Something Else", style: .plain, target: nil, action: nil)
+
         
         //Formation Options Properties
         formOptionsView.layer.cornerRadius = 20
-        formOptionsView.backgroundColor = #colorLiteral(red: 0.1478704014, green: 0.1637916303, blue: 0.1738279326, alpha: 1)
+        formOptionsView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         formOptionsView.layer.borderWidth = 2
-        formOptionsView.layer.borderColor = #colorLiteral(red: 0.1478704014, green: 0.1637916303, blue: 0.1738279326, alpha: 1).cgColor
-        nodeColorButton.layer.cornerRadius = 10
+        formOptionsView.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1).cgColor
+        nodeColorButton.layer.cornerRadius = 8
         
        //Gets the board
         formationVM.currentBoard = boardVM.getCurrentBoard()
         
         
         //Define Stage properties
-        stage = GameScene(size: stageView.bounds.size)
+        stage = StageScene(size: stageView.bounds.size)
         stage.scaleMode = .fill
         stage.myDelegate = self
         stage.selectedColor = selectedColor
+
         stageView.presentScene(stage) // TODO - have in viewdidload or viewdidappear
+
+        
+        
         
         //Define labelToggle properties
         labelToggleButton.setImage(UIImage(systemName: "person.fill.checkmark"),
@@ -73,7 +81,11 @@ class GameViewController: KeyUIViewController{
         formsTableView.dataSource = self
         formsTableView.delegate = self
         
+
         nodeLabelTextField.delegate = self
+        nodeLabelTextField.layer.borderWidth = 1
+        nodeLabelTextField.layer.borderColor = #colorLiteral(red: 0.3411764706, green: 0.768627451, blue: 0.8196078431, alpha: 1)
+        nodeLabelTextField.layer.cornerRadius = 2
         nodeColorButton.backgroundColor =  UIColor.yellow
         
         colorPicker.delegate = self
@@ -98,22 +110,29 @@ class GameViewController: KeyUIViewController{
     //Check if there is music,
 
         do{
+            //print("In Game View Controller getting song ", boardVM.getCurrentBoard()?.song)
             if let a = boardVM.getCurrentBoard()?.song{
-                let path = Bundle.main.path(forResource: "\(a)", ofType:nil)!
-                let music = URL(fileURLWithPath: path)
+                //AVAudioPlayer.prepareToPlay(<#T##self: AVAudioPlayer##AVAudioPlayer#>)
+                //let path = Bundle.main.path(forResource: a, ofType:nil)!
+                //let path = Bundle.main.path(forResource: <#T##String?#>, ofType: <#T##String?#>)
+                guard let music = URL(string: a) else { print("URL Nil");  return}
                     _ = try AVAudioPlayer(contentsOf: music)
-                musicUrl = music
+
+                
+//                    _ = try AVAudioPlayer(contentsOf: music)
+                musicUrl = URL(string: a)
                 musicToggleButton.isEnabled = true
             }
             else{
                 print("No song")
-                
+                musicToggleButton.isEnabled = false
             }
             
         }
         catch{
-            print("Error ")
+            print("Could Not do music")
         }
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -184,8 +203,18 @@ class GameViewController: KeyUIViewController{
     
     @IBAction func formTimingPressed(_ sender: UIButton) {
         let nextVC = storyboard?.instantiateViewController(identifier: "ViewController") as! ViewController
-        //nextVC.delegate = self
+        nextVC.delegate = self
         nextVC.audioURL = musicUrl!
+        
+        let prev = formationVM.getFormation(type: FormationType.previous)?.songTime
+        let curr = formationVM.getFormation(type: FormationType.current)?.songTime
+        let next = formationVM.getFormation(type: FormationType.next)?.songTime
+        //print("Prev Curr Next", prev, curr, next)
+        
+        nextVC.prevSongTiming = prev
+        nextVC.currSongTiming = curr
+        nextVC.nextSongTiming = next
+        
         self.navigationController?.pushViewController(nextVC, animated: true)
         
         
@@ -217,14 +246,17 @@ class GameViewController: KeyUIViewController{
         
         //formationVM.setCurrentSelection(index: 0)
         
+        //Gets initial wait time
+        
         for _ in 0..<formationVM.formationArray.count{
 
-                
+             // print("In For loop")
                // print(formationVM.currentFormation?.name)
             if let nextFormation = formationVM.getFormation(type: FormationType.next){
                     let nextDancerForms = dancerVM.loadDancers(selectedFormation: nextFormation, current: false)
                 if let index = formationVM.getCurrentIndex(){
-                    let time = Double(nextFormation.waitTime)
+                    let time = self.waitTimeCalculator()
+                   // print("Second Wait Time", time)
                     self.stage.playThroughFormations(dancers: nextDancerForms, waitTime: time, transitionTime: 2.0, formIndex: index, totalForms: formationVM.formationArray.count)
                 
                     waitT = 3.0
@@ -267,7 +299,7 @@ class GameViewController: KeyUIViewController{
     }
     
     @IBAction func removeFormation(_ sender: UIButton) {
-        
+        //current 1
         if let toRemove = formationVM.getFormation(type: FormationType.current){
             formationVM.updatePosition(type: PositionType.remove)
 
@@ -276,10 +308,7 @@ class GameViewController: KeyUIViewController{
                 if currIndex - 1 == -1{
                     formationVM.createNewFormation(formData: nil)
                 }
-                else if currIndex - 1 != -1 && currIndex + 2 != formationArray.count{
-                    formationVM.setCurrentSelection(index: currIndex)
-                }
-                else if currIndex - 1 != -1 && currIndex + 2 == formationArray.count{
+                else if currIndex - 1 != -1 && currIndex + 2 <= formationArray.count{
                     formationVM.setCurrentSelection(index: currIndex)
                 }
                 else{
@@ -353,7 +382,7 @@ class GameViewController: KeyUIViewController{
     
     @IBAction func musicTogglePressed(_ sender: UIButton) {
         sender.isSelected.toggle()
-        print("Music Selection, ", sender.isSelected)
+        ///print("Music Selection, ", sender.isSelected)
         stage.musicEnabled = !sender.isSelected
     }
     
@@ -381,6 +410,8 @@ extension GameViewController: UITableViewDataSource, UITableViewDelegate{
         let cell = self.formsTableView.dequeueReusableCell(withIdentifier: "ReusableCell") as! FormationSnapshotCell
         cell.formNameTextfield.delegate = self
         cell.formNameTextfield.text = ""
+        cell.formNameTextfield.layer.borderWidth = 1
+        cell.formNameTextfield.layer.borderColor = #colorLiteral(red: 0.7568627451, green: 0.8392156863, blue: 0.8980392157, alpha: 1)
         if let item = formationVM.getFormation(type: FormationType.atLocation(indexPath.row)){
             if let formationData = item.image{
                 let cellImage = UIImage(data: formationData)
@@ -388,7 +419,7 @@ extension GameViewController: UITableViewDataSource, UITableViewDelegate{
             }
             if let name = item.name{
                 if name != ""{
-                    print("Index Path Name", indexPath.row, item.name ?? "Error")
+                   // print("Index Path Name", indexPath.row, item.name ?? "Error")
                     cell.formNameTextfield?.text = item.name
                 }
             }
@@ -412,6 +443,15 @@ extension GameViewController: UITableViewDataSource, UITableViewDelegate{
             print("Error loading in didSelect")
         }
         
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        print(self.view.frame.size.height * 0.35)
+        return self.view.frame.size.height * 0.35
+    }
+
+     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return self.view.frame.size.height * 0.35
     }
     
     
@@ -462,80 +502,6 @@ extension GameViewController: UITextFieldDelegate{
     }
     
 }
-
-//MARK: - GAMESCENE Delegate/Protocols
-extension GameViewController: GameSceneUpdatesDelegate{
-
-    
-    func dancerToAdd(xPosition: Float, yPosition: Float, id: String, color: String, label: String) {
-        
-        if let curr = formationVM.getFormation(type: FormationType.current){
-            print("Current Index", formationVM.getCurrentIndex()!)
-        
-        dancerVM.addDancer(xPosition: xPosition, yPosition: yPosition, label: label, id: id, color: color, selectedFormation: curr)
-        }
-        dancerVM.saveDancer()
-        
-        if let imageData = dancerVM.imageToData(view: stageView) {
-        formationVM.updateFormImage(data: imageData)
-        }
-        allFormUpdates()
-    }
-    
-    func dancerMoved(id: String, xPosition: Float, yPosition: Float) {
-        if let curr = formationVM.getFormation(type: FormationType.current){
-            dancerVM.updateDancerPosition(id: id, xPosition: xPosition, yPosition: yPosition, owner: curr)
-        }
-        else{
-            print("Cannot Find Curr Formation")
-        }
-        
-        
-        dancerVM.saveDancer()
-        if let imageData = dancerVM.imageToData(view: stageView) {
-        formationVM.updateFormImage(data: imageData)
-        }
-        allFormUpdates()
-    }
-    
-    func enableTextField(enable: Bool, id: String) {
-        enableText = enable
-        if enableText{
-            nodeLabelTextField.text = dancerVM.getDancer(id: id)?.label ?? ""
-        }
-        else{
-            nodeLabelTextField.text = ""
-        }
-        //print(enableText)
-    }
-    
-    func updateNodeColor(color: UIColor) {
-        stage.selectedColor = color
-        selectedColor = color
-        nodeColorButton.backgroundColor = selectedColor
-    }
-    
-    func removedDancer(id: String) {
-        dancerVM.removeDancer(dancerId: id)
-        dancerVM.saveDancer()
-        if let imageData = dancerVM.imageToData(view: stageView){
-            formationVM.updateFormImage(data: imageData)
-        }
-        allFormUpdates()
-    }
-    
-    func updateFormationSelected(index: IndexPath) {
-        DispatchQueue.main.async {
-            self.formsTableView.selectRow(at: index, animated: true, scrollPosition: .top)
-            self.enableText = false
-            self.nodeLabelTextField.text = ""
-
-        
-        }
-        
-    }
-    
-}
   
 extension GameViewController: FormUpdatesDelegate{
     //Called everytime Formation data is loaded
@@ -579,44 +545,3 @@ extension GameViewController: UIColorPickerViewControllerDelegate{
 
 }
 }
-
-extension GameViewController: MusicChosenDelegate{
-    
-    func musicChosen(url: URL) {
-        self.musicUrl = url
-        self.musicToggleButton.isEnabled = true
-        //set button to enabled
-        //there should be a property in stage music, when play is pressed, parameter music? = nil
-        //based on music toggle, music should be nil or not
-        boardVM.updateBoardSong(songUrl: "\(url)")
-    }
-}
-
-extension GameViewController{
-    
-    func updateWaitTime(time: Float64){
-        //Calculate time - formation before wait time
-        //if cannot load music - default all to 3.0
-        if formationVM.getFormation(type: FormationType.previous) != nil{
-            _ = 3 - 2
-            //Timing of previous - timing of current selected - meaning save song times
-            
-            
-        }
-        //formationVM.updateFormWaitTime(time: <#T##Int#>)
-        
-    }
-}
-
-
-//TODO: - Next Formation Pressed - DONE
-
-//TODO: - Previous Formation Pressed - DONE
-
-//TODO: - Play Formations all way
-
-//TODO: - Undo
-
-//TODO: - if there's a dancer already at that location, can't put it there
-
-//TODO: - when making changes to a dancer in one formation - make sure you're making those changes to the same dancers in ALL formations. Ex: in F1 - color blue, F2 - color yellow - should BE SAME

@@ -23,6 +23,7 @@ extension Formation {
     @NSManaged public var formationOwner: Board
     @NSManaged public var position: Int16
     @NSManaged public var waitTime: Int16
+    @NSManaged public var songTime: Float
 
 }
 

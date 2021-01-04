@@ -34,7 +34,7 @@ class MusicViewController: UIViewController, UITableViewDelegate, UITableViewDat
         self.title = "Songs"
         
         
-        
+        //var finalSongsArray: [MPMediaItem] = []
                 let mediaItems = MPMediaQuery.songs().items
                      let mediaCollection = MPMediaItemCollection(items: mediaItems ?? [])
         finalSongsArray = mediaCollection.items
@@ -74,7 +74,7 @@ class MusicViewController: UIViewController, UITableViewDelegate, UITableViewDat
             withIdentifier: "MusicPlayerCell",
             for: indexPath) 
         cell.textLabel?.text = finalSongsArray[indexPath.row].title
-        print("Text", finalSongsArray[indexPath.row].title)
+        print("Text", finalSongsArray[indexPath.row].title, finalSongsArray[indexPath.row].persistentID)
         //cell.labelMusicTitle?.text = albums[indexPath.section].songs[indexPath.row].songTitle
         //cell.labelMusicDescription?.text = albums[indexPath.section].songs[indexPath.row].artistName
         //let songId: NSNumber = albums[indexPath.section].songs[indexPath.row].songId
@@ -94,11 +94,13 @@ class MusicViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("Chosen", finalSongsArray[indexPath.row].assetURL)
         if let assetUrl = finalSongsArray[indexPath.row].assetURL{
+            print("ASSET URL", assetUrl)
         self.delegate?.musicChosen(url: assetUrl)
         }
         else{
             print("Error")
         }
+        
         self.dismiss(animated: true, completion: nil)
     }
 //   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
