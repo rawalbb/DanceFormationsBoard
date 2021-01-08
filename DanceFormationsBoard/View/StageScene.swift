@@ -153,9 +153,12 @@ class StageScene: SKScene {
                 self.addChild(n)
                 
                 
-            
-                let xPos = Float(n.position.x)
-                let yPos = Float(n.position.y)
+
+                let point = PositionManager.positionToPercentage(x: n.position.x, y: n.position.y, viewW: self.view?.bounds.width, viewH: self.view?.bounds.height)
+
+                let xPos = Float(point.x)
+                let yPos = Float(point.y)
+                print("PRINTING POINTS", xPos, yPos)
                 n.nodeId = UUID().uuidString
                 let color = selectedColor.toHexString()
                 let dancerId = n.nodeId
@@ -253,7 +256,12 @@ class StageScene: SKScene {
             else{
             node.position = getNearestIntersection(x: touchLocation.x, y: touchLocation.y)
                 let id = node.nodeId
-            self.myDelegate.dancerMoved(id: id, xPosition: Float(node.position.x), yPosition: Float(node.position.y))
+                
+                
+                
+                let point = PositionManager.positionToPercentage(x: node.position.x, y: node.position.y, viewW: self.view?.bounds.width, viewH: self.view?.bounds.height)
+
+            self.myDelegate.dancerMoved(id: id, xPosition: Float(point.x), yPosition: Float(point.y))
             }
         }
         //currentNode = nil
@@ -323,7 +331,11 @@ class StageScene: SKScene {
             
             //closestNode!.lineWidth = 20
             
-            n.position = CGPoint(x: CGFloat(dancer.xPos), y: CGFloat(dancer.yPos))
+            let point = PositionManager.percentageToPosition(x: dancer.xPos, y: dancer.yPos, viewW: self.view?.bounds.width, viewH: self.view?.bounds.height)
+            print("Formation Selected positions ", point.x, point.y, self.view?.bounds.width, self.view?.bounds.height)
+            let point2 = getNearestIntersection(x: point.x, y: point.y)
+            
+            n.position = CGPoint(x: CGFloat(point2.x), y: CGFloat(point2.y))
             n.zPosition = 1
             label.name = "labelName"
             label.position = CGPoint(x: 0, y: 14 )
@@ -419,8 +431,8 @@ class StageScene: SKScene {
             
 
             if let toUpdateIndex = currNodes.firstIndex(where: { $0.nodeId == dancer.id }) {
-                
-                let next = CGPoint(x: CGFloat(dancer.xPos), y: CGFloat(dancer.yPos))
+                let point = PositionManager.percentageToPosition(x: dancer.xPos, y: dancer.yPos, viewW: self.view?.bounds.width, viewH: self.view?.bounds.height)
+                let next = CGPoint(x: point.x, y: point.y)
 
                 let action = SKAction.move(to: next , duration: 2.0)
 
@@ -457,7 +469,11 @@ class StageScene: SKScene {
                 
                 self.addChild(n)
                 currNodes.append(n)
-                let next = CGPoint(x: CGFloat(dancer.xPos), y: CGFloat(dancer.yPos))
+                
+                let point = PositionManager.percentageToPosition(x: dancer.xPos, y: dancer.yPos, viewW: self.view?.bounds.width, viewH: self.view?.bounds.height)
+                let next = CGPoint(x: point.x, y: point.y)
+                
+                
                 let action = SKAction.move(to: next , duration: 2.0)
                 n.run(action)
             }
@@ -523,6 +539,7 @@ class StageScene: SKScene {
         
         
     }
+    
     
 }
 

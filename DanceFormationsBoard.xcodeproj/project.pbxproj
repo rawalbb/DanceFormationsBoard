@@ -14,6 +14,9 @@
 		4324B4682550976800B3060E /* FormationSnapshotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4324B4662550976800B3060E /* FormationSnapshotCell.xib */; };
 		4324B4DC255358A200B3060E /* FormationsData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4324B4D9255358A200B3060E /* FormationsData.xcdatamodeld */; };
 		4324B4FB2553B51900B3060E /* CoreDataUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4324B4FA2553B51900B3060E /* CoreDataUtil.swift */; };
+		435C40EE25A7C8C600036FF4 /* SceneKitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435C40ED25A7C8C600036FF4 /* SceneKitViewController.swift */; };
+		435C40F225A7C9C100036FF4 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 435C40F125A7C9C100036FF4 /* art.scnassets */; };
+		435C40FE25A8F4A300036FF4 /* PositionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435C40FD25A8F4A300036FF4 /* PositionManager.swift */; };
 		43608ED4257DF10F002114C5 /* MusicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43608ED3257DF10F002114C5 /* MusicViewController.swift */; };
 		43608EF8257F2DE4002114C5 /* Board+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43608EF6257F2DE4002114C5 /* Board+CoreDataClass.swift */; };
 		43608EF9257F2DE4002114C5 /* Board+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43608EF7257F2DE4002114C5 /* Board+CoreDataProperties.swift */; };
@@ -53,6 +56,9 @@
 		4324B4DA255358A200B3060E /* DanceFormationsBoard.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DanceFormationsBoard.xcdatamodel; sourceTree = "<group>"; };
 		4324B4DB255358A200B3060E /* FormationsData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FormationsData.xcdatamodel; sourceTree = "<group>"; };
 		4324B4FA2553B51900B3060E /* CoreDataUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataUtil.swift; sourceTree = "<group>"; };
+		435C40ED25A7C8C600036FF4 /* SceneKitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneKitViewController.swift; sourceTree = "<group>"; };
+		435C40F125A7C9C100036FF4 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
+		435C40FD25A8F4A300036FF4 /* PositionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositionManager.swift; sourceTree = "<group>"; };
 		43608ED3257DF10F002114C5 /* MusicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicViewController.swift; sourceTree = "<group>"; };
 		43608EF6257F2DE4002114C5 /* Board+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Board+CoreDataClass.swift"; sourceTree = "<group>"; };
 		43608EF7257F2DE4002114C5 /* Board+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Board+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -123,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				43608F0A257F3DC5002114C5 /* ImageDataManager.swift */,
+				435C40FD25A8F4A300036FF4 /* PositionManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -162,6 +169,7 @@
 				43A0A9F225505F8100394193 /* ViewController */,
 				43A0A9D825505F5300394193 /* AppDelegate.swift */,
 				43A0A9DA25505F5300394193 /* SceneDelegate.swift */,
+				435C40F125A7C9C100036FF4 /* art.scnassets */,
 				43A0A9E425505F5800394193 /* Assets.xcassets */,
 				43A0A9E625505F5800394193 /* LaunchScreen.storyboard */,
 				43A0A9E925505F5800394193 /* Info.plist */,
@@ -198,6 +206,7 @@
 				4365F08A25886E60002C366B /* ViewController.swift */,
 				4315A2732592C02700A66F33 /* GameViewController+Music.swift */,
 				4315A2792592C3A700A66F33 /* GameViewController+Stage.swift */,
+				435C40ED25A7C8C600036FF4 /* SceneKitViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -270,6 +279,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				43AB36B22576B0B1001F5DAB /* BoardTableViewCell.xib in Resources */,
+				435C40F225A7C9C100036FF4 /* art.scnassets in Resources */,
 				43A0A9E825505F5800394193 /* LaunchScreen.storyboard in Resources */,
 				4324B4682550976800B3060E /* FormationSnapshotCell.xib in Resources */,
 				43A0A9E525505F5800394193 /* Assets.xcassets in Resources */,
@@ -287,6 +297,7 @@
 				43608EF8257F2DE4002114C5 /* Board+CoreDataClass.swift in Sources */,
 				43608F0B257F3DC5002114C5 /* ImageDataManager.swift in Sources */,
 				4315A2742592C02700A66F33 /* GameViewController+Music.swift in Sources */,
+				435C40EE25A7C8C600036FF4 /* SceneKitViewController.swift in Sources */,
 				43621D37257354ED00D3B0DB /* BoardViewController.swift in Sources */,
 				43A0AA0D255061AB00394193 /* StageScene.swift in Sources */,
 				43608F02257F2E1D002114C5 /* Dancer+CoreDataProperties.swift in Sources */,
@@ -307,6 +318,7 @@
 				43160D81255B9BB30038804F /* FormationTableView.swift in Sources */,
 				43A0AA052550601300394193 /* FormationViewModel.swift in Sources */,
 				43A0A9DB25505F5300394193 /* SceneDelegate.swift in Sources */,
+				435C40FE25A8F4A300036FF4 /* PositionManager.swift in Sources */,
 				4365F072258860DC002C366B /* ASWaveformPlayerView.swift in Sources */,
 				43AB36B12576B0B1001F5DAB /* BoardTableViewCell.swift in Sources */,
 				43A0A9FC2550600200394193 /* DancerViewModel.swift in Sources */,

@@ -19,12 +19,16 @@ class NotesViewController: KeyboardViewController {
     
     var notes: String?
     var delegate: NotesUpdatedDelegate? = nil
+    var navTitle: String = "Board Notes"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         notesTextView.delegate = self
         notesTextView.text = notes
         self.backgroundSV = notesScrollView
+        
+        self.navigationController?.navigationItem.title = navTitle
+        self.navigationController?.navigationBar.prefersLargeTitles = true
 
         // Do any additional setup after loading the view.
     }

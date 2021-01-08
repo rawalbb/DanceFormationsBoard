@@ -126,6 +126,7 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
         let nextVC = storyboard?.instantiateViewController(identifier: "NotesViewController") as! NotesViewController
         nextVC.delegate = self
         nextVC.notes = boardVM.getCurrentBoard()?.notes
+        //nextVC.navTitle = boardVM.getCurrentBoard()?.name ?? "Board Notes"
         self.navigationController?.pushViewController(nextVC, animated: true)
     }
     

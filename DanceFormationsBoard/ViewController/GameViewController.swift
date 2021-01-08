@@ -387,6 +387,15 @@ class GameViewController: KeyUIViewController{
     }
     
     
+    @IBAction func infoButtonPressed(_ sender: Any) {
+        
+        let nextVC = storyboard?.instantiateViewController(identifier: "SceneKitViewController") as! SceneKitViewController
+        nextVC.formationVM = formationVM
+        nextVC.dancerVM = dancerVM
+        //nextVC.boardVM = boardVM
+        self.navigationController?.pushViewController(nextVC, animated: true)
+        
+    }
     
     
     func allFormUpdates(){
