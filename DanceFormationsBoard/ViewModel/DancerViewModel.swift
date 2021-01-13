@@ -59,11 +59,9 @@ class DancerViewModel{
         newDancer.label = label
         newDancer.color = color
         newDancer.id = id
-        //selectedFormation.addToDancers(newDancer)
+       
         newDancer.owner = selectedFormation
-        //self.currDancerArray.append(newDancer)
-        
-        //Call Save everytime this is called
+
     }
     
     func addDancer(dancer: Dancer, selectedFormation: Formation){

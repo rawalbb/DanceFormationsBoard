@@ -17,12 +17,11 @@ extension Dancer {
     }
 
     @NSManaged public var color: String
+    @NSManaged public var dancerOwner: String
     @NSManaged public var id: String
     @NSManaged public var label: String?
     @NSManaged public var xPos: Float
     @NSManaged public var yPos: Float
-    @NSManaged public var owner: Formation
-
 }
 
 extension Dancer : Identifiable {
