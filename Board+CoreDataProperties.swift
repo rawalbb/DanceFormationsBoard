@@ -17,7 +17,7 @@ extension Board {
     }
 
     @NSManaged public var image: Data?
-    @NSManaged public var lastEdited: Date?
+    @NSManaged public var lastEdited: Date
     @NSManaged public var name: String?
     @NSManaged public var notes: String?
     @NSManaged public var song: String?

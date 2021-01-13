@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 
-public class Board: NSManagedObject, NSCoding, Codable {
+public class Board: NSManagedObject, Codable {
     
     enum CodingKeys: CodingKey {
       case image, lastEdited, name, notes, song, uniqueId, forms
@@ -32,7 +32,7 @@ public class Board: NSManagedObject, NSCoding, Codable {
           self.name = try container.decode(String?.self, forKey: .name)
           self.notes = try container.decode(String?.self, forKey: .notes)
           self.song = nil
-          self.forms = UUID().uuidString
+          self.uniqueId = UUID().uuidString
             self.forms = try container.decode([Formation].self, forKey: .forms)
           
           }

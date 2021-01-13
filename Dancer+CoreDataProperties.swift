@@ -16,8 +16,8 @@ extension Dancer {
         return NSFetchRequest<Dancer>(entityName: "Dancer")
     }
 
-    @NSManaged public var color: String?
-    @NSManaged public var id: String?
+    @NSManaged public var color: String
+    @NSManaged public var id: String
     @NSManaged public var label: String?
     @NSManaged public var xPos: Float
     @NSManaged public var yPos: Float

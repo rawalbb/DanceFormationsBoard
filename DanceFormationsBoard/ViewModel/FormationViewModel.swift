@@ -147,10 +147,10 @@ class FormationViewModel{
         }
     }
     
-    func updateFormWaitTime(time: Int){
+    func updateFormWaitTime(time: Double){
         if let curr = getFormation(type: FormationType.current){
             
-            curr.waitTime = Int16(time)
+            curr.waitTime = Double(time)
             
 
         }
@@ -167,8 +167,8 @@ class FormationViewModel{
 
         let request : NSFetchRequest<Formation> = Formation.fetchRequest()
 
-        let predicate = NSPredicate(format: "formationOwner.uniqueId == %@", currentBoard.uniqueId)
-        request.predicate = predicate
+        //let predicate = NSPredicate(format: "formationOwner.uniqueId == %@", currentBoard.uniqueId)
+        //request.predicate = predicate
         do{
             
             let tempArray = try context.fetch(request)

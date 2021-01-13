@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 
-public class Dancer: NSManagedObject, NSCoding, Codable {
+public class Dancer: NSManagedObject, Codable {
     
       enum CodingKeys: CodingKey {
         case color, id, label, xPos, yPos

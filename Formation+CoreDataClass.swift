@@ -10,14 +10,14 @@ import Foundation
 import CoreData
 
 
-public class Formation: NSManagedObject, NSCoding, Codable {
+public class Formation: NSManagedObject, Codable {
     
     enum CodingKeys: CodingKey {
       case image, name, position, songTime, uniqueId, waitTime, dancers
     }
       
 
-    required convenience init(from decoder: Decoder) throws {
+    required convenience public init(from decoder: Decoder) throws {
       guard let context = decoder.userInfo[CodingUserInfoKey.managedObjectContext] as? NSManagedObjectContext else {
         throw DecoderConfigurationError.missingManagedObjectContext
       }
