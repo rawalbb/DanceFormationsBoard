@@ -18,19 +18,22 @@ extension GameViewController: StageSceneUpdatesDelegate{
         
         if let curr = formationVM.getFormation(type: FormationType.current){
             print("Current Index", formationVM.getCurrentIndex()!)
-        
+
         dancerVM.addDancer(xPosition: xPosition, yPosition: yPosition, label: label, id: id, color: color, selectedFormation: curr)
         }
         dancerVM.saveDancer()
+        if let imageData = ImageDataManager.sceneToData(view: stageView){
+                
+            formationVM.updateFormImage(imageData: imageData)
+            
         
-        if let imageData = dancerVM.imageToData(view: stageView) {
-        formationVM.updateFormImage(data: imageData)
         }
         allFormUpdates()
     }
     
     func dancerMoved(id: String, xPosition: Float, yPosition: Float) {
         if let curr = formationVM.getFormation(type: FormationType.current){
+
             dancerVM.updateDancerPosition(id: id, xPosition: xPosition, yPosition: yPosition, owner: curr)
         }
         else{
@@ -39,8 +42,10 @@ extension GameViewController: StageSceneUpdatesDelegate{
         
         
         dancerVM.saveDancer()
-        if let imageData = dancerVM.imageToData(view: stageView) {
-        formationVM.updateFormImage(data: imageData)
+        if let imageData = ImageDataManager.sceneToData(view: stageView){
+
+                formationVM.updateFormImage(imageData: imageData)
+        
         }
         allFormUpdates()
     }
@@ -65,8 +70,10 @@ extension GameViewController: StageSceneUpdatesDelegate{
     func removedDancer(id: String) {
         dancerVM.removeDancer(dancerId: id)
         dancerVM.saveDancer()
-        if let imageData = dancerVM.imageToData(view: stageView){
-            formationVM.updateFormImage(data: imageData)
+        if let imageData = ImageDataManager.sceneToData(view: stageView){
+
+                formationVM.updateFormImage(imageData: imageData)
+
         }
         allFormUpdates()
     }

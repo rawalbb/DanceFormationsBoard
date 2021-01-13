@@ -31,16 +31,15 @@ class FormationViewModel{
     }
     
     //Creates New Formation - if no image data given, create default, else create with image data
-    func createNewFormation(formData: Data? = nil){
+    func createNewFormation(imageData: Data? = nil){
         
         let newFormation = Formation(context: context)
-        
-        if let data = formData{
-            newFormation.image = data
-        }
-        else{
-            newFormation.image = UIImage(named: "defaultFormImage")?.jpegData(compressionQuality: 1.0)
-        }
+        if let dataStr = imageData{
+                newFormation.image = dataStr
+            }
+            else{
+                newFormation.image = ImageDataManager.imageToData(image: UIImage(named: "defaultFormImage")!)
+            }
 
             
         if formationArray.count > 0 && currentIndex != nil
@@ -121,10 +120,15 @@ class FormationViewModel{
         currentIndex = index
     }
     
-    func updateFormImage(data: Data){
+    func updateFormImage(imageData: Data?){
         
         if let curr = getFormation(type: FormationType.current){
-            curr.image = data
+            if let dataStr = imageData{
+                    curr.image = dataStr
+                }
+                else{
+                    curr.image = ImageDataManager.imageToData(image: UIImage(named: "defaultFormImage")!)
+                }
         }
     }
     

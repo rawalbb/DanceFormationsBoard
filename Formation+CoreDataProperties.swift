@@ -2,7 +2,7 @@
 //  Formation+CoreDataProperties.swift
 //  DanceFormationsBoard
 //
-//  Created by Bansri Rawal on 12/7/20.
+//  Created by Bansri Rawal on 1/10/21.
 //
 //
 
@@ -18,12 +18,13 @@ extension Formation {
 
     @NSManaged public var image: Data?
     @NSManaged public var name: String?
-    @NSManaged public var uniqueId: String
-    @NSManaged public var dancers: NSSet?
-    @NSManaged public var formationOwner: Board
     @NSManaged public var position: Int16
-    @NSManaged public var waitTime: Int16
     @NSManaged public var songTime: Float
+    @NSManaged public var uniqueId: String
+    @NSManaged public var waitTime: Int16
+    //@NSManaged public var dancers: NSSet?
+    @NSManaged var dancers: Set<Dancer>?
+    @NSManaged public var formationOwner: Board
 
 }
 

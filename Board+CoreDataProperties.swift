@@ -2,7 +2,7 @@
 //  Board+CoreDataProperties.swift
 //  DanceFormationsBoard
 //
-//  Created by Bansri Rawal on 12/7/20.
+//  Created by Bansri Rawal on 1/10/21.
 //
 //
 
@@ -16,13 +16,16 @@ extension Board {
         return NSFetchRequest<Board>(entityName: "Board")
     }
 
-    @NSManaged public var image: Data
+    @NSManaged public var image: Data?
     @NSManaged public var lastEdited: Date
-    @NSManaged public var name: String
+    @NSManaged public var name: String?
     @NSManaged public var notes: String?
-    @NSManaged public var uniqueId: String
-    @NSManaged public var subFormations: NSSet?
     @NSManaged public var song: String?
+    @NSManaged public var uniqueId: String
+//    @NSManaged public var subFormations: NSSet?
+    @NSManaged  var subFormations: Set<Formation>?
+
+    //@NSManaged var photos: Set<Photo>
 
 }
 
@@ -30,10 +33,10 @@ extension Board {
 extension Board {
 
     @objc(addSubFormationsObject:)
-    @NSManaged public func addToSubFormations(_ value: Formation)
+    @NSManaged func addToSubFormations(_ value: Formation)
 
     @objc(removeSubFormationsObject:)
-    @NSManaged public func removeFromSubFormations(_ value: Formation)
+    @NSManaged func removeFromSubFormations(_ value: Formation)
 
     @objc(addSubFormations:)
     @NSManaged public func addToSubFormations(_ values: NSSet)

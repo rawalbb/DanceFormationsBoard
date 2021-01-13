@@ -11,7 +11,7 @@ class BoardViewController: KeyViewController {
     
     @IBOutlet weak var boardTableView: UITableView!
     
-    var boardVM = BoardViewModel()
+    var boardVM = BoardViewModel.shared
     var boardVMArray: [Board] = []
     let defaultImageView:UIImageView = UIImageView()
     let defaultLabel = UILabel()
@@ -41,6 +41,11 @@ class BoardViewController: KeyViewController {
         boardVM.loadBoards()
         boardVMArray = boardVM.getBoardArray()
         //**Don't need to call DispatchQueue - check for formations b/c already called from load boards delegate method
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
     }
     
@@ -78,18 +83,11 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
         cell.boardDateTextField.text = "Last Updated: \(df.string(from: board.lastEdited))"
         cell.backgroundColor = UIColor.clear
         
-        if let subForm = board.subFormations?.allObjects as? [Formation]{
-            if subForm.count != 0{
-                if let data = subForm[0].image{
-                    cell.boardImageField.image = UIImage(data: data)
-                }
-            }
-            else{
-                cell.boardImageField.image = #imageLiteral(resourceName: "defaultFormImage")
-                cell.boardImageField.contentMode = .scaleToFill
-            }
-            cell.boardImageField.layer.borderWidth = 2
-            cell.boardImageField.layer.borderColor = #colorLiteral(red: 0.7568627451, green: 0.8392156863, blue: 0.8980392157, alpha: 1)
+        if let boardImageData = board.image{
+            cell.boardImageField.image = ImageDataManager.dataToImage(dataStr: boardImageData)
+        }
+        else{
+            cell.boardImageField.image = UIImage(named: "defaultFormImage")
         }
         
         return cell
@@ -101,7 +99,7 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
         
         boardVM.setCurrentBoard(index: indexPath.row)
         let nextVC = storyboard?.instantiateViewController(identifier: "GameViewController") as! GameViewController
-        nextVC.boardVM = boardVM
+        //nextVC.boardVM = boardVM
         self.navigationController?.pushViewController(nextVC, animated: true)
     }
     
@@ -120,6 +118,23 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
     
     private func handleSendBoard() {
         print("Send board pressed")
+      
+        
+        guard
+            let sendingBoard = self.boardVM.getCurrentBoard(),
+            let url = sendingBoard.exportToURL(name: sendingBoard.name ?? "Heya")
+            else { return }
+          
+          // 2
+        
+          let activity = UIActivityViewController(
+            activityItems: ["Check out this book! I like using Book Tracker.", url],
+            applicationActivities: nil
+          )
+
+          // 3
+          present(activity, animated: true, completion: nil)
+        
     }
     
     private func addNotes() {

@@ -19,6 +19,7 @@ class BoardViewModel{
     var boardsArray = [Board]()
     var currentBoardIndex: Int?
     var delegate: BoardUpdatesDelegate?
+    static let shared = BoardViewModel()
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -62,12 +63,31 @@ class BoardViewModel{
         newBoard.name = "Board \(boardsArray.count)"
         newBoard.lastEdited = Date()
         
-        if let data = ImageDataManager.imageToData(image: #imageLiteral(resourceName: "defaultFormImage")){
-            newBoard.image = data
+        if let dataStr = ImageDataManager.imageToData(image: #imageLiteral(resourceName: "defaultFormImage")){
+            newBoard.image = dataStr
         }
         newBoard.notes = nil
         newBoard.uniqueId = UUID().uuidString
         newBoard.song = nil
+        
+    }
+    
+    func addBoardFromUrl(board: Board){
+        print("ADD BOARD FORM URL CALLED")
+        let newBoard = Board(context: context)
+        newBoard.name = board.name
+        newBoard.lastEdited = Date()
+        
+        newBoard.image = board.image
+//        if let newImage = UIImage(named: "defaultFormImage"){
+//        if let newImageData = ImageDataManager.imageToData(image: newImage){
+//            newBoard.image = newImageData
+//        }
+        //}
+        
+        newBoard.notes = board.notes
+        newBoard.uniqueId = UUID().uuidString
+        newBoard.song = board.song
     }
     
     //Function: Get current Board
@@ -108,10 +128,9 @@ class BoardViewModel{
     
     
     //Update Board Image
-    func updateBoardImage(imageData: Data){
+    func updateBoardImage(imageData: Data?){
         
         getCurrentBoard()?.image = imageData
-        
     }
     
     func updateBoardNotes(notes: String){
@@ -136,4 +155,6 @@ class BoardViewModel{
         getCurrentBoard()?.song = songUrl
         print("Setting Board Song URL ", songUrl)
     }
+    
+    
 }

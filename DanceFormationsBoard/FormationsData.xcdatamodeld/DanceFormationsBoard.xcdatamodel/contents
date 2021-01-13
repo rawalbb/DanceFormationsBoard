@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17192" systemVersion="19H15" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Board" representedClassName=".Board" syncable="YES">
-        <attribute name="image" attributeType="Binary"/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="19H114" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Board" representedClassName=".Board" syncable="YES" codeGenerationType="category">
+        <attribute name="image" optional="YES" attributeType="Binary"/>
         <attribute name="lastEdited" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="notes" optional="YES" attributeType="String"/>
@@ -9,7 +9,7 @@
         <attribute name="uniqueId" attributeType="String"/>
         <relationship name="subFormations" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Formation" inverseName="formationOwner" inverseEntity="Formation"/>
     </entity>
-    <entity name="Dancer" representedClassName=".Dancer" syncable="YES">
+    <entity name="Dancer" representedClassName=".Dancer" syncable="YES" codeGenerationType="category">
         <attribute name="color" attributeType="String"/>
         <attribute name="id" attributeType="String"/>
         <attribute name="label" optional="YES" attributeType="String"/>
@@ -17,7 +17,7 @@
         <attribute name="yPos" attributeType="Float" usesScalarValueType="YES"/>
         <relationship name="owner" maxCount="1" deletionRule="Nullify" destinationEntity="Formation" inverseName="dancers" inverseEntity="Formation"/>
     </entity>
-    <entity name="Formation" representedClassName=".Formation" syncable="YES">
+    <entity name="Formation" representedClassName=".Formation" syncable="YES" codeGenerationType="category">
         <attribute name="image" attributeType="Binary"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="position" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>

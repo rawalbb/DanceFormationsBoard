@@ -49,6 +49,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Save changes in the application's managed object context when the application transitions to the background.
         (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
     }
+    
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        print("In appppp")
+        
+        if let url = URLContexts.first?.url{
+            guard url.pathExtension == "board" else { return }
+              let decoder = JSONDecoder()
+              decoder.userInfo[CodingUserInfoKey.managedObjectContext] = context
+            DataSharingManager.importData(from: url, decoder: decoder)
+        }
+             
+              
+           //Book.importData(from: url)
+        
+             return 
+    }
+    
+
 
 
 }

@@ -25,7 +25,7 @@ class GameViewController: KeyUIViewController{
     
     
     
-    var boardVM: BoardViewModel!
+    var boardVM = BoardViewModel.shared
     var formationVM = FormationViewModel()
     var dancerVM = DancerViewModel()
     var formationArray: [Formation] = []
@@ -148,8 +148,10 @@ class GameViewController: KeyUIViewController{
         //don't need to update label
         //don't need to update board properties
         boardVM.updateBoardDate(date: Date())
-        
+        let image = formationVM.getFormation(type: .atLocation(0))?.image
+        boardVM.updateBoardImage(imageData: image)
         //Board image should be udpated as well when back pressed
+        //TODO: image is not getting updated
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -161,16 +163,15 @@ class GameViewController: KeyUIViewController{
         //TODO - sometimes the image is not updated, so update here? by calling load
         formationArray = formationVM.loadFormations() //TODO - is this needed
 
-        if let imageData = dancerVM.imageToData(view: stageView){
-            formationVM.updateFormImage(data: imageData)
+        if let newSceneData = ImageDataManager.sceneToData(view: stageView){
+            formationVM.updateFormImage(imageData: newSceneData)
             
             if let curr = formationVM.getCurrentIndex(){
                 if curr + 1 != formationArray.count{
                     formationVM.updatePosition(type: PositionType.add)
                 }
             }
-            
-            formationVM.createNewFormation(formData: imageData)
+            formationVM.createNewFormation(imageData: newSceneData)
             
             if let curr = formationVM.getCurrentIndex(){
                     formationVM.setCurrentSelection(index: curr + 1)
@@ -280,9 +281,8 @@ class GameViewController: KeyUIViewController{
                     self.stage.updateDancerLabel(label: text)
                     if let nodeId = self.stage.currentNode?.nodeId{
                         dancerVM.updateDancerLabel(id: nodeId, label: text)
-                        if let imageData = dancerVM.imageToData(view: stageView){
-                        
-                        formationVM.updateFormImage(data: imageData)
+                        if let imageData = ImageDataManager.sceneToData(view: stageView){
+                            formationVM.updateFormImage(imageData: imageData)
                         allFormUpdates()
                     }
         
@@ -306,7 +306,7 @@ class GameViewController: KeyUIViewController{
         
             if let currIndex = formationVM.getCurrentIndex(){
                 if currIndex - 1 == -1{
-                    formationVM.createNewFormation(formData: nil)
+                    formationVM.createNewFormation()
                 }
                 else if currIndex - 1 != -1 && currIndex + 2 <= formationArray.count{
                     formationVM.setCurrentSelection(index: currIndex)
@@ -422,9 +422,13 @@ extension GameViewController: UITableViewDataSource, UITableViewDelegate{
         cell.formNameTextfield.layer.borderWidth = 1
         cell.formNameTextfield.layer.borderColor = #colorLiteral(red: 0.7568627451, green: 0.8392156863, blue: 0.8980392157, alpha: 1)
         if let item = formationVM.getFormation(type: FormationType.atLocation(indexPath.row)){
-            if let formationData = item.image{
-                let cellImage = UIImage(data: formationData)
+            if let formationStr = item.image{
+                if let cellImage = ImageDataManager.dataToImage(dataStr: formationStr){
                 cell.formationImage?.image = cellImage
+                }
+            }
+            else{
+                cell.formationImage?.image = UIImage(named: "defaultFormImage")!
             }
             if let name = item.name{
                 if name != ""{
@@ -546,8 +550,8 @@ extension GameViewController: UIColorPickerViewControllerDelegate{
         if let nodeId = self.stage.currentNode?.nodeId{
             dancerVM.updateDancerColor(id: nodeId, color: colorString)
             dancerVM.saveDancer()
-            if let imageData = dancerVM.imageToData(view: stageView){
-                formationVM.updateFormImage(data: imageData)
+            if let imageData = ImageDataManager.sceneToData(view: stageView){
+                formationVM.updateFormImage(imageData: imageData)
             }
         allFormUpdates()
         }

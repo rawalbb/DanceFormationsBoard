@@ -51,7 +51,7 @@ class DancerViewModel{
     }
     
     func addDancer(xPosition: Float, yPosition: Float, label: String, id: String, color: String, selectedFormation: Formation){
-        
+        //double
         
         let newDancer = Dancer(context: context)
         newDancer.xPos = xPosition
@@ -161,20 +161,6 @@ class DancerViewModel{
         
     }
     
-    func imageToData(view formationView: SKView) -> Data?{
-        
-        let renderer = UIGraphicsImageRenderer(size: formationView.frame.size)
-        let image = renderer.image { ctx in
-            formationView.drawHierarchy(in: formationView.bounds, afterScreenUpdates: true)
-        }
-        
-        if let data = image.jpegData(compressionQuality: 1.0){
-           return data
-        }
-        else{
-            return nil
-        }
-    }
     
  
 }
