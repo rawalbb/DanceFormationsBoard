@@ -156,5 +156,18 @@ class BoardViewModel{
         print("Setting Board Song URL ", songUrl)
     }
     
+    func getCurrentBoardForms() -> [Formation]?{
+        
+        if let index = currentBoardIndex
+        {
+            return boardsArray[index].forms
+        }
+        else{
+            print("Getting Current Board Error")
+            return nil
+        }
+        
+    }
+    
     
 }
