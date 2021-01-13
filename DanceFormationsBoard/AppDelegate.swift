@@ -7,13 +7,17 @@
 
 import UIKit
 import CoreData
+import Firebase
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
+      var window: UIWindow? //setting up Firebase
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        FirebaseApp.configure() //Connecting app with Firebase
+        let db = Firestore.firestore() //Setting up Cloud firestore
         
         return true
     }
