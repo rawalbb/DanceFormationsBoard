@@ -38,8 +38,9 @@ class BoardViewController: KeyViewController {
     override func viewWillAppear(_ animated: Bool) {
         
         //Loads boards
-        boardVM.loadBoards()
-        boardVMArray = boardVM.getBoardArray()
+        boardVM.loadAllBoards()
+        boardVMArray = boardVM.getAllBoards()
+        print("IN VIEW WILL APPEAR, ", boardVMArray.count)
         //**Don't need to call DispatchQueue - check for formations b/c already called from load boards delegate method
         
     }
@@ -52,14 +53,16 @@ class BoardViewController: KeyViewController {
     @IBAction func addBoardPressed(_ sender: UIBarButtonItem) {
         
         boardVM.createNewBoard()
-        allBoardUpdates()
+        //allBoardUpdates()
+        boardVM.loadAllBoards()
+        boardVMArray = boardVM.getAllBoards()
         
     }
     
     func allBoardUpdates(){
         
-        boardVM.saveBoard()
-        boardVM.loadBoards()
+        boardVM.saveToFirebase()
+        boardVM.loadAllBoards()
     }
     
 }
@@ -79,7 +82,7 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
         let board = boardVMArray[indexPath.row]
         
         cell.boardNameTextField.delegate = self
-        cell.boardNameTextField.text = board.name
+        cell.boardNameTextField.text = board.boardName
         cell.boardDateTextField.text = "Last Updated: \(df.string(from: board.lastEdited))"
         cell.backgroundColor = UIColor.clear
         
@@ -97,17 +100,19 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
         let cell = tableView.cellForRow(at: indexPath) as! BoardTableViewCell
         cell.boardNameTextField.resignFirstResponder()
         
-        boardVM.setCurrentBoard(index: indexPath.row)
-        let nextVC = storyboard?.instantiateViewController(identifier: "GameViewController") as! GameViewController
-        //nextVC.boardVM = boardVM
-        self.navigationController?.pushViewController(nextVC, animated: true)
+//        boardVM.setCurrentBoard(index: indexPath.row)
+//        let nextVC = storyboard?.instantiateViewController(identifier: "GameViewController") as! GameViewController
+//        //nextVC.boardVM = boardVM
+//        self.navigationController?.pushViewController(nextVC, animated: true)
     }
     
     private func handleMoveToTrash() {
         
         if let toRemove = boardVM.getCurrentBoard(){
-            boardVM.removeBoard(board: toRemove)
-            allBoardUpdates()
+            boardVM.removeFromFirebase()
+            //allBoardUpdates()
+            boardVM.loadAllBoards()
+            boardVMArray = boardVM.getAllBoards()
             //Don't need to call checkFormations in DispatchQuueue, already called in delegate method
         }
         else{
@@ -118,23 +123,23 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
     
     private func handleSendBoard() {
         print("Send board pressed")
-      
-        
-        guard
-            let sendingBoard = self.boardVM.getCurrentBoard(),
-            let url = sendingBoard.exportToURL(name: sendingBoard.name ?? "Heya")
-            else { return }
-          
-          // 2
-        
-          let activity = UIActivityViewController(
-            activityItems: ["Check out this book! I like using Book Tracker.", url],
-            applicationActivities: nil
-          )
-
-          // 3
-          present(activity, animated: true, completion: nil)
-        
+//
+//
+//        guard
+//            let sendingBoard = self.boardVM.getCurrentBoard(),
+//            let url = sendingBoard.exportToURL(name: sendingBoard.name ?? "Heya")
+//            else { return }
+//
+//          // 2
+//
+//          let activity = UIActivityViewController(
+//            activityItems: ["Check out this book! I like using Book Tracker.", url],
+//            applicationActivities: nil
+//          )
+//
+//          // 3
+//          present(activity, animated: true, completion: nil)
+//
     }
     
     private func addNotes() {
@@ -192,7 +197,7 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
     
     func checkForNoFormations(){
         
-        if boardVM.getBoardArray().count == 0{
+        if boardVM.getAllBoards().count == 0{
             
             defaultImageView.isHidden = false
             defaultLabel.isHidden = false
@@ -259,11 +264,11 @@ extension BoardViewController: UITextFieldDelegate{
         
         if let updateText = textField.text{
             if updateText != ""{
-                boardVM.updateBoardName(boardName: updateText)
+                boardVM.updateBoardName(name: updateText)
                 allBoardUpdates()
             }
             else{
-                boardVM.updateBoardName(boardName: boardVM.getCurrentBoard()?.name ?? "Board \(String(describing: boardVM.currentBoardIndex))")
+                boardVM.updateBoardName(name: boardVM.getCurrentBoard()?.boardName ?? "Board \(String(describing: boardVM.currentBoardIndex))")
                 allBoardUpdates()
             }
         }
@@ -301,7 +306,7 @@ extension BoardViewController: UITextFieldDelegate{
 extension BoardViewController: BoardUpdatesDelegate{
     
     func boardUpdated(boardArray: [Board]) {
-        boardVMArray = boardVM.getBoardArray()
+        boardVMArray = boardVM.getAllBoards()
         
         DispatchQueue.main.async {
             self.checkForNoFormations()
@@ -317,4 +322,6 @@ extension BoardViewController: NotesUpdatedDelegate{
     }
 }
 
+
+//TODO: get data from firebase, store in array - for creation and removal - contact firebase, and saving if were view were to disappear or close out of app
 //TODO: Needs to be updated 

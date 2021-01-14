@@ -7,7 +7,8 @@
 
 import Foundation
 import UIKit
-import CoreData
+import FirebaseFirestoreSwift
+import FirebaseFirestore
 
 protocol BoardUpdatesDelegate{
     func boardUpdated(boardArray: [Board])
@@ -16,81 +17,75 @@ protocol BoardUpdatesDelegate{
 
 class BoardViewModel{
     
-    var boardsArray = [Board]()
+    var boardsArray : [Board] = []{
+        didSet{
+            return boardsArray.sort { $0.lastEdited < $1.lastEdited
+            }
+            
+
+        }
+    }
+   
+    
     var currentBoardIndex: Int?
     var delegate: BoardUpdatesDelegate?
     static let shared = BoardViewModel()
     
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    
-    //Function: Load all Formation Dance Boards for Home Screen
-    func loadBoards(){
-        
-        let request : NSFetchRequest<Board> = Board.fetchRequest()
-        do{
-            
-            let tempBoardsArray = try context.fetch(request)
-            boardsArray = tempBoardsArray.sorted(by: {
-                $0.lastEdited.compare($1.lastEdited) == .orderedDescending
-            })
-        }
-        catch{
-            print("Error Fetching Data from Context in Formation ViewModel \(error)")
-        }
-        
-        self.delegate?.boardUpdated(boardArray: boardsArray)
-    }
-    
-    //Function: Save the Board
-    func saveBoard(){
-        do{
-            try context.save()
-        } catch {
-            print("Error saving context \(error)")
-        }
-    }
-    
-    //Function: Remove Board
-    func removeBoard(board: Board){
-        do{
-            context.delete(board)
-        }
-    }
+    let collection = Firestore.firestore().collection("danceboards")
     
     func createNewBoard(){
         
-        let newBoard = Board(context: context)
-        newBoard.name = "Board \(boardsArray.count)"
-        newBoard.lastEdited = Date()
-        
+        var newImage: Data? = nil
         if let dataStr = ImageDataManager.imageToData(image: #imageLiteral(resourceName: "defaultFormImage")){
-            newBoard.image = dataStr
+            newImage = dataStr
         }
-        newBoard.notes = nil
-        newBoard.uniqueId = UUID().uuidString
-        newBoard.song = nil
+        let name = "Board \(boardsArray.count)"
+        let uniqueId = UUID().uuidString
+        
+        let newBoard = Board(
+            image: newImage,
+            lastEdited: Date(),
+            boardName: name,
+            notes: nil,
+            song: nil,
+            uniqueId: uniqueId
+        )
+        
+        collection.document("\(uniqueId)").setData(newBoard.dictionary)
+            //addDocument(data: newBoard.dictionary)
         
     }
     
-    func addBoardFromUrl(board: Board){
-        print("ADD BOARD FORM URL CALLED")
-        let newBoard = Board(context: context)
-        newBoard.name = board.name
-        newBoard.lastEdited = Date()
-        
-        newBoard.image = board.image
-//        if let newImage = UIImage(named: "defaultFormImage"){
-//        if let newImageData = ImageDataManager.imageToData(image: newImage){
-//            newBoard.image = newImageData
-//        }
-        //}
-        
-        newBoard.notes = board.notes
-        newBoard.uniqueId = UUID().uuidString
-        newBoard.song = board.song
-    }
+
     
-    //Function: Get current Board
+    
+    func loadAllBoards(){
+        //What if save users to share it with as an array, array can also just hold one person. Load users, check to see if
+        //guard let query = query else { return }
+        //stopObserving()
+        collection.getDocuments { [self] (snapshot, error) in
+          if let error = error {
+            print(error)
+          } else if let snapshot = snapshot {
+            let developers: [Board] = snapshot.documents.compactMap {
+              return try? $0.data(as: Board.self)
+            }
+            //print("Developers ", developers)
+            self.boardsArray = developers
+            print("Boards in model", self.boardsArray.count)
+            
+            self.delegate?.boardUpdated(boardArray: self.boardsArray)
+          }
+        }
+                
+  
+
+        // Display data from Firestore, part one
+        
+
+    }
+
+    
     func getCurrentBoard() -> Board?{
         if let index = currentBoardIndex
         {
@@ -100,7 +95,10 @@ class BoardViewModel{
             print("Getting Current Board Error")
             return nil
         }
-        
+    }
+    
+    func getAllBoards() -> [Board]{
+        return boardsArray
     }
     
     //Function: Get current Board Index
@@ -116,45 +114,116 @@ class BoardViewModel{
         }
     }
     
-    //Function: Get array of boards
-    func getBoardArray() -> [Board]{
-        return boardsArray
-    }
-    
     //Function: Set current Board
     func setCurrentBoard(index: Int){
         currentBoardIndex = index
     }
     
     
-    //Update Board Image
+    //Update things individually or update array then update, updates for curr board
+    func updateBoardNotes(notes: String?){
+        if let index = currentBoardIndex
+        {
+            boardsArray[index].notes = notes
+            boardsArray[index].lastEdited = Date()
+        }
+        else{
+            print("Error updating board notes")
+        }
+    }
+    
     func updateBoardImage(imageData: Data?){
+        if let index = currentBoardIndex
+        {
+            boardsArray[index].image = imageData
+        }
+        else{
+            print("Error updating board notes")
+
+        }
         
-        getCurrentBoard()?.image = imageData
     }
     
-    func updateBoardNotes(notes: String){
-        
-        getCurrentBoard()?.notes = notes
-        
-    }
+    func updateBoardName(name: String?){
+        if let index = currentBoardIndex
+        {
+            boardsArray[index].boardName = name
+            boardsArray[index].lastEdited = Date()
+        }
+        else{
+            print("Error updating board name")
     
-    
-    //Update Board Name
-    func updateBoardName(boardName: String){
-        
-        getCurrentBoard()?.name = boardName
+        }
     }
     
     func updateBoardDate(date: Date){
         
-        getCurrentBoard()?.lastEdited = date
+        if let index = currentBoardIndex
+        {
+            boardsArray[index].lastEdited = date
+        }
+        else{
+            print("Error updating board date")
+     
+        }
     }
     
-    func updateBoardSong(songUrl: String){
-        getCurrentBoard()?.song = songUrl
-        print("Setting Board Song URL ", songUrl)
+    func updateBoardSong(songUrl: String?){
+        
+        if let index = currentBoardIndex
+        {
+            boardsArray[index].song = songUrl
+        }
+        else{
+            print("Error updating board song")
+       
+        }
     }
     
+    func removeBoard(){
+        
+        
+    }
     
-}
+    func saveToFirebase(){
+        
+        for boards in boardsArray{
+        collection.document("\(boards.uniqueId)").setData([
+            "image" : (boards.image),
+            "lastEdited": boards.lastEdited,
+            "boardName": boards.boardName,
+            "notes": boards.notes,
+            "song": boards.song,
+            "uniqueId": boards.uniqueId
+
+        ]) { err in
+            if let err = err {
+                print("Error writing document: \(err)")
+            } else {
+                print("Document successfully written!")
+            }
+        }
+        }
+
+        
+    }
+    
+    func removeFromFirebase(){
+        if let curr = getCurrentBoard()?.uniqueId{
+        collection.document(curr).delete() { err in
+            if let err = err {
+                print("Error removing document: \(err)")
+            } else {
+                print("Document successfully removed!")
+            }
+        }
+    }
+    }
+        
+    }
+
+
+
+
+
+

@@ -3,6 +3,7 @@ import Foundation
 import UIKit
 import SpriteKit
 import CoreData
+import Firebase
 
 
 protocol FormUpdatesDelegate{
@@ -19,209 +20,289 @@ class FormationViewModel{
     var currentBoard: Board!
     var delegate: FormUpdatesDelegate?
     
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    
-    //Saves Formation
-    func saveFormation(){
-        do{
-            try context.save()
-        } catch {
-            print("Error saving context \(error)")
-        }
-    }
-    
-    //Creates New Formation - if no image data given, create default, else create with image data
+        var documents: [DocumentSnapshot] = []
+
+        let collection = Firestore.firestore().collection("formations")
+        
     func createNewFormation(imageData: Data? = nil){
         
-        let newFormation = Formation(context: context)
-        if let dataStr = imageData{
-                newFormation.image = dataStr
-            }
-            else{
-                newFormation.image = ImageDataManager.imageToData(image: UIImage(named: "defaultFormImage")!)
-            }
+        var newImage: Data? = nil
+                if let dataStr = imageData{
+                        newImage = dataStr
+                    }
+                    else{
+                        newImage = ImageDataManager.imageToData(image: UIImage(named: "defaultFormImage")!)
+                    }
+        var uniqueId = UUID().uuidString
+        var position = 0
+        var formOwnerId = self.getCurrentBoardId()
+        
+                if formationArray.count > 0 && currentIndex != nil
+                {
+//                    let dancerObjects = getFormation(type: FormationType.current)?.dancers as! Set<Dancer>
+//
+//                    for dancer in dancerObjects{
+//                        danceVM.addDancer(dancer: dancer, selectedFormation: newFormation)
+//                    }
+                    //for dancer in dancers that match this formation id...load up only those that match the board id
+                    if let currIndex = getCurrentIndex(){
+                        position = currIndex + 1
+                    }
+        
+                }
+                else{
+                    //var dancers = nil
+                    position = 0
+                }
 
             
-        if formationArray.count > 0 && currentIndex != nil
-        {
-            let dancerObjects = getFormation(type: FormationType.current)?.dancers as! Set<Dancer>
+        
             
-            for dancer in dancerObjects{
-                danceVM.addDancer(dancer: dancer, selectedFormation: newFormation)
+        let newFormation = Formation(image: newImage, formName: "", position: position, songTime: -1.0, uniqueId: uniqueId, formOwner: formOwnerId)
+            
+            collection.document("\(uniqueId)").setData(newFormation.dictionary)
+                //addDocument(data: newBoard.dictionary)
+            
+    }
+
+        
+        fileprivate func baseQuery() -> Query {
+            return Firestore.firestore().collection("danceboards").limit(to: 50)
+        }
+        
+        fileprivate var query: Query? {
+            didSet {
+                if let listener = listener {
+                    listener.remove()
+                    loadAllFormations()
+                }
             }
-            if let currIndex = getCurrentIndex(){
-                newFormation.position = Int16(currIndex + 1)
+        }
+        
+        private var listener: ListenerRegistration?
+        
+        
+        fileprivate func stopObserving() {
+            listener?.remove()
+        }
+        
+        
+        func loadAllFormations(){
+            
+            
+            guard let query = query else { return }
+            stopObserving()
+            
+            
+            listener = query.addSnapshotListener { [unowned self] (snapshot, error) in
+                guard let snapshot = snapshot else {
+                    print("Error fetching snapshot results: \(error!)")
+                    return
+                }
+                let models = snapshot.documents.map { (document) -> Formation in
+                    let model = Formation(dictionary: document.data())!
+                        return model
+                    
+                }
+                self.formationArray = models
+                self.documents = snapshot.documents
+                
             }
+            // Display data from Firestore, part one
+            self.delegate?.formUpdated(formArray: formationArray)
             
         }
-        else{
-            newFormation.dancers = nil
-            newFormation.position = 0
-        }
-        newFormation.waitTime = 3
-        newFormation.songTime = -1.0
-        newFormation.uniqueId = UUID().uuidString
-        newFormation.formationOwner = currentBoard
+    
+    func getCurrentBoardId() -> String{
+        guard let boardId = BoardViewModel.shared.getCurrentBoard()?.uniqueId else { return "" }
+        return boardId
     }
     
-    func getFormation(type: FormationType) -> Formation?{
-        var returnVal: Formation? = nil
-        switch type{
-        
-        case .current:
-            if let current = self.getCurrentIndex()
-            {
-                returnVal = formationArray[current]
-            }
-            else{
-                print("Getting Current Formation Error")
-                returnVal = nil
-            }
     
-        case .previous:
-            if let current = self.getCurrentIndex(){
-                if current > 0{
-                    returnVal = formationArray[current - 1]
+        func getFormation(type: FormationType) -> Formation?{
+            var returnVal: Formation? = nil
+            switch type{
+    
+            case .current:
+                if let current = self.getCurrentIndex()
+                {
+                    returnVal = formationArray[current]
+                }
+                else{
+                    print("Getting Current Formation Error")
+                    returnVal = nil
+                }
+    
+            case .previous:
+                if let current = self.getCurrentIndex(){
+                    if current > 0{
+                        returnVal = formationArray[current - 1]
+                    }
+                    else{
+                        returnVal = nil
+                    }
+                }
+    
+            case .next:
+    
+                if let current = self.getCurrentIndex(){
+                    if current < formationArray.count - 1{
+                        returnVal = formationArray[current + 1]
+                    }
                 }
                 else{
                     returnVal = nil
                 }
-            }
-
-        case .next:
-                
-            if let current = self.getCurrentIndex(){
-                if current < formationArray.count - 1{
-                    returnVal = formationArray[current + 1]
-                }
-            }
-            else{
-                returnVal = nil
-            }
-        
-        case .atLocation(let index):
-            if index < formationArray.count{
-                returnVal = formationArray[index]
-            }
-            else{
-                return nil
-            }
-            
-    }
-        return returnVal
-    }
     
-    func getCurrentIndex() -> Int?{
-        
-        return currentIndex
-    }
-    
-    func setCurrentSelection(index: Int){
-        currentIndex = index
-    }
-    
-    func updateFormImage(imageData: Data?){
-        
-        if let curr = getFormation(type: FormationType.current){
-            if let dataStr = imageData{
-                    curr.image = dataStr
+            case .atLocation(let index):
+                if index < formationArray.count{
+                    returnVal = formationArray[index]
                 }
                 else{
-                    curr.image = ImageDataManager.imageToData(image: UIImage(named: "defaultFormImage")!)
+                    return nil
                 }
-        }
-    }
     
-    func updateFormLabel(label: String?){
+        }
+            return returnVal
+        }
         
-        if let curr = getFormation(type: FormationType.current){
-            if label != nil && label != ""{
-            curr.name = label
+        
+        //Function: Get current Board Index
+        func getCurrentIndex() -> Int?{
+            
+            if let index = currentIndex
+            {
+                return index
             }
             else{
-                curr.name = "Enter Name:"
+                print("Getting Current Formation Error")
+                return nil
             }
         }
-    }
-    
-    func updateFormWaitTime(time: Int){
-        if let curr = getFormation(type: FormationType.current){
-            
-            curr.waitTime = Int16(time)
-            
-
+        
+        //Function: Set current Board
+        func setCurrentFormation(index: Int){
+            currentIndex = index
         }
-    }
+        
+        
+
+        
+        func updateFormImage(imageData: Data?){
+            if let index = currentIndex
+            {
+                formationArray[index].image = imageData
+            }
+            else{
+                print("Error updating board notes")
+
+            }
+            
+        }
+        
+    func updateFormName(name: String?){
+            if let index = currentIndex
+            {
+                formationArray[index].formName = name
+            }
+            else{
+                print("Error updating board name")
+            }
+        }
+        
+        
+        func updateFormSongTime(time: Float?){
+            
+            var curr = getFormation(type: FormationType.current)
+                if curr != nil {
+                    curr?.songTime = time
+                }
+
+                    
+        }
+    
+    
+        func updatePosition(type: PositionType){
+            if let curr = getCurrentIndex(){
+                let updateStart = curr + 1
+            switch type{
+    
+            case .add:
+                for i in updateStart..<formationArray.count{
+    
+                    formationArray[i].position += 1
+                }
+                //For each formation greater than "current formation", increase position count
+            case .remove:
+                for i in updateStart..<formationArray.count{
+    
+                    formationArray[i].position -= 1
+                }
+            }
+    
+        }
+        }
+    
+        func getFollowingForms() -> [Formation]?{
+            let filtered = formationArray.filter{ forms in
+                guard let index = currentIndex else { return false}
+                    return forms.position > index
+            }
+            return filtered
+        }
+    
+        func updateFormLabel(label: String?){
+            
+            var curr = getFormation(type: FormationType.current)
+                if curr != nil {
+                    if label != nil && label != ""{
+                    curr?.formName = label
+                    }
+                    else{
+                        curr?.formName = "Enter Name:"
+                    }
+                }
+                    }
+    
+
     
     
     func removeFormation(form: Formation){
         
-        context.delete(form)
+        if let toUpdateIndex = formationArray.firstIndex(where: {
+            $0.uniqueId == form.uniqueId
+        }) {
+            formationArray.remove(at: toUpdateIndex)
+        }
         
     }
     
-    func loadFormations() -> [Formation]{
-
-        let request : NSFetchRequest<Formation> = Formation.fetchRequest()
-
-        let predicate = NSPredicate(format: "formationOwner.uniqueId == %@", currentBoard.uniqueId)
-        request.predicate = predicate
-        do{
-            
-            let tempArray = try context.fetch(request)
-            formationArray = tempArray.sorted(by: {
-                $0.position < $1.position
-            })
+    func saveToFirebase(){
         
-        }
-        catch{
-            print("Error Fetching Data from Context in Formation ViewModel \(error)")
-        }
-        self.delegate?.formUpdated(formArray: formationArray)
+        for forms in formationArray{
 
-        return formationArray
-    }
-    
-    
-    func updatePosition(type: PositionType){
-        if let curr = getCurrentIndex(){
-            let updateStart = curr + 1
-        switch type{
         
-        case .add:
-            for i in updateStart..<formationArray.count{
-                
-                formationArray[i].position += 1
-            }
-            //For each formation greater than "current formation", increase position count
-        case .remove:
-            for i in updateStart..<formationArray.count{
-                
-                formationArray[i].position -= 1
+        collection.document("\(forms.uniqueId)").setData([
+            "image" : (forms.image),
+            "formName": forms.formName,
+            "position": forms.position,
+            "songTime": forms.songTime,
+            "uniqueId": forms.uniqueId,
+            "formOwner": forms.formOwner
+
+        ]) { err in
+            if let err = err {
+                print("Error writing document: \(err)")
+            } else {
+                print("Document successfully written!")
             }
         }
-        
-    }
-    }
-    
-    func setSongTime(time: Float){
-        
-        if let curr = getFormation(type: FormationType.current){
-           
-            curr.songTime = time
 
-        }
+        
     }
     
-    func getFollowingForms() -> [Formation]?{
-        let filtered = formationArray.filter{ forms in
-            guard let index = currentIndex else { return false}
-                return forms.position > index
-        }
-        return filtered
+        
     }
-    
-    
 }
 
 enum FormationType{

@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FirebaseApp.configure() //Connecting app with Firebase
         let db = Firestore.firestore() //Setting up Cloud firestore
+        Database.database().isPersistenceEnabled = true
         
         return true
     }
