@@ -22,8 +22,8 @@ class DancerViewModel{
         let request : NSFetchRequest<Dancer> = Dancer.fetchRequest()
         var dancerArray : [Dancer] = []
         
-        let predicate = NSPredicate(format: "owner.uniqueId = %@", selectedFormation.uniqueId)
-        request.predicate = predicate
+        //let predicate = NSPredicate(format: "owner.uniqueId = %@", selectedFormation.uniqueId)
+        //request.predicate = predicate
         do{
             dancerArray = try context.fetch(request)
         }
@@ -59,11 +59,9 @@ class DancerViewModel{
         newDancer.label = label
         newDancer.color = color
         newDancer.id = id
-        //selectedFormation.addToDancers(newDancer)
-        newDancer.owner = selectedFormation
-        //self.currDancerArray.append(newDancer)
-        
-        //Call Save everytime this is called
+       
+        //newDancer.owner = selectedFormation
+
     }
     
     func addDancer(dancer: Dancer, selectedFormation: Formation){
@@ -75,7 +73,7 @@ class DancerViewModel{
         newDancer.label = dancer.label
         newDancer.color = dancer.color
         newDancer.id = dancer.id
-        newDancer.owner = selectedFormation
+        //newDancer.owner = selectedFormation
         //self.currDancerArray.append(newDancer)
         
         //Call Save everytime this is called
@@ -88,14 +86,14 @@ class DancerViewModel{
         print("Printing Curr Array - I think it's not updated", currDancerArray.count)
         
         //
-        if let toUpdateIndex = currDancerArray.firstIndex(where: {
-            $0.id == id && $0.owner == owner
-        }) {
-            print("TO UPDATE in dancerVM", xPosition, yPosition)
-            
-            currDancerArray[toUpdateIndex].xPos = xPosition
-            currDancerArray[toUpdateIndex].yPos = yPosition
-        }
+//        if let toUpdateIndex = currDancerArray.firstIndex(where: {
+//            $0.id == id && $0.owner == owner
+//        }) {
+//            print("TO UPDATE in dancerVM", xPosition, yPosition)
+//            
+//            currDancerArray[toUpdateIndex].xPos = xPosition
+//            currDancerArray[toUpdateIndex].yPos = yPosition
+//        }
         
     }
     

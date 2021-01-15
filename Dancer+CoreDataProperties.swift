@@ -2,7 +2,7 @@
 //  Dancer+CoreDataProperties.swift
 //  DanceFormationsBoard
 //
-//  Created by Bansri Rawal on 1/10/21.
+//  Created by Bansri Rawal on 1/13/21.
 //
 //
 
@@ -21,7 +21,6 @@ extension Dancer {
     @NSManaged public var label: String?
     @NSManaged public var xPos: Float
     @NSManaged public var yPos: Float
-    @NSManaged public var owner: Formation
 
 }
 

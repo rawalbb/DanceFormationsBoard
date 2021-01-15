@@ -24,16 +24,16 @@
 		4365F072258860DC002C366B /* ASWaveformPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4365F071258860DC002C366B /* ASWaveformPlayerView.swift */; };
 		4365F08325886CEE002C366B /* AudioAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4365F08225886CEE002C366B /* AudioAnalyzer.swift */; };
 		4365F08B25886E60002C366B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4365F08A25886E60002C366B /* ViewController.swift */; };
-		436C65C225ABE9CE00FA777F /* Formation+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C65BC25ABE9CE00FA777F /* Formation+CoreDataClass.swift */; };
-		436C65C325ABE9CE00FA777F /* Formation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C65BD25ABE9CE00FA777F /* Formation+CoreDataProperties.swift */; };
-		436C65C425ABE9CE00FA777F /* Board+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C65BE25ABE9CE00FA777F /* Board+CoreDataClass.swift */; };
-		436C65C525ABE9CE00FA777F /* Board+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C65BF25ABE9CE00FA777F /* Board+CoreDataProperties.swift */; };
-		436C65C625ABE9CE00FA777F /* Dancer+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C65C025ABE9CE00FA777F /* Dancer+CoreDataClass.swift */; };
-		436C65C725ABE9CE00FA777F /* Dancer+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C65C125ABE9CE00FA777F /* Dancer+CoreDataProperties.swift */; };
 		436C65CA25ABEA9300FA777F /* FormationsData.xcdatamodeld in Resources */ = {isa = PBXBuildFile; fileRef = 4324B4D9255358A200B3060E /* FormationsData.xcdatamodeld */; };
 		436C65D025ABF3E200FA777F /* DataSharingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C65CF25ABF3E200FA777F /* DataSharingManager.swift */; };
 		436C65D825ABFA6E00FA777F /* FormationSnapshotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4324B4662550976800B3060E /* FormationSnapshotCell.xib */; };
 		436C65DA25ABFA7500FA777F /* BoardTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43AB36B02576B0B1001F5DAB /* BoardTableViewCell.xib */; };
+		436C663025AF785D00FA777F /* Board+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C662A25AF785C00FA777F /* Board+CoreDataClass.swift */; };
+		436C663125AF785D00FA777F /* Board+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C662B25AF785C00FA777F /* Board+CoreDataProperties.swift */; };
+		436C663225AF785D00FA777F /* Dancer+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C662C25AF785C00FA777F /* Dancer+CoreDataClass.swift */; };
+		436C663325AF785D00FA777F /* Dancer+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C662D25AF785C00FA777F /* Dancer+CoreDataProperties.swift */; };
+		436C663425AF785D00FA777F /* Formation+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C662E25AF785C00FA777F /* Formation+CoreDataClass.swift */; };
+		436C663525AF785D00FA777F /* Formation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C662F25AF785D00FA777F /* Formation+CoreDataProperties.swift */; };
 		43A0A9D925505F5300394193 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0A9D825505F5300394193 /* AppDelegate.swift */; };
 		43A0A9DB25505F5300394193 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0A9DA25505F5300394193 /* SceneDelegate.swift */; };
 		43A0A9DD25505F5400394193 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0A9DC25505F5300394193 /* GameViewController.swift */; };
@@ -70,13 +70,13 @@
 		4365F08225886CEE002C366B /* AudioAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAnalyzer.swift; sourceTree = "<group>"; };
 		4365F08A25886E60002C366B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		436C658A25ABB86100FA777F /* book_44.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = book_44.png; sourceTree = "<group>"; };
-		436C65BC25ABE9CE00FA777F /* Formation+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Formation+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
-		436C65BD25ABE9CE00FA777F /* Formation+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Formation+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
-		436C65BE25ABE9CE00FA777F /* Board+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Board+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
-		436C65BF25ABE9CE00FA777F /* Board+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Board+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
-		436C65C025ABE9CE00FA777F /* Dancer+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dancer+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
-		436C65C125ABE9CE00FA777F /* Dancer+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dancer+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		436C65CF25ABF3E200FA777F /* DataSharingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSharingManager.swift; sourceTree = "<group>"; };
+		436C662A25AF785C00FA777F /* Board+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Board+CoreDataClass.swift"; sourceTree = "<group>"; };
+		436C662B25AF785C00FA777F /* Board+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Board+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		436C662C25AF785C00FA777F /* Dancer+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dancer+CoreDataClass.swift"; sourceTree = "<group>"; };
+		436C662D25AF785C00FA777F /* Dancer+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dancer+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		436C662E25AF785C00FA777F /* Formation+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Formation+CoreDataClass.swift"; sourceTree = "<group>"; };
+		436C662F25AF785D00FA777F /* Formation+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Formation+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		43A0A9D525505F5300394193 /* DanceFormationsBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DanceFormationsBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43A0A9D825505F5300394193 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		43A0A9DA25505F5300394193 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -109,12 +109,6 @@
 		4324B4EA255399EA00B3060E /* Entities */ = {
 			isa = PBXGroup;
 			children = (
-				436C65BC25ABE9CE00FA777F /* Formation+CoreDataClass.swift */,
-				436C65BD25ABE9CE00FA777F /* Formation+CoreDataProperties.swift */,
-				436C65BE25ABE9CE00FA777F /* Board+CoreDataClass.swift */,
-				436C65BF25ABE9CE00FA777F /* Board+CoreDataProperties.swift */,
-				436C65C025ABE9CE00FA777F /* Dancer+CoreDataClass.swift */,
-				436C65C125ABE9CE00FA777F /* Dancer+CoreDataProperties.swift */,
 				4324B4FA2553B51900B3060E /* CoreDataUtil.swift */,
 			);
 			path = Entities;
@@ -149,6 +143,12 @@
 		43A0A9CC25505F5300394193 = {
 			isa = PBXGroup;
 			children = (
+				436C662A25AF785C00FA777F /* Board+CoreDataClass.swift */,
+				436C662B25AF785C00FA777F /* Board+CoreDataProperties.swift */,
+				436C662C25AF785C00FA777F /* Dancer+CoreDataClass.swift */,
+				436C662D25AF785C00FA777F /* Dancer+CoreDataProperties.swift */,
+				436C662E25AF785C00FA777F /* Formation+CoreDataClass.swift */,
+				436C662F25AF785D00FA777F /* Formation+CoreDataProperties.swift */,
 				43A0A9D725505F5300394193 /* DanceFormationsBoard */,
 				43A0A9D625505F5300394193 /* Products */,
 				43621CF2256EE3DB00D3B0DB /* Frameworks */,
@@ -300,36 +300,36 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				436C663025AF785D00FA777F /* Board+CoreDataClass.swift in Sources */,
 				43608F0B257F3DC5002114C5 /* ImageDataManager.swift in Sources */,
 				4315A2742592C02700A66F33 /* GameViewController+Music.swift in Sources */,
 				435C40EE25A7C8C600036FF4 /* SceneKitViewController.swift in Sources */,
 				43621D37257354ED00D3B0DB /* BoardViewController.swift in Sources */,
-				436C65C625ABE9CE00FA777F /* Dancer+CoreDataClass.swift in Sources */,
-				436C65C425ABE9CE00FA777F /* Board+CoreDataClass.swift in Sources */,
 				43A0AA0D255061AB00394193 /* StageScene.swift in Sources */,
 				43AB36B52576E509001F5DAB /* NotesViewController.swift in Sources */,
-				436C65C725ABE9CE00FA777F /* Dancer+CoreDataProperties.swift in Sources */,
-				436C65C525ABE9CE00FA777F /* Board+CoreDataProperties.swift in Sources */,
 				4324B4FB2553B51900B3060E /* CoreDataUtil.swift in Sources */,
+				436C663225AF785D00FA777F /* Dancer+CoreDataClass.swift in Sources */,
 				43A0A9DD25505F5400394193 /* GameViewController.swift in Sources */,
+				436C663325AF785D00FA777F /* Dancer+CoreDataProperties.swift in Sources */,
 				43A0A9D925505F5300394193 /* AppDelegate.swift in Sources */,
 				43621D312571E2BD00D3B0DB /* UIColor+Extension.swift in Sources */,
 				436C65D025ABF3E200FA777F /* DataSharingManager.swift in Sources */,
 				4324B4672550976800B3060E /* FormationSnapshotCell.swift in Sources */,
+				436C663425AF785D00FA777F /* Formation+CoreDataClass.swift in Sources */,
+				436C663125AF785D00FA777F /* Board+CoreDataProperties.swift in Sources */,
 				4315A27A2592C3A700A66F33 /* GameViewController+Stage.swift in Sources */,
 				43608F15257FD3BB002114C5 /* KeyboardViewController.swift in Sources */,
 				43608ED4257DF10F002114C5 /* MusicViewController.swift in Sources */,
 				4365F08B25886E60002C366B /* ViewController.swift in Sources */,
 				43160D81255B9BB30038804F /* FormationTableView.swift in Sources */,
+				436C663525AF785D00FA777F /* Formation+CoreDataProperties.swift in Sources */,
 				43A0AA052550601300394193 /* FormationViewModel.swift in Sources */,
 				43A0A9DB25505F5300394193 /* SceneDelegate.swift in Sources */,
 				435C40FE25A8F4A300036FF4 /* PositionManager.swift in Sources */,
 				4365F072258860DC002C366B /* ASWaveformPlayerView.swift in Sources */,
-				436C65C325ABE9CE00FA777F /* Formation+CoreDataProperties.swift in Sources */,
 				43AB36B12576B0B1001F5DAB /* BoardTableViewCell.swift in Sources */,
 				43A0A9FC2550600200394193 /* DancerViewModel.swift in Sources */,
 				43AB36A925744C57001F5DAB /* BoardViewModel.swift in Sources */,
-				436C65C225ABE9CE00FA777F /* Formation+CoreDataClass.swift in Sources */,
 				4365F08325886CEE002C366B /* AudioAnalyzer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

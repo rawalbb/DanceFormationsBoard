@@ -18,6 +18,7 @@ class FormationViewModel{
     var danceVM = DancerViewModel()
     var currentBoard: Board!
     var delegate: FormUpdatesDelegate?
+    var boardVM = BoardViewModel.shared
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -61,7 +62,9 @@ class FormationViewModel{
         newFormation.waitTime = 3
         newFormation.songTime = -1.0
         newFormation.uniqueId = UUID().uuidString
-        newFormation.formationOwner = currentBoard
+        //newFormation.formationOwner = currentBoard
+        
+        boardVM.getCurrentBoard()?.forms?.append(newFormation)
     }
     
     func getFormation(type: FormationType) -> Formation?{
@@ -144,10 +147,10 @@ class FormationViewModel{
         }
     }
     
-    func updateFormWaitTime(time: Int){
+    func updateFormWaitTime(time: Double){
         if let curr = getFormation(type: FormationType.current){
             
-            curr.waitTime = Int16(time)
+            curr.waitTime = Double(time)
             
 
         }
@@ -164,8 +167,8 @@ class FormationViewModel{
 
         let request : NSFetchRequest<Formation> = Formation.fetchRequest()
 
-        let predicate = NSPredicate(format: "formationOwner.uniqueId == %@", currentBoard.uniqueId)
-        request.predicate = predicate
+        //let predicate = NSPredicate(format: "formationOwner.uniqueId == %@", currentBoard.uniqueId)
+        //request.predicate = predicate
         do{
             
             let tempArray = try context.fetch(request)

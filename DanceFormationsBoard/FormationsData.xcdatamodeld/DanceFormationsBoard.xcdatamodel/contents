@@ -1,35 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="19H114" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Board" representedClassName=".Board" syncable="YES" codeGenerationType="category">
+    <entity name="Board" representedClassName=".Board" syncable="YES">
+        <attribute name="forms" optional="YES" attributeType="Transformable" customClassName="[Formation]"/>
         <attribute name="image" optional="YES" attributeType="Binary"/>
-        <attribute name="lastEdited" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="lastEdited" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="notes" optional="YES" attributeType="String"/>
         <attribute name="song" optional="YES" attributeType="String"/>
         <attribute name="uniqueId" attributeType="String"/>
-        <relationship name="subFormations" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Formation" inverseName="formationOwner" inverseEntity="Formation"/>
     </entity>
-    <entity name="Dancer" representedClassName=".Dancer" syncable="YES" codeGenerationType="category">
+    <entity name="Dancer" representedClassName=".Dancer" syncable="YES">
         <attribute name="color" attributeType="String"/>
         <attribute name="id" attributeType="String"/>
         <attribute name="label" optional="YES" attributeType="String"/>
         <attribute name="xPos" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="yPos" attributeType="Float" usesScalarValueType="YES"/>
-        <relationship name="owner" maxCount="1" deletionRule="Nullify" destinationEntity="Formation" inverseName="dancers" inverseEntity="Formation"/>
     </entity>
-    <entity name="Formation" representedClassName=".Formation" syncable="YES" codeGenerationType="category">
-        <attribute name="image" attributeType="Binary"/>
+    <entity name="Formation" representedClassName=".Formation" syncable="YES">
+        <attribute name="dancers" optional="YES" attributeType="Transformable" customClassName="[Dancer]"/>
+        <attribute name="image" optional="YES" attributeType="Binary"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="position" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="songTime" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="uniqueId" attributeType="String"/>
-        <attribute name="waitTime" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="dancers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Dancer" inverseName="owner" inverseEntity="Dancer"/>
-        <relationship name="formationOwner" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Board" inverseName="subFormations" inverseEntity="Board"/>
+        <attribute name="waitTime" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <elements>
         <element name="Board" positionX="-27" positionY="54" width="128" height="148"/>
-        <element name="Dancer" positionX="-45" positionY="0" width="128" height="133"/>
-        <element name="Formation" positionX="-18" positionY="27" width="128" height="163"/>
+        <element name="Dancer" positionX="-45" positionY="0" width="128" height="118"/>
+        <element name="Formation" positionX="-18" positionY="27" width="128" height="148"/>
     </elements>
 </model>

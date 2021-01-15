@@ -98,9 +98,9 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
         cell.boardNameTextField.resignFirstResponder()
         
         boardVM.setCurrentBoard(index: indexPath.row)
-        let nextVC = storyboard?.instantiateViewController(identifier: "GameViewController") as! GameViewController
+       // let nextVC = storyboard?.instantiateViewController(identifier: "GameViewController") as! GameViewController
         //nextVC.boardVM = boardVM
-        self.navigationController?.pushViewController(nextVC, animated: true)
+        //self.navigationController?.pushViewController(nextVC, animated: true)
     }
     
     private func handleMoveToTrash() {
