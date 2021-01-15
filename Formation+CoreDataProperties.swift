@@ -22,8 +22,8 @@ extension Formation {
     @NSManaged public var songTime: Float
     @NSManaged public var uniqueId: String
     @NSManaged public var waitTime: Int16
-    //@NSManaged public var dancers: NSSet?
-    @NSManaged var dancers: Set<Dancer>?
+    @NSManaged public var dancers: NSSet?
+   // @NSManaged var dancers: Set<Dancer>?
     @NSManaged public var formationOwner: Board
 
 }

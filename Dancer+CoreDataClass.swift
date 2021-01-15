@@ -23,9 +23,13 @@ class Dancer: NSManagedObject, Codable {
     guard let context = decoder.userInfo[CodingUserInfoKey.managedObjectContext] as? NSManagedObjectContext else {
       throw DecoderConfigurationError.missingManagedObjectContext
     }
-
+    guard let entity = NSEntityDescription.entity(forEntityName: "Dancer", in: context) else {
+        /* ... */ throw DecoderConfigurationError.missingManagedObjectContext }
     
-    self.init(context: context)
+
+        self.init(entity: entity, insertInto: context)
+    
+    //self.init(context: context)
 
     let container = try decoder.container(keyedBy: CodingKeys.self)
     self.color = try container.decode(String.self, forKey: .color)
@@ -44,7 +48,7 @@ class Dancer: NSManagedObject, Codable {
         try container.encode(label, forKey: .label)
         try container.encode(xPos, forKey: .xPos)
        try container.encode(yPos, forKey: .yPos)
-        //try container.encode(owner, forKey: .owner)
+       // try container.encode(owner, forKey: .owner)
       }
 
     }

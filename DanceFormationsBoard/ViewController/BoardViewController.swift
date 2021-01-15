@@ -133,6 +133,7 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
           )
 
           // 3
+        activity.excludedActivityTypes = [.openInIBooks, .markupAsPDF, .addToReadingList, .assignToContact, .postToFlickr, .postToTencentWeibo, .copyToPasteboard ]
           present(activity, animated: true, completion: nil)
         
     }

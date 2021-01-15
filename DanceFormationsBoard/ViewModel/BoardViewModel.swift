@@ -73,21 +73,38 @@ class BoardViewModel{
     }
     
     func addBoardFromUrl(board: Board){
-        print("ADD BOARD FORM URL CALLED")
-        let newBoard = Board(context: context)
-        newBoard.name = board.name
-        newBoard.lastEdited = Date()
-        
-        newBoard.image = board.image
-//        if let newImage = UIImage(named: "defaultFormImage"){
-//        if let newImageData = ImageDataManager.imageToData(image: newImage){
-//            newBoard.image = newImageData
+//        print("ADD BOARD FORM URL CALLED")
+//        let newBoard = Board(context: context)
+//        newBoard.name = board.name
+//        newBoard.lastEdited = Date()
+//        
+//        newBoard.image = board.image
+////        if let newImage = UIImage(named: "defaultFormImage"){
+////        if let newImageData = ImageDataManager.imageToData(image: newImage){
+////            newBoard.image = newImageData
+////        }
+//        //}
+//        
+//        newBoard.notes = board.notes
+//        newBoard.uniqueId = UUID().uuidString
+//        newBoard.song = board.song
+//        newBoard.subFormations = board.subFormations
+//        
+//        guard let subFormsArray = board.subFormations?.allObjects as [Formation]? else { return }
+//        for form in subFormsArray{
+//            
+//            print("Adding FORMATION ")
+//            let newForm = Formation(context: context)
+//            newForm.image = form.image
+//            newForm.name = form.name
+//            newForm.position = form.position
+//            newForm.uniqueId = form.uniqueId
+//            newForm.songTime = form.songTime
+//            newForm.waitTime = form.waitTime
+//            newForm.formationOwner = board
+//    
 //        }
-        //}
-        
-        newBoard.notes = board.notes
-        newBoard.uniqueId = UUID().uuidString
-        newBoard.song = board.song
+//        
     }
     
     //Function: Get current Board
