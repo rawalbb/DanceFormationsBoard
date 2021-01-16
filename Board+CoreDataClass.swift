@@ -20,7 +20,7 @@ public class Board: NSManagedObject, Codable {
             throw DecoderConfigurationError.missingManagedObjectContext
         }
         guard let entity = NSEntityDescription.entity(forEntityName: "Board", in: context) else { throw
-            NSEntityMigrationPolicyError }
+            DecoderConfigurationError.missingManagedObjectContext }
        
         self.init(entity: entity, insertInto: context)
         

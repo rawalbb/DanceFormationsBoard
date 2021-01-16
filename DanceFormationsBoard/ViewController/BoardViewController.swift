@@ -12,7 +12,7 @@ class BoardViewController: KeyViewController {
     
     @IBOutlet weak var boardTableView: UITableView!
     
-    var boardVM = BoardViewModel.shared
+    var boardVM = BoardViewModel()
     var boardVMArray: [Board] = []
     let defaultImageView:UIImageView = UIImageView()
     let defaultLabel = UILabel()

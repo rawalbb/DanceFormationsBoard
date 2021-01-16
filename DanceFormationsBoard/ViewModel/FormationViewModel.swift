@@ -18,7 +18,7 @@ class FormationViewModel{
     var danceVM = DancerViewModel()
     var currentBoard: Board!
     var delegate: FormUpdatesDelegate?
-    var boardVM = BoardViewModel.shared
+    var boardVM = BoardViewModel()
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -59,7 +59,7 @@ class FormationViewModel{
             newFormation.dancers = nil
             newFormation.position = 0
         }
-        newFormation.waitTime = 3
+        
         newFormation.songTime = -1.0
         newFormation.uniqueId = UUID().uuidString
         //newFormation.formationOwner = currentBoard
@@ -146,16 +146,6 @@ class FormationViewModel{
             }
         }
     }
-    
-    func updateFormWaitTime(time: Double){
-        if let curr = getFormation(type: FormationType.current){
-            
-            curr.waitTime = Int16(Double(time))
-            
-
-        }
-    }
-    
     
     func removeFormation(form: Formation){
         

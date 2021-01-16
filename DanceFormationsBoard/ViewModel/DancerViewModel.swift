@@ -39,7 +39,7 @@ class DancerViewModel{
     }
     
     func removeDancer(dancerId: String){
-        if let deletedDancer = currDancerArray.firstIndex(where: {$0.id == dancerId}){
+        if let deletedDancer = currDancerArray.firstIndex(where: {$0.uniqueId == dancerId}){
            
             //currDancerArray.remove(at: deletedDancer)
             let dancerToRemove = currDancerArray[deletedDancer]
@@ -58,7 +58,7 @@ class DancerViewModel{
         newDancer.yPos = yPosition
         newDancer.label = label
         newDancer.color = color
-        newDancer.id = id
+        newDancer.uniqueId = id
        
         //newDancer.owner = selectedFormation
 
@@ -72,7 +72,7 @@ class DancerViewModel{
         newDancer.yPos = dancer.yPos
         newDancer.label = dancer.label
         newDancer.color = dancer.color
-        newDancer.id = dancer.id
+        newDancer.uniqueId = dancer.uniqueId
         //newDancer.owner = selectedFormation
         //self.currDancerArray.append(newDancer)
         

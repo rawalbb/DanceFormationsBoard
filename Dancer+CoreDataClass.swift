@@ -19,7 +19,7 @@ class Dancer: NSManagedObject, Codable {
             throw DecoderConfigurationError.missingManagedObjectContext
         }
         guard let entity = NSEntityDescription.entity(forEntityName: "Dancer", in: context) else {
-            throw NSEntityMigrationPolicyError }
+            throw DecoderConfigurationError.missingManagedObjectContext }
         
         
         self.init(entity: entity, insertInto: context)

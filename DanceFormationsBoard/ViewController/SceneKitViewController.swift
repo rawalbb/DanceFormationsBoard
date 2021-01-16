@@ -238,7 +238,7 @@ class SceneKitViewController: UIViewController {
             //IF there isn't a dancer at that position - not found, add that node
 
 
-            if let toUpdateIndex = currNodes.firstIndex(where: { $0.accessibilityLabel == dancer.id }) {
+            if let toUpdateIndex = currNodes.firstIndex(where: { $0.accessibilityLabel == dancer.uniqueId }) {
 
                 
                 
@@ -317,7 +317,7 @@ class SceneKitViewController: UIViewController {
             let stage = scene.rootNode.childNode(withName: "stage", recursively: true)!
             let cubeNode = templateScene.rootNode.childNode(withName: "boy", recursively: true)! as! SCNNode
             
-            cubeNode.accessibilityLabel = dancer.id
+            cubeNode.accessibilityLabel = dancer.uniqueId
             let width = (stage.boundingBox.max.x - stage.boundingBox.min.x) * 1.5
             let height = (stage.boundingBox.max.z - stage.boundingBox.min.z) * 1.5
             

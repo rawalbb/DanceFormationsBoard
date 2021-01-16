@@ -743,7 +743,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "35"
             endingLineNumber = "35"
-            landmarkName = "encode(to:)"
+            landmarkName = "init(from:)"
             landmarkType = "7">
             <Locations>
                <Location
@@ -777,22 +777,6 @@
                   offsetFromSymbolStart = "402">
                </Location>
             </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "8B914554-40F9-4CD9-A45E-87505EB25406"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "DanceFormationsBoard/Manager/DataSharingManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "20"
-            endingLineNumber = "20"
-            landmarkName = "importData(from:decoder:)"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -873,54 +857,6 @@
             endingLineNumber = "78"
             landmarkName = "sceneToString(view:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "DC530BA1-EB22-4563-B802-494E29BDBF41"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "DanceFormationsBoard/ViewModel/BoardViewModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "23"
-            endingLineNumber = "23"
-            landmarkName = "BoardViewModel"
-            landmarkType = "3">
-            <Locations>
-               <Location
-                  uuid = "DC530BA1-EB22-4563-B802-494E29BDBF41 - a6c93ed013df8db0"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "DanceFormationsBoard.BoardViewModel.boardsArray.didset : Swift.Array&lt;DanceFormationsBoard.Board&gt;"
-                  moduleName = "DanceFormationsBoard"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/bansrirawal/Desktop/iAppDev/DanceFormationsBoard/DanceFormationsBoard/ViewModel/BoardViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "22"
-                  endingLineNumber = "22"
-                  offsetFromSymbolStart = "31">
-               </Location>
-               <Location
-                  uuid = "DC530BA1-EB22-4563-B802-494E29BDBF41 - 8c197053c7d3720d"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (DanceFormationsBoard.Board, DanceFormationsBoard.Board) -&gt; Swift.Bool in DanceFormationsBoard.BoardViewModel.boardsArray.didset : Swift.Array&lt;DanceFormationsBoard.Board&gt;"
-                  moduleName = "DanceFormationsBoard"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/bansrirawal/Desktop/iAppDev/DanceFormationsBoard/DanceFormationsBoard/ViewModel/BoardViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "23"
-                  endingLineNumber = "23"
-                  offsetFromSymbolStart = "111">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1216,22 +1152,6 @@
             startingLineNumber = "70"
             endingLineNumber = "70"
             landmarkName = "getFormation(type:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "662AFD47-461F-4EAF-B3E2-9E6F4A9DBD10"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "DanceFormationsBoard/ViewModel/BoardViewModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "93"
-            endingLineNumber = "93"
-            landmarkName = "addBoardFromUrl(board:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

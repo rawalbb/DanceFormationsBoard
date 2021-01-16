@@ -61,9 +61,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             DataSharingManager.importData(from: url, decoder: decoder)
         }
              
-              
-           //Book.importData(from: url)
-        
+
              return 
     }
     

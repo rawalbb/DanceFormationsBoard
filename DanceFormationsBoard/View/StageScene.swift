@@ -404,7 +404,7 @@ class StageScene: SKScene {
             let n = DanceNode(circleOfRadius: 10)
             n.fillColor = UIColor(hex: dancer.color)
             n.strokeColor = UIColor(hex: dancer.color)
-            n.nodeId = dancer.id
+            n.nodeId = dancer.uniqueId
             let label = SKLabelNode(text: dancer.label)
             
             ////When text is changed it should get the currently selected Node and change it's text
@@ -516,7 +516,7 @@ class StageScene: SKScene {
             //IF there isn't a dancer at that position - not found, add that node
             
 
-            if let toUpdateIndex = currNodes.firstIndex(where: { $0.nodeId == dancer.id }) {
+            if let toUpdateIndex = currNodes.firstIndex(where: { $0.nodeId == dancer.uniqueId }) {
                 let point = PositionManager.percentageToPosition(x: dancer.xPos, y: dancer.yPos, viewW: self.view?.bounds.width, viewH: self.view?.bounds.height)
                 let next = CGPoint(x: point.x, y: point.y)
 
@@ -530,7 +530,7 @@ class StageScene: SKScene {
                 let n = DanceNode(circleOfRadius: 10)
                 n.fillColor = UIColor(hex: dancer.color)
                 n.strokeColor = UIColor(hex: dancer.color)
-                n.nodeId = dancer.id
+                n.nodeId = dancer.uniqueId
                 let label = SKLabelNode(text: dancer.label)
                 
                 ////When text is changed it should get the currently selected Node and change it's text
@@ -569,7 +569,7 @@ class StageScene: SKScene {
             
             for nodes in currNodes{
                 
-                if dancers.firstIndex(where: { $0.id == nodes.nodeId }) != nil {
+                if dancers.firstIndex(where: { $0.uniqueId == nodes.nodeId }) != nil {
 
             }
                 else{

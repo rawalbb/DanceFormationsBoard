@@ -22,7 +22,7 @@ class Formation: NSManagedObject, Codable {
             throw DecoderConfigurationError.missingManagedObjectContext
         }
         guard let entity = NSEntityDescription.entity(forEntityName: "Formation", in: context) else {  throw
-            NSEntityMigrationPolicyError }
+            DecoderConfigurationError.missingManagedObjectContext }
         
         
         self.init(entity: entity, insertInto: context)
