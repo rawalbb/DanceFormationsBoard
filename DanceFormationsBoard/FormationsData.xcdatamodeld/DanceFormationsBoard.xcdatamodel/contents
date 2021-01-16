@@ -11,8 +11,8 @@
     </entity>
     <entity name="Dancer" representedClassName=".Dancer" syncable="YES">
         <attribute name="color" attributeType="String"/>
-        <attribute name="id" attributeType="String"/>
         <attribute name="label" optional="YES" attributeType="String"/>
+        <attribute name="uniqueId" attributeType="String"/>
         <attribute name="xPos" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="yPos" attributeType="Float" usesScalarValueType="YES"/>
     </entity>
@@ -23,11 +23,10 @@
         <attribute name="position" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="songTime" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="uniqueId" attributeType="String"/>
-        <attribute name="waitTime" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <elements>
         <element name="Board" positionX="-27" positionY="54" width="128" height="148"/>
         <element name="Dancer" positionX="-45" positionY="0" width="128" height="118"/>
-        <element name="Formation" positionX="-18" positionY="27" width="128" height="148"/>
+        <element name="Formation" positionX="-18" positionY="27" width="128" height="133"/>
     </elements>
 </model>
