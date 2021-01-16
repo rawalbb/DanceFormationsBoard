@@ -9,6 +9,7 @@ import UIKit
 
 class BoardViewController: KeyViewController {
     
+    
     @IBOutlet weak var boardTableView: UITableView!
     
     var boardVM = BoardViewModel.shared
@@ -18,6 +19,7 @@ class BoardViewController: KeyViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         
         //Sets tableview in inherited class KeyboardViewController
         self.backgroundSV = boardTableView

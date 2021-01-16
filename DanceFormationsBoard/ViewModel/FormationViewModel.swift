@@ -64,7 +64,7 @@ class FormationViewModel{
         newFormation.uniqueId = UUID().uuidString
         //newFormation.formationOwner = currentBoard
         
-        boardVM.getCurrentBoard()?.forms?.append(newFormation)
+       // boardVM.getCurrentBoard()?.forms?.append(newFormation)
     }
     
     func getFormation(type: FormationType) -> Formation?{
@@ -150,7 +150,7 @@ class FormationViewModel{
     func updateFormWaitTime(time: Double){
         if let curr = getFormation(type: FormationType.current){
             
-            curr.waitTime = Double(time)
+            curr.waitTime = Int16(Double(time))
             
 
         }

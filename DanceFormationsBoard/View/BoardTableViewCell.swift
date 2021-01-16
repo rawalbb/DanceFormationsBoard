@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BoardTableViewCell: UITableViewCell {
+class BoardTableViewCell: UITableViewCell, FJButton3DDelegate {
 
     
     @IBOutlet weak var boardNameTextField: UITextField!
@@ -16,10 +16,14 @@ class BoardTableViewCell: UITableViewCell {
     
     @IBOutlet weak var boardImageField: UIImageView!
     
+    @IBOutlet private weak var button3D: FJButton3D!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
+        button3D.delegate = self
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -27,5 +31,12 @@ class BoardTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+
+    func didTap(onButton3D button3d: FJButton3D) {
+        //toggleButton3D.pressed = false
+    }
+
     
 }
+
+

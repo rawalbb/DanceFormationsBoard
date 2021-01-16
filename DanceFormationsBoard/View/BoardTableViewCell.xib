@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="ipad12_9rounded" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="BoardReusableCell" id="KGk-i7-Jjw" customClass="BoardTableViewCell" customModule="DanceFormationsBoard" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="373" height="73"/>
+            <rect key="frame" x="0.0" y="0.0" width="478" height="73"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="373" height="73"/>
+                <rect key="frame" x="0.0" y="0.0" width="478" height="73"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="UFX-8Z-uBa" userLabel="labelStackView">
-                        <rect key="frame" x="40" y="8" width="224" height="73"/>
+                        <rect key="frame" x="40" y="8" width="239" height="73"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="252" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kKN-mF-uhQ">
-                                <rect key="frame" x="0.0" y="0.0" width="224" height="41"/>
+                                <rect key="frame" x="0.0" y="0.0" width="239" height="41"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="textColor" red="0.87843137250000003" green="0.30588235289999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
@@ -31,7 +32,7 @@
                                 </variation>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="idz-QV-4xN" userLabel="Board Date Text View">
-                                <rect key="frame" x="0.0" y="49" width="224" height="24"/>
+                                <rect key="frame" x="0.0" y="49" width="239" height="24"/>
                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="14"/>
                                 <color key="textColor" name="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -42,18 +43,40 @@
                         </subviews>
                     </stackView>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="59s-GE-ocT">
-                        <rect key="frame" x="288" y="8" width="45" height="57"/>
+                        <rect key="frame" x="375" y="8" width="95" height="57"/>
                     </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pbq-MG-dR6" userLabel="buttonView" customClass="FJButton3D" customModule="DanceFormationsBoard" customModuleProvider="target">
+                        <rect key="frame" x="303" y="16.5" width="64" height="40"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="64" id="Fgw-WS-POM"/>
+                            <constraint firstAttribute="height" constant="40" id="Icx-db-QlU"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="frontColor">
+                                <color key="value" red="0.87843137250000003" green="0.30588235289999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="behindColor">
+                                <color key="value" red="0.78443139791488647" green="0.87086755037307739" blue="0.94589728116989136" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="string" keyPath="text" value="3D"/>
+                        </userDefinedRuntimeAttributes>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
-                    <constraint firstItem="UFX-8Z-uBa" firstAttribute="width" secondItem="H2p-sc-9uM" secondAttribute="width" multiplier="0.6" id="9Vh-Z9-gQw"/>
+                    <constraint firstItem="59s-GE-ocT" firstAttribute="leading" secondItem="Pbq-MG-dR6" secondAttribute="trailing" constant="8" id="0Iu-ak-Chh"/>
+                    <constraint firstItem="UFX-8Z-uBa" firstAttribute="width" secondItem="H2p-sc-9uM" secondAttribute="width" multiplier="0.5" id="9Vh-Z9-gQw"/>
                     <constraint firstItem="59s-GE-ocT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="GEu-Lc-Iut"/>
-                    <constraint firstAttribute="trailing" secondItem="59s-GE-ocT" secondAttribute="trailing" constant="40" id="R16-D9-LoY"/>
+                    <constraint firstAttribute="trailing" secondItem="59s-GE-ocT" secondAttribute="trailing" constant="8" id="R16-D9-LoY"/>
                     <constraint firstItem="UFX-8Z-uBa" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="SAl-em-aq2"/>
-                    <constraint firstItem="59s-GE-ocT" firstAttribute="leading" secondItem="UFX-8Z-uBa" secondAttribute="trailing" constant="24" id="eOj-JE-gSb"/>
                     <constraint firstAttribute="bottom" secondItem="59s-GE-ocT" secondAttribute="bottom" constant="8" id="imT-L7-3yz"/>
+                    <constraint firstItem="Pbq-MG-dR6" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="kTW-oe-ynn"/>
                     <constraint firstItem="UFX-8Z-uBa" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="40" id="mhi-Eh-Qa3"/>
+                    <constraint firstItem="Pbq-MG-dR6" firstAttribute="leading" secondItem="UFX-8Z-uBa" secondAttribute="trailing" priority="999" constant="24" id="qmw-hS-UXu"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -61,13 +84,17 @@
                 <outlet property="boardDateTextField" destination="idz-QV-4xN" id="2iK-5T-Icn"/>
                 <outlet property="boardImageField" destination="59s-GE-ocT" id="9N4-cu-F8S"/>
                 <outlet property="boardNameTextField" destination="kKN-mF-uhQ" id="taG-eS-Msf"/>
+                <outlet property="button3D" destination="Pbq-MG-dR6" id="XxC-Bk-Fxa"/>
             </connections>
-            <point key="canvasLocation" x="107.97101449275362" y="70.647321428571431"/>
+            <point key="canvasLocation" x="138.28125" y="70.497803806734993"/>
         </tableViewCell>
     </objects>
     <resources>
         <namedColor name="textColor">
-            <color red="0.75686274509803919" green="0.83921568627450982" blue="0.89803921568627454" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.75700002908706665" green="0.83899998664855957" blue="0.89800000190734863" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>
