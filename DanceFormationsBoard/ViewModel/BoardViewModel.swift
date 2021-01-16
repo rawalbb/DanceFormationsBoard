@@ -55,7 +55,7 @@ class BoardViewModel{
             context.delete(board)
         }
     }
-    
+    //Function: Create New Board
     func createNewBoard(){
         
         let newBoard = Board(context: context)
@@ -79,7 +79,7 @@ class BoardViewModel{
             return boardsArray[index]
         }
         else{
-            print("Getting Current Board Error")
+
             return nil
         }
         
@@ -93,7 +93,7 @@ class BoardViewModel{
             return index
         }
         else{
-            print("Getting Current Board Error")
+
             return nil
         }
     }
@@ -135,10 +135,6 @@ class BoardViewModel{
     
     func updateBoardSong(songUrl: String){
         getCurrentBoard()?.song = songUrl
-        print("Setting Board Song URL ", songUrl)
     }
-    
-
-    
     
 }
