@@ -52,7 +52,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        print("In appppp")
+
         
         if let url = URLContexts.first?.url{
             guard url.pathExtension == "board" else { return }
@@ -60,9 +60,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
               decoder.userInfo[CodingUserInfoKey.managedObjectContext] = context
             DataSharingManager.importData(from: url, decoder: decoder)
         }
-             
-              
-           //Book.importData(from: url)
         
              return 
     }

@@ -16,7 +16,7 @@ class DancerViewModel{
                 print("Error saving context \(error)")
             }
     }
-    
+   
     func loadDancers(selectedFormation: Formation, current: Bool) -> [Dancer]{
         
         let request : NSFetchRequest<Dancer> = Dancer.fetchRequest()
@@ -39,6 +39,11 @@ class DancerViewModel{
     }
     
     func removeDancer(dancerId: String){
+        print("Dancer Id ", dancerId)
+        print("CurrDancer Array ", currDancerArray.count)
+        for node in currDancerArray{
+            print(node.id)
+        }
         if let deletedDancer = currDancerArray.firstIndex(where: {$0.id == dancerId}){
            
             //currDancerArray.remove(at: deletedDancer)

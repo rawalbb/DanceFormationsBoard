@@ -20,14 +20,18 @@ extension GameViewController: StageSceneUpdatesDelegate{
             print("Current Index", formationVM.getCurrentIndex()!)
 
         dancerVM.addDancer(xPosition: xPosition, yPosition: yPosition, label: label, id: id, color: color, selectedFormation: curr)
+            
+            dancerVM.saveDancer()
+            dancerVM.loadDancers(selectedFormation: curr, current: true)
         }
-        dancerVM.saveDancer()
+        
         if let imageData = ImageDataManager.sceneToData(view: stageView){
                 
             formationVM.updateFormImage(imageData: imageData)
             
         
         }
+       
         allFormUpdates()
     }
     
@@ -53,9 +57,17 @@ extension GameViewController: StageSceneUpdatesDelegate{
     func enableTextField(enable: Bool, id: String) {
         enableText = enable
         if enableText{
+            nodeLabelTextField.isHidden = false
             nodeLabelTextField.text = dancerVM.getDancer(id: id)?.label ?? ""
         }
         else{
+//            switch enableText{
+//            case true:
+//                <#code#>
+//            case false:
+//                <#code#>
+//            }
+            nodeLabelTextField.isHidden = true
             nodeLabelTextField.text = ""
         }
         //print(enableText)
@@ -95,12 +107,13 @@ extension GameViewController{
     //stored is start time
     //for formation 1, calculate wait time by getting next formation
     func waitTimeCalculator() -> Double{
-        if let nextStart = formationVM.getFormation(type: FormationType.next)?.songTime, let currStart = formationVM.getFormation(type: FormationType.current)?.songTime {
-            return Double(nextStart - currStart)
-        }
-        else{
-            return 3.0
-        }
+//        if let nextStart = formationVM.getFormation(type: FormationType.next)?.songTime, let currStart = formationVM.getFormation(type: FormationType.current)?.songTime {
+//            return Double(nextStart - currStart)
+//        }
+//        else{
+//            return 3.0
+//        }
+        return 3.0
     }
     
     func initialWaitCalculator(){

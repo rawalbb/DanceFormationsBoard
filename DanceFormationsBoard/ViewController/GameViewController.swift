@@ -45,10 +45,12 @@ class GameViewController: KeyUIViewController{
         
         //Formation Options Properties
         formOptionsView.layer.cornerRadius = 20
-        formOptionsView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        formOptionsView.backgroundColor = #colorLiteral(red: 0.1298420429, green: 0.1298461258, blue: 0.1298439503, alpha: 1)
         formOptionsView.layer.borderWidth = 2
         formOptionsView.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1).cgColor
-        nodeColorButton.layer.cornerRadius = 8
+
+        nodeColorButton.layer.masksToBounds = true
+        nodeColorButton.layer.cornerRadius = nodeColorButton.frame.width/2
         
        //Gets the board
         formationVM.currentBoard = boardVM.getCurrentBoard()
@@ -83,6 +85,7 @@ class GameViewController: KeyUIViewController{
         
 
         nodeLabelTextField.delegate = self
+        nodeLabelTextField.isHidden = true
         nodeLabelTextField.layer.borderWidth = 1
         nodeLabelTextField.layer.borderColor = #colorLiteral(red: 0.3411764706, green: 0.768627451, blue: 0.8196078431, alpha: 1)
         nodeLabelTextField.layer.cornerRadius = 2
@@ -418,6 +421,8 @@ extension GameViewController: UITableViewDataSource, UITableViewDelegate{
         
         let cell = self.formsTableView.dequeueReusableCell(withIdentifier: "ReusableCell") as! FormationSnapshotCell
         cell.formNameTextfield.delegate = self
+        
+        
         cell.formNameTextfield.text = ""
         cell.formNameTextfield.layer.borderWidth = 1
         cell.formNameTextfield.layer.borderColor = #colorLiteral(red: 0.7568627451, green: 0.8392156863, blue: 0.8980392157, alpha: 1)

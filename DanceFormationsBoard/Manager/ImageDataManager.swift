@@ -37,8 +37,6 @@ static func imageToString(image: UIImage) -> String?{
         
         if let data = image.jpegData(compressionQuality: 1.0){
             let decodedString = String(data: data, encoding: .utf8)
-            print("DECODEDDD  ", decodedString)
-            print(data.base64EncodedString())
             return decodedString
         }
         else{
@@ -76,7 +74,6 @@ static func imageToString(image: UIImage) -> String?{
         }
         
         let convertedStr = self.imageToRegString(image: image)
-        print("PRINTING CONVERTED STRING ", convertedStr)
         return convertedStr
     }
     

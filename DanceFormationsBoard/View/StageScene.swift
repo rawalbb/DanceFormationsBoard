@@ -89,7 +89,7 @@ class StageScene: SKScene {
 
 
                 lineNode.strokeColor = #colorLiteral(red: 0.5568627451, green: 0.6039215686, blue: 0.6745098039, alpha: 1)
-                lineNode.lineWidth = 1
+            lineNode.lineWidth = 0.5
                 xArray.append(xCounter)
             
             
@@ -114,11 +114,11 @@ class StageScene: SKScene {
         midYPath.move(to: midYStart)
         midYPath.addLine(to: midYEnd)
         let midXLineNode = SKShapeNode(path: midXPath.cgPath)
-        midXLineNode.strokeColor = #colorLiteral(red: 0.1411764771, green: 0.3960784376, blue: 0.5647059083, alpha: 1)
-        midXLineNode.lineWidth = 2
+        midXLineNode.strokeColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
+        midXLineNode.lineWidth = 1
         let midYLineNode = SKShapeNode(path: midYPath.cgPath)
-        midYLineNode.strokeColor = #colorLiteral(red: 0.1411764771, green: 0.3960784376, blue: 0.5647059083, alpha: 1)
-        midYLineNode.lineWidth = 2
+        midYLineNode.strokeColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
+        midYLineNode.lineWidth = 1
         addChild(midXLineNode)
         addChild(midYLineNode)
         
@@ -137,12 +137,12 @@ class StageScene: SKScene {
             let lineNode = SKShapeNode(path: path.cgPath)
             if num == 0{
                 lineNode.strokeColor = #colorLiteral(red: 0.5587006807, green: 0.6035502553, blue: 0.6746274233, alpha: 1)
-                lineNode.lineWidth = 3
+                lineNode.lineWidth = 4
                 yArray.append(yCounter)
             }
             else{
                 lineNode.strokeColor = #colorLiteral(red: 0.5587006807, green: 0.6035502553, blue: 0.6746274233, alpha: 1)
-                lineNode.lineWidth = 1
+                lineNode.lineWidth = 0.5
                 yArray.append(yCounter)
             
             }
@@ -164,7 +164,7 @@ class StageScene: SKScene {
             
             let lineNode = SKShapeNode(path: path.cgPath)
 
-                lineNode.strokeColor = #colorLiteral(red: 0.1411764771, green: 0.3960784376, blue: 0.5647059083, alpha: 1)
+                lineNode.strokeColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
                 lineNode.lineWidth = 3
    
             
@@ -398,6 +398,8 @@ class StageScene: SKScene {
     func formationSelected(dancers: [Dancer]? = nil, index: IndexPath? = nil){
         
         endActionsHelper()
+        currentNode = nil
+        self.myDelegate.enableTextField(enable: false, id: "")
         
         if let dancers = dancers{
         for dancer in dancers{

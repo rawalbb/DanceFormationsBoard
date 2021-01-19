@@ -17,17 +17,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
-    
-    
-//    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-//        print("In appppp")
-//      guard url.pathExtension == "board" else { return false }
-//        let decoder = JSONDecoder()
-//        decoder.userInfo[CodingUserInfoKey.managedObjectContext] = self.persistentContainer.viewContext
-//        DataSharingManager.importData(from: url, decoder: decoder)
-//    //Book.importData(from: url)
-//      return true
-//    }
 
 //    // MARK: UISceneSession Lifecycle
 //

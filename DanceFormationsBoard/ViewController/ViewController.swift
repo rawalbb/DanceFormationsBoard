@@ -172,7 +172,6 @@ class ViewController: UIViewController {
 
 extension ViewController: TimeDelegate{
     func updateTime(time: Float) {
-        //print("Updating Timing")
         let dcf = DateComponentsFormatter()
         dcf.allowedUnits = [.minute, .second]
         dcf.unitsStyle = .positional

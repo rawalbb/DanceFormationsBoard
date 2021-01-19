@@ -92,7 +92,8 @@ class SceneKitViewController: UIViewController {
             
             let stage = scene.rootNode.childNode(withName: "stage", recursively: true)!
             //let boy = templateScene.rootNode.childNode(withName: "boy", recursively: true)!
-            
+            formationVM.currentBoard = BoardViewModel.shared.getCurrentBoard()
+            formationVM.loadFormations()
             
             
             //let cubeNode = boy
@@ -281,13 +282,10 @@ class SceneKitViewController: UIViewController {
 
         for _ in 0..<formationVM.formationArray.count{
 
-             // print("In For loop")
-               // print(formationVM.currentFormation?.name)
             if let nextFormation = formationVM.getFormation(type: FormationType.next){
                     let nextDancerForms = dancerVM.loadDancers(selectedFormation: nextFormation, current: false)
                 if let index = formationVM.getCurrentIndex(){
-                    
-                   // print("Second Wait Time", time)
+
                     self.playThroughFormations(dancers: nextDancerForms, waitTime: 3.0, transitionTime: 2.0, formIndex: index, totalForms: formationVM.formationArray.count)
                 
                     waitT = 3.0
@@ -322,8 +320,7 @@ class SceneKitViewController: UIViewController {
             let height = (stage.boundingBox.max.z - stage.boundingBox.min.z) * 1.5
             
             let point = PositionManager.percentageToPosition(x: dancer.xPos, y: dancer.yPos, viewW: CGFloat(width), viewH: CGFloat(height))
-            
-            print("POINT 3D, ", point.x, point.y)
+
             cubeNode.position = SCNVector3(point.x + CGFloat(stage.boundingBox.min.x * 1.5), 8, point.y + CGFloat(stage.boundingBox.min.z * 1.5)) // SceneKit/AR coordinates are in meters
 
             sceneView.scene?.rootNode.addChildNode(cubeNode)
