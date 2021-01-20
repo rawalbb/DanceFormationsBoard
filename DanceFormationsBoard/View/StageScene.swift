@@ -345,7 +345,7 @@ class StageScene: SKScene {
                 
                 
                 
-                let point = PositionManager.positionToPercentage(x: node.position.x, y: node.position.y, viewW: self.view?.bounds.width, viewH: self.view?.bounds.height)
+                let point = PositionManager.positionToPercentage(x: node.position.x, y: node.position.y, viewW: self.view?.frame.width, viewH: self.view?.frame.height)
 
             self.myDelegate.dancerMoved(id: id, xPosition: Float(point.x), yPosition: Float(point.y))
             }

@@ -8,6 +8,7 @@
 import UIKit
 import QuartzCore
 import SceneKit
+import SpriteKit
 
 class SceneKitViewController: UIViewController {
 
@@ -17,13 +18,76 @@ class SceneKitViewController: UIViewController {
     var formationVM: FormationViewModel!
     var dancerVM: DancerViewModel!
     var arrayOfActions: [SCNAction] = []
+    var spriteScene: OverlayScene!
+    var prevNode: SKNode?
+    var nextNode: SKNode?
+    var playNode: SKNode?
+    var musicNode: SKNode?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupScene()
         
+        self.spriteScene = OverlayScene(size: self.view.frame.size)
+        self.spriteScene.isUserInteractionEnabled = true
+        prevNode = self.spriteScene.childNode(withName: "prevNode") as! SKSpriteNode
+        nextNode = self.spriteScene.childNode(withName: "nextNode") as! SKSpriteNode
+        playNode = self.spriteScene.childNode(withName: "playNode") as! SKSpriteNode
+        musicNode = self.spriteScene.childNode(withName: "musicNode") as! SKSpriteNode
+        self.spriteScene.overlayDelegate = self
+            self.sceneView.overlaySKScene = self.spriteScene
         
+        
+        // add a tap gesture recognizer
+//               let tapGesture = UITapGestureRecognizer(target: self, action:
+//                   #selector(handleTap(_:)))
+//                sceneView.addGestureRecognizer(tapGesture)
+
+// result.node is the node that the user tapped on
+                // perform any actions you want on it
         // Do any additional setup after loading the view.
+    }
+    
+    @objc func handleTap(_ gestureRecognize: UIGestureRecognizer) {
+     //retrieve the SCNView
+    let scnView = self.view as! SCNView
+
+    // check what nodes are tapped
+        let p = gestureRecognize.location(in: scnView)
+    
+    let hitResults = scnView.hitTest(p, options: [:])
+    // check that we clicked on at least one object
+    if hitResults.count > 0 {
+        // retrieved the first clicked object
+        let result: AnyObject = hitResults[0]
+        print(prevNode?.position.x, prevNode?.position.y)
+        if prevNode!.contains(p){
+            print("PREV NODEIT IS")
+        }
+        guard let resultNode = result as? SKSpriteNode else { return }
+
+
+
+                if let name = resultNode.name
+                {
+                    switch name{
+                    case "prevNode":
+                        print("prev node touched")
+
+                    case "nextNode":
+                        print("next node touched")
+
+                    case "playNode":
+                        print("play node touched")
+
+                    case "musicNode":
+                        print("music node touched")
+                    default:
+                        print("idk")
+                    }
+                }
+
+    }
     }
        
             // create a new scene
@@ -95,16 +159,30 @@ class SceneKitViewController: UIViewController {
             formationVM.currentBoard = BoardViewModel.shared.getCurrentBoard()
             formationVM.loadFormations()
             
-            
+  
             //let cubeNode = boy
 
             //cubeNode.position = stage.position
             //cubeNode.position = SCNVector3(0, 8, 0) // SceneKit/AR coordinates are in meters
             //sceneView.scene?.rootNode.addChildNode(cubeNode)
            // drawGrid()
-            playFormations()
+            //playFormations()
+            
+            formationVM.setCurrentSelection(index: 0)
+            if let curr = formationVM.getFormation(type: FormationType.current){
+                let dancers = dancerVM.loadDancers(selectedFormation: curr, current: true)
+                self.formationSelected(dancers: dancers)
+            }
+            else{
+                print("Error loading in play formations pressed ")
+            }
             
         }
+    
+    func starButtonClicked(){
+               print("Button Clicked")
+
+           }
     
     func convertToStageDimensions(originalX: Float, originalY: Float) -> SCNVector3{
         let stage = scene.rootNode.childNode(withName: "stage", recursively: true)!
@@ -115,7 +193,7 @@ class SceneKitViewController: UIViewController {
         let point = PositionManager.percentageToPosition(x: originalX, y: originalY, viewW: CGFloat(width), viewH: CGFloat(length))
 
 
-        let newVector = SCNVector3(point.x + CGFloat(stage.boundingBox.min.x * 1.5), 8, point.y + CGFloat(stage.boundingBox.min.z * 1.5))
+        let newVector = SCNVector3(point.x + CGFloat(stage.boundingBox.min.x * 1.5), 5, point.y + CGFloat(stage.boundingBox.min.z * 1.5))
         return newVector
 
     }
@@ -171,8 +249,8 @@ class SceneKitViewController: UIViewController {
         
 
         
-        @objc
-        func handleTap(_ gestureRecognize: UIGestureRecognizer) {
+       // @objc
+        //func handleTap(_ gestureRecognize: UIGestureRecognizer) {
             // retrieve the SCNView
     //        let scnView = self.view as! SCNView
     //
@@ -205,7 +283,7 @@ class SceneKitViewController: UIViewController {
     //
     //            SCNTransaction.commit()
     //        }
-        }
+        //}
         
         override var shouldAutorotate: Bool {
             return false
@@ -268,6 +346,24 @@ class SceneKitViewController: UIViewController {
         
 }
     
+        func endActionsHelper(removeDancers: Bool = true){
+            
+            sceneView.scene?.rootNode.enumerateChildNodes({ (dancerNode, stop) in
+                sceneView.scene?.rootNode.removeAllActions()
+                if dancerNode.name == "boy"{
+                    dancerNode.removeFromParentNode()
+                    dancerNode.removeAllActions()
+                    
+                }
+                
+                 if dancerNode.name == "music"{
+                    dancerNode.removeAllActions()
+                    dancerNode.removeFromParentNode()
+                 }
+            })
+            }
+
+    
     func playFormations(){
         self.arrayOfActions = []
         formationVM.setCurrentSelection(index: 0)
@@ -315,13 +411,19 @@ class SceneKitViewController: UIViewController {
             let stage = scene.rootNode.childNode(withName: "stage", recursively: true)!
             let cubeNode = templateScene.rootNode.childNode(withName: "boy", recursively: true)! as! SCNNode
             
+            cubeNode.geometry?.material(named: "headColor")?.diffuse.contents = UIColor(hex: dancer.color)
+            
+            cubeNode.geometry?.material(named: "legColor")?.diffuse.contents = UIColor(hex: dancer.color)
+            cubeNode.geometry?.material(named: "bodyColor")?.diffuse.contents = UIColor(hex: dancer.color)
+                
+            
             cubeNode.accessibilityLabel = dancer.id
             let width = (stage.boundingBox.max.x - stage.boundingBox.min.x) * 1.5
             let height = (stage.boundingBox.max.z - stage.boundingBox.min.z) * 1.5
             
             let point = PositionManager.percentageToPosition(x: dancer.xPos, y: dancer.yPos, viewW: CGFloat(width), viewH: CGFloat(height))
 
-            cubeNode.position = SCNVector3(point.x + CGFloat(stage.boundingBox.min.x * 1.5), 8, point.y + CGFloat(stage.boundingBox.min.z * 1.5)) // SceneKit/AR coordinates are in meters
+            cubeNode.position = SCNVector3(point.x + CGFloat(stage.boundingBox.min.x * 1.5), 5, point.y + CGFloat(stage.boundingBox.min.z * 1.5)) // SceneKit/AR coordinates are in meters
 
             sceneView.scene?.rootNode.addChildNode(cubeNode)
             //closestNode!.lineWidth = 20
@@ -332,5 +434,61 @@ class SceneKitViewController: UIViewController {
         
     }
     
+    func playNextFormation(){
+        
+        self.arrayOfActions = []
+        
+        if let nextFormation = formationVM.getFormation(type: FormationType.next){
+            
+                let nextDancerForms = dancerVM.loadDancers(selectedFormation: nextFormation, current: false)
+            if let nextIndex = formationVM.getCurrentIndex(){
+                formationVM.setCurrentSelection(index: nextIndex + 1)
+            }
+            if let index = formationVM.getCurrentIndex(){
+                self.playThroughFormations(dancers: nextDancerForms, waitTime: 0.0, transitionTime: 2.0, formIndex: index, totalForms: formationVM.formationArray.count)
+            }
+        }
+        scene.rootNode.runAction(SCNAction.sequence(self.arrayOfActions))
+    }
+    
+    func playPrevFormation(){
 
+        self.arrayOfActions = []
+        
+        if let prevFormation = formationVM.getFormation(type: FormationType.previous){
+            //Get previous, load dancers from previous,
+                let nextDancerForms = dancerVM.loadDancers(selectedFormation: prevFormation, current: false)
+
+            if let index = formationVM.getCurrentIndex(){
+                formationVM.setCurrentSelection(index: index - 1)
+                self.playThroughFormations(dancers: nextDancerForms, waitTime: 0.0, transitionTime: 2.0, formIndex: index, totalForms: formationVM.formationArray.count)
+            }
+        }
+        scene.rootNode.runAction(SCNAction.sequence(self.arrayOfActions))
+    }
 }
+
+extension SceneKitViewController: OverlaySceneDelegate{
+    func playPressed() {
+        print("YOO")
+        playFormations()
+    }
+    
+    func nextPressed() {
+        print("YOO")
+        playNextFormation()
+    }
+    
+    func prevPressed() {
+        print("YOO")
+        playPrevFormation()
+    }
+    
+    func musicPressed() {
+        print("YOO")
+    }
+    
+      
+    
+}
+
