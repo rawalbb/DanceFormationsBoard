@@ -88,7 +88,7 @@ class ViewController: UIViewController {
     }
     
     func showSimpleAlert() {
-        let alert = UIAlertController(title: "Scrubber", message: "Current formation start time exceeds next formation start time. Select Continue to set the following formation times to default",         preferredStyle: UIAlertController.Style.alert)
+        let alert = UIAlertController(title: "Scrubber", message: "Current formation start time exceeds next formation start time. Select Continue to set the following formation wait times to 3.0",         preferredStyle: UIAlertController.Style.alert)
 
         alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler: { _ in
             self.dismiss(animated: true, completion: nil)
@@ -107,47 +107,67 @@ class ViewController: UIViewController {
     
     @IBAction func timingSelectedPressed(_ sender: UIBarButtonItem) {
         
-        if prevSongTiming == nil && nextSongTiming == nil{
-            self.delegate?.timeSelected(time: self.currSongTiming ?? 0.0)
-            self.navigationController?.popViewController(animated: true)
-            //self.dismiss(animated: true, completion: nil)
-        }
-        else if prevSongTiming != nil && nextSongTiming == nil{
-            if let curr = currSongTiming, let prev = prevSongTiming{
-                if prev < curr{
-                    self.delegate?.timeSelected(time: curr)
-                    self.navigationController?.popViewController(animated: true)
-                }
-                else{
-                    print("Cannot close VC, timing not valid, prev")
-                }
+        //If it's the first formation, update form timings for next few
+        //song def can't be less then previous
+        guard let currTiming = currSongTiming else { return }
+        
+        if let nextTiming = nextSongTiming{
+            if currTiming > nextTiming{
+                self.delegate?.timeSelected(time: currTiming)
+                self.delegate?.updateFollowingForms()
+                self.navigationController?.popViewController(animated: true)
             }
-        }
-        else if prevSongTiming == nil && nextSongTiming != nil {
-            if let curr = currSongTiming, let next = nextSongTiming{
-                if curr < next{
-                    self.delegate?.timeSelected(time: curr)
-                    self.navigationController?.popViewController(animated: true)
-                }
-                else{
-                    print("Cannot close VC, timing not valid, enxt")
-                }
+            else{
+                self.delegate?.timeSelected(time: currTiming)
+                self.navigationController?.popViewController(animated: true)
             }
         }
         else{
-            if let curr = currSongTiming, let prev = prevSongTiming, let next = nextSongTiming{
-                if curr < next && prev < curr{
-                    self.delegate?.timeSelected(time: curr)
-                    self.navigationController?.popViewController(animated: true)
-                }
-                else if prev < curr && curr > next{
-                    self.showSimpleAlert()
-                }
-                else{
-                    print("Cannot close VC, timing not valid both present")
-                }
-            }
+            self.delegate?.timeSelected(time: currTiming)
+            self.navigationController?.popViewController(animated: true)
         }
+      
+//        if prevSongTiming == nil && nextSongTiming == nil{
+//            self.delegate?.timeSelected(time: self.currSongTiming ?? 0.0)
+//            self.navigationController?.popViewController(animated: true)
+//            //self.dismiss(animated: true, completion: nil)
+//        }
+//        else if prevSongTiming != nil && nextSongTiming == nil{
+//            if let curr = currSongTiming, let prev = prevSongTiming{
+//                if prev < curr{
+//                    self.delegate?.timeSelected(time: curr)
+//                    self.navigationController?.popViewController(animated: true)
+//                }
+//                else{
+//                    print("Cannot close VC, timing not valid, prev")
+//                }
+//            }
+//        }
+//        else if prevSongTiming == nil && nextSongTiming != nil {
+//            if let curr = currSongTiming, let next = nextSongTiming{
+//                if curr < next{
+//                    self.delegate?.timeSelected(time: curr)
+//                    self.navigationController?.popViewController(animated: true)
+//                }
+//                else{
+//                    print("Cannot close VC, timing not valid, enxt")
+//                }
+//            }
+//        }
+//        else{
+//            if let curr = currSongTiming, let prev = prevSongTiming, let next = nextSongTiming{
+//                if curr < next && prev < curr{
+//                    self.delegate?.timeSelected(time: curr)
+//                    self.navigationController?.popViewController(animated: true)
+//                }
+//                else if prev < curr && curr > next{
+//                    self.showSimpleAlert()
+//                }
+//                else{
+//                    print("Cannot close VC, timing not valid both present")
+//                }
+//            }
+//        }
 //        if prevSongTiming == nil && nextSongTiming != nil{
 ////            if currSongTiming < nextSongTiming{
 ////                //trigger method where it sets all remaining formations to default 3.0 seconds

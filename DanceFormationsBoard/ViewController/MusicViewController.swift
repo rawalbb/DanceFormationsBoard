@@ -19,7 +19,8 @@ class MusicViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
 
     @IBOutlet var tableView : UITableView?
-    let myTableView: UITableView = UITableView( frame: CGRect.zero, style: .grouped )
+    //let myTableView: UITableView = UITableView( frame: CGRect.zero, style: .grouped )
+    
 
 
     var audio: AVAudioPlayer?
@@ -47,7 +48,7 @@ class MusicViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
                 //let sound = NSURL(fileURLWithPath: Bundle.main.path(forResource: "Bulleya", ofType: "mp3")!)
         
- 
+                    tableView?.backgroundColor = UIColor.clear
     }
     }
 
@@ -72,7 +73,8 @@ class MusicViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
         let cell = tableView.dequeueReusableCell(
             withIdentifier: "MusicPlayerCell",
-            for: indexPath) 
+            for: indexPath)
+        cell.textLabel?.textColor = UIColor.white
         cell.textLabel?.text = finalSongsArray[indexPath.row].title
         print("Text", finalSongsArray[indexPath.row].title, finalSongsArray[indexPath.row].persistentID)
         //cell.labelMusicTitle?.text = albums[indexPath.section].songs[indexPath.row].songTitle

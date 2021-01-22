@@ -27,7 +27,7 @@ public class ASWaveformPlayerView: UIView {
     private var waveforms = [CALayer]()
     
     public var currentPlaybackTime: CMTime = CMTimeMake(value: 0, timescale: 1)
-    public var  imageThumbnail = #imageLiteral(resourceName: "musicSelectionIcon")
+    public var  imageThumbnail = #imageLiteral(resourceName: "addMusicIcon")
     private let trackLayer = CALayer()
     //private var mySlider = UISlider()
     public var prevPlaybackTime: CMTime = CMTimeMake(value: 0, timescale: 1)
@@ -57,7 +57,7 @@ public class ASWaveformPlayerView: UIView {
         audioPlayer = AVPlayer(url: audioURL)
         
         super.init(frame: .zero)
-        prevPlaybackTime = prevTime
+        prevPlaybackTime = prevTime + CMTimeMake(value: 3, timescale: 60)
         currentPlaybackTime = currTime
         audioPlayer.seek(to: currentPlaybackTime, completionHandler: { [weak self] (_) in
             print("Current Play Back Time when initially seeking", self?.currentPlaybackTime)

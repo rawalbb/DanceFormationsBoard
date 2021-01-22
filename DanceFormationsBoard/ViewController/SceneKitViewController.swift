@@ -187,13 +187,13 @@ class SceneKitViewController: UIViewController {
     func convertToStageDimensions(originalX: Float, originalY: Float) -> SCNVector3{
         let stage = scene.rootNode.childNode(withName: "stage", recursively: true)!
 
-        let width = (stage.boundingBox.max.x - stage.boundingBox.min.x) * 1.5
-        let length = (stage.boundingBox.max.z - stage.boundingBox.min.z) * 1.5
+        let width = (stage.boundingBox.max.x - stage.boundingBox.min.x) * 2.0
+        let length = (stage.boundingBox.max.z - stage.boundingBox.min.z) * 1.8
         
         let point = PositionManager.percentageToPosition(x: originalX, y: originalY, viewW: CGFloat(width), viewH: CGFloat(length))
 
 
-        let newVector = SCNVector3(point.x + CGFloat(stage.boundingBox.min.x * 1.5), 5, point.y + CGFloat(stage.boundingBox.min.z * 1.5))
+        let newVector = SCNVector3(point.x + CGFloat(stage.boundingBox.min.x * 2.0), 5, -(point.y + CGFloat(stage.boundingBox.min.z * 1.8)))
         return newVector
 
     }
@@ -202,16 +202,16 @@ class SceneKitViewController: UIViewController {
     func drawGrid(){
         let stage = scene.rootNode.childNode(withName: "stage", recursively: true)!
         
-        let gridWidth = CGFloat(stage.boundingBox.max.x - stage.boundingBox.min.x) * 1.5 - 4
-        let gridZ = CGFloat(stage.boundingBox.max.z - stage.boundingBox.min.z) * 1.5 - 4
+        let gridWidth = CGFloat(stage.boundingBox.max.x - stage.boundingBox.min.x) * 2.0 - 4
+        let gridZ = CGFloat(stage.boundingBox.max.z - stage.boundingBox.min.z) * 1.8 - 4
         print("Grid Height, Grid Width ", gridZ, gridWidth)
         let box = SCNBox(width: 0.5, height: 0.5, length: gridZ, chamferRadius: 0)
         let box2 = SCNBox(width: gridWidth, height: 0.5, length: 0.5, chamferRadius: 0)
         
         
-        var xCounter: CGFloat = CGFloat(stage.boundingBox.min.x) * 1.5 + 2
+        var xCounter: CGFloat = CGFloat(stage.boundingBox.min.x) * 2.0 + 2
         print("XCounter Original", xCounter)
-        var yCounter: CGFloat = CGFloat(stage.boundingBox.min.z) * 1.5 + 2
+        var yCounter: CGFloat = CGFloat(stage.boundingBox.min.z) * 1.8 + 2
         let increment: CGFloat = gridWidth/10
         let yIncrement: CGFloat = gridZ/10
         var xNumLines: Int {
@@ -366,6 +366,7 @@ class SceneKitViewController: UIViewController {
     
     func playFormations(){
         self.arrayOfActions = []
+        self.endActionsHelper()
         formationVM.setCurrentSelection(index: 0)
         if let curr = formationVM.getFormation(type: FormationType.current){
             let dancers = dancerVM.loadDancers(selectedFormation: curr, current: true)
@@ -418,12 +419,12 @@ class SceneKitViewController: UIViewController {
                 
             
             cubeNode.accessibilityLabel = dancer.id
-            let width = (stage.boundingBox.max.x - stage.boundingBox.min.x) * 1.5
-            let height = (stage.boundingBox.max.z - stage.boundingBox.min.z) * 1.5
+            let width = (stage.boundingBox.max.x - stage.boundingBox.min.x) * 2.0
+            let height = (stage.boundingBox.max.z - stage.boundingBox.min.z) * 1.8
             
             let point = PositionManager.percentageToPosition(x: dancer.xPos, y: dancer.yPos, viewW: CGFloat(width), viewH: CGFloat(height))
 
-            cubeNode.position = SCNVector3(point.x + CGFloat(stage.boundingBox.min.x * 1.5), 5, point.y + CGFloat(stage.boundingBox.min.z * 1.5)) // SceneKit/AR coordinates are in meters
+            cubeNode.position = SCNVector3(point.x + CGFloat(stage.boundingBox.min.x * 2.0), 5, -(point.y + CGFloat(stage.boundingBox.min.z * 1.8))) // SceneKit/AR coordinates are in meters
 
             sceneView.scene?.rootNode.addChildNode(cubeNode)
             //closestNode!.lineWidth = 20
@@ -486,6 +487,29 @@ extension SceneKitViewController: OverlaySceneDelegate{
     
     func musicPressed() {
         print("YOO")
+    }
+    
+    
+    
+    func calculateWaitHelper(withMusic: Bool = false) -> Double{
+        var wait = 3.0
+        guard let next = formationVM.getFormation(type: FormationType.next) else {
+            return wait
+        }
+        guard let curr = formationVM.getFormation(type: FormationType.current) else {
+            return wait
+        }
+        if !withMusic{
+                wait = 3.0
+            
+        }
+        if withMusic{
+            wait = Double(next.songTime - curr.songTime)
+        }
+   //go through and set all the wait times, prev + 3 to a certain amount initially when music is loaded
+        //when edited, select next song times to be + 3 seconds after
+        //when
+        return wait
     }
     
       

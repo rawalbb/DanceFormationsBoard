@@ -37,10 +37,10 @@
                                 </prototypes>
                             </tableView>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CTd-Iw-4qb" userLabel="DetailView">
-                                <rect key="frame" x="133" y="330.33333333333331" width="630" height="62.666666666666686"/>
+                                <rect key="frame" x="110.33333333333331" y="330.33333333333331" width="675.66666666666674" height="62.666666666666686"/>
                                 <subviews>
                                     <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="pzS-aj-Tfg" userLabel="detailStackView">
-                                        <rect key="frame" x="0.0" y="3.9999999999999964" width="630" height="58.666666666666657"/>
+                                        <rect key="frame" x="0.0" y="3.9999999999999964" width="675.66666666666663" height="58.666666666666657"/>
                                         <subviews>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t8c-kT-pJd">
                                                 <rect key="frame" x="0.0" y="17.333333333333371" width="24" height="24"/>
@@ -57,7 +57,7 @@
                                                 </connections>
                                             </button>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="H2Q-8d-X0A">
-                                                <rect key="frame" x="54" y="12.333333333333371" width="112" height="34"/>
+                                                <rect key="frame" x="54.000000000000014" y="12.333333333333371" width="111.99999999999999" height="34"/>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
@@ -71,11 +71,11 @@
                                                 </connections>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="752" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Q1-Tz-DJH">
-                                                <rect key="frame" x="196" y="1" width="24.333333333333343" height="56.666666666666664"/>
-                                                <color key="tintColor" red="0.3411764706" green="0.76862745099999996" blue="0.81960784310000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <rect key="frame" x="196" y="1" width="30.333333333333343" height="56.666666666666664"/>
+                                                <color key="tintColor" name="color-icons"/>
                                                 <state key="normal">
-                                                    <imageReference key="image" image="person.fill.checkmark" catalog="system" symbolScale="medium"/>
-                                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="medium"/>
+                                                    <imageReference key="image" image="person.fill.checkmark" catalog="system" symbolScale="large"/>
+                                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
                                                 </state>
                                                 <state key="disabled">
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
@@ -91,11 +91,11 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="coJ-4r-bti" userLabel="addFormsButton">
-                                                <rect key="frame" x="250.33333333333329" y="18.333333333333371" width="23.666666666666657" height="22"/>
-                                                <color key="tintColor" red="0.3411764706" green="0.76862745099999996" blue="0.81960784310000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <rect key="frame" x="256.33333333333337" y="18.333333333333371" width="29.333333333333314" height="22"/>
+                                                <color key="tintColor" name="color-icons"/>
                                                 <state key="normal">
                                                     <color key="titleColor" name="navBarColor"/>
-                                                    <imageReference key="image" image="plus.rectangle.fill" catalog="system" symbolScale="medium"/>
+                                                    <imageReference key="image" image="plus.rectangle.fill" catalog="system" symbolScale="large"/>
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="medium"/>
                                                 </state>
                                                 <connections>
@@ -103,10 +103,10 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QOa-ZT-f3p" userLabel="deleteFormsButton">
-                                                <rect key="frame" x="304" y="18.333333333333371" width="19" height="22"/>
-                                                <color key="tintColor" red="0.3411764706" green="0.76862745099999996" blue="0.81960784310000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <rect key="frame" x="315.66666666666669" y="16.666666666666686" width="23.333333333333314" height="25.666666666666671"/>
+                                                <color key="tintColor" name="color-icons"/>
                                                 <state key="normal">
-                                                    <imageReference key="image" image="trash.fill" catalog="system" symbolScale="medium"/>
+                                                    <imageReference key="image" image="trash.fill" catalog="system" symbolScale="large"/>
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="medium"/>
                                                 </state>
                                                 <connections>
@@ -114,11 +114,11 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qdh-BM-qXd" userLabel="playFormsButton">
-                                                <rect key="frame" x="353" y="18.333333333333371" width="23.666666666666686" height="22"/>
-                                                <color key="tintColor" red="0.3411764705882353" green="0.76862745098039209" blue="0.81960784313725488" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <rect key="frame" x="369" y="18.333333333333371" width="29.333333333333314" height="22"/>
+                                                <color key="tintColor" name="color-icons"/>
                                                 <state key="normal">
                                                     <color key="titleColor" red="0.30588236451148987" green="0.80392158031463623" blue="0.76862746477127075" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <imageReference key="image" image="play.rectangle.fill" catalog="system" symbolScale="medium"/>
+                                                    <imageReference key="image" image="play.rectangle.fill" catalog="system" symbolScale="large"/>
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="medium"/>
                                                 </state>
                                                 <connections>
@@ -126,11 +126,11 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eGE-wm-H9t" userLabel="prevFormsButton">
-                                                <rect key="frame" x="406.66666666666663" y="18.333333333333371" width="19.333333333333314" height="22"/>
-                                                <color key="tintColor" red="0.3411764706" green="0.76862745099999996" blue="0.81960784310000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <rect key="frame" x="428.33333333333331" y="18.333333333333371" width="23.666666666666686" height="22"/>
+                                                <color key="tintColor" name="color-icons"/>
                                                 <state key="normal">
                                                     <color key="titleColor" red="0.3058823645" green="0.80392158030000005" blue="0.76862746479999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <imageReference key="image" image="chevron.left.square.fill" catalog="system" symbolScale="medium"/>
+                                                    <imageReference key="image" image="chevron.left.square.fill" catalog="system" symbolScale="large"/>
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="medium"/>
                                                 </state>
                                                 <connections>
@@ -138,11 +138,11 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8PH-Aw-pKR" userLabel="nextFormsButton">
-                                                <rect key="frame" x="456" y="18.333333333333371" width="19.333333333333314" height="22"/>
-                                                <color key="tintColor" red="0.3411764706" green="0.76862745099999996" blue="0.81960784310000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <rect key="frame" x="482.00000000000006" y="18.333333333333371" width="23.666666666666686" height="22"/>
+                                                <color key="tintColor" name="color-icons"/>
                                                 <state key="normal">
                                                     <color key="titleColor" name="navBarColor"/>
-                                                    <imageReference key="image" image="chevron.right.square.fill" catalog="system" symbolScale="medium"/>
+                                                    <imageReference key="image" image="chevron.right.square.fill" catalog="system" symbolScale="large"/>
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="medium"/>
                                                 </state>
                                                 <connections>
@@ -150,22 +150,22 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="753" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="foS-3t-kg9" userLabel="addMusic">
-                                                <rect key="frame" x="505.33333333333337" y="18.333333333333371" width="24" height="22"/>
+                                                <rect key="frame" x="535.66666666666663" y="17.333333333333371" width="29.666666666666629" height="24"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <color key="tintColor" red="0.3411764706" green="0.76862745099999996" blue="0.81960784310000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="tintColor" name="color-icons"/>
                                                 <state key="normal">
-                                                    <imageReference key="image" image="music.note.house.fill" catalog="system" symbolScale="medium"/>
+                                                    <imageReference key="image" image="memories.badge.plus" catalog="system" symbolScale="large"/>
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="medium"/>
                                                 </state>
                                                 <connections>
                                                     <action selector="addMusicPressed:" destination="6mI-VL-OAy" eventType="touchUpInside" id="991-qf-9vH"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5lC-EW-fIw" userLabel="musicToggle">
-                                                <rect key="frame" x="559.33333333333337" y="18.333333333333371" width="23.333333333333371" height="22"/>
-                                                <color key="tintColor" red="0.3411764706" green="0.76862745099999996" blue="0.81960784310000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5lC-EW-fIw" userLabel="playMusic">
+                                                <rect key="frame" x="595.33333333333326" y="17" width="29.333333333333371" height="24.666666666666671"/>
+                                                <color key="tintColor" name="color-icons"/>
                                                 <state key="normal">
-                                                    <imageReference key="image" image="music.quarternote.3" catalog="system" symbolScale="medium"/>
+                                                    <imageReference key="image" image="music.house.fill" catalog="system" symbolScale="large"/>
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="medium"/>
                                                 </state>
                                                 <state key="selected" image="musicSelectionIcon"/>
@@ -174,10 +174,10 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aUV-y0-MRO" userLabel="musicScrubberButton">
-                                                <rect key="frame" x="612.66666666666663" y="18.333333333333371" width="17.333333333333371" height="22"/>
-                                                <color key="tintColor" red="0.3411764706" green="0.76862745099999996" blue="0.81960784310000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <rect key="frame" x="654.66666666666663" y="18.333333333333371" width="21" height="22"/>
+                                                <color key="tintColor" name="color-icons"/>
                                                 <state key="normal">
-                                                    <imageReference key="image" image="waveform" catalog="system" symbolScale="medium"/>
+                                                    <imageReference key="image" image="waveform" catalog="system" symbolScale="large"/>
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="medium"/>
                                                 </state>
                                                 <connections>
@@ -217,8 +217,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Formation" largeTitleDisplayMode="always" id="ab3-Lf-EWg">
-                        <barButtonItem key="rightBarButtonItem" title="Item" image="info.circle.fill" catalog="system" id="cpE-xI-83i">
-                            <color key="tintColor" red="0.87843137250000003" green="0.30588235289999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <barButtonItem key="rightBarButtonItem" title="Item" id="cpE-xI-83i">
+                            <imageReference key="image" image="info.circle.fill" catalog="system" symbolScale="large"/>
+                            <color key="tintColor" name="color-heading"/>
                             <connections>
                                 <action selector="infoButtonPressed:" destination="6mI-VL-OAy" id="AvH-FG-0HQ"/>
                             </connections>
@@ -230,6 +231,7 @@
                         <outlet property="formsTableView" destination="1lt-HL-pxQ" id="obn-Y0-dTc"/>
                         <outlet property="hieracrchyView" destination="XmL-ea-QKr" id="IhQ-B9-LCX"/>
                         <outlet property="labelToggleButton" destination="6Q1-Tz-DJH" id="JD4-Kp-N8z"/>
+                        <outlet property="musicTimingButton" destination="aUV-y0-MRO" id="JCk-1Z-LS4"/>
                         <outlet property="musicToggleButton" destination="5lC-EW-fIw" id="Zj1-s4-ntW"/>
                         <outlet property="nodeColorButton" destination="t8c-kT-pJd" id="sgW-j2-ESG"/>
                         <outlet property="nodeLabelTextField" destination="H2Q-8d-X0A" id="hM8-iU-fJ2"/>
@@ -252,6 +254,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Formation Music Selection" id="wqH-D7-Zde">
                         <barButtonItem key="rightBarButtonItem" title="Done" id="neG-C9-Hbg">
+                            <color key="tintColor" name="color-nav"/>
                             <connections>
                                 <action selector="timingSelectedPressed:" destination="qaU-a9-LzJ" id="Zd8-WG-P3d"/>
                             </connections>
@@ -272,7 +275,7 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3uk-xV-Tkx">
                                 <rect key="frame" x="44" y="0.0" width="808" height="393"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" name="color-black"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MusicPlayerCell" id="4DB-mq-b5h">
                                         <rect key="frame" x="0.0" y="28" width="808" height="43.666667938232422"/>
@@ -351,10 +354,12 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="My Boards" largeTitleDisplayMode="always" id="6g4-es-sin">
-                        <barButtonItem key="backBarButtonItem" title="Boards" id="0Di-LA-83i"/>
+                        <barButtonItem key="backBarButtonItem" title="Boards" id="0Di-LA-83i">
+                            <color key="tintColor" name="color-heading"/>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Item" id="7kV-HI-6MA">
                             <imageReference key="image" image="plus.rectangle.fill.on.rectangle.fill" catalog="system" symbolScale="large"/>
-                            <color key="tintColor" red="0.75686274509999996" green="0.83921568629999999" blue="0.8980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="tintColor" name="color-nav"/>
                             <connections>
                                 <action selector="addBoardPressed:" destination="kuo-cn-jFQ" id="6c8-Cb-dfu"/>
                             </connections>
@@ -412,7 +417,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Board Notes" largeTitleDisplayMode="always" id="TvP-Q7-lV8">
                         <barButtonItem key="rightBarButtonItem" title="Done" id="ihJ-oD-P3E">
-                            <color key="tintColor" red="0.87843137250000003" green="0.30588235289999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="tintColor" name="color-heading"/>
                             <connections>
                                 <action selector="donePressed:" destination="FAy-EC-sk5" id="fRV-99-19M"/>
                             </connections>
@@ -435,11 +440,11 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="621-9T-msw">
                         <rect key="frame" x="0.0" y="0.0" width="896" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" name="AccentColor"/>
-                        <color key="tintColor" red="0.87843137250000003" green="0.30588235289999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" name="color-black"/>
+                        <color key="tintColor" name="color-black"/>
+                        <color key="barTintColor" name="color-black"/>
                         <textAttributes key="titleTextAttributes">
-                            <color key="textColor" name="textColor"/>
+                            <color key="textColor" name="color-nav"/>
                         </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -456,8 +461,8 @@
         <image name="chevron.left.square.fill" catalog="system" width="128" height="114"/>
         <image name="chevron.right.square.fill" catalog="system" width="128" height="114"/>
         <image name="info.circle.fill" catalog="system" width="128" height="121"/>
-        <image name="music.note.house.fill" catalog="system" width="128" height="106"/>
-        <image name="music.quarternote.3" catalog="system" width="128" height="103"/>
+        <image name="memories.badge.plus" catalog="system" width="128" height="104"/>
+        <image name="music.house.fill" catalog="system" width="128" height="106"/>
         <image name="musicSelectionIcon" width="32" height="32"/>
         <image name="person.fill.checkmark" catalog="system" width="128" height="88"/>
         <image name="person.fill.xmark" catalog="system" width="128" height="88"/>
@@ -466,8 +471,17 @@
         <image name="plus.rectangle.fill.on.rectangle.fill" catalog="system" width="128" height="96"/>
         <image name="trash.fill" catalog="system" width="121" height="128"/>
         <image name="waveform" catalog="system" width="128" height="128"/>
-        <namedColor name="AccentColor">
-            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="color-black">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="color-heading">
+            <color red="0.8784313725490196" green="0.30588235294117649" blue="0.45882352941176469" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="color-icons">
+            <color red="0.32549019607843138" green="0.78823529411764703" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="color-nav">
+            <color red="0.78431373834609985" green="0.87058824300765991" blue="0.94509804248809814" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="formsBackgroundColor">
             <color red="0.18400000035762787" green="0.20399999618530273" blue="0.21600000560283661" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

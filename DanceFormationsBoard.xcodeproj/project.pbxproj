@@ -34,6 +34,7 @@
 		436C65D025ABF3E200FA777F /* DataSharingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C65CF25ABF3E200FA777F /* DataSharingManager.swift */; };
 		436C65D825ABFA6E00FA777F /* FormationSnapshotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4324B4662550976800B3060E /* FormationSnapshotCell.xib */; };
 		436C65DA25ABFA7500FA777F /* BoardTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43AB36B02576B0B1001F5DAB /* BoardTableViewCell.xib */; };
+		436C66C825B7411500FA777F /* OverlayScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C66C725B7411300FA777F /* OverlayScene.swift */; };
 		43A0A9D925505F5300394193 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0A9D825505F5300394193 /* AppDelegate.swift */; };
 		43A0A9DB25505F5300394193 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0A9DA25505F5300394193 /* SceneDelegate.swift */; };
 		43A0A9DD25505F5400394193 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0A9DC25505F5300394193 /* GameViewController.swift */; };
@@ -77,6 +78,7 @@
 		436C65C025ABE9CE00FA777F /* Dancer+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dancer+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
 		436C65C125ABE9CE00FA777F /* Dancer+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dancer+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		436C65CF25ABF3E200FA777F /* DataSharingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSharingManager.swift; sourceTree = "<group>"; };
+		436C66C725B7411300FA777F /* OverlayScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayScene.swift; sourceTree = "<group>"; };
 		43A0A9D525505F5300394193 /* DanceFormationsBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DanceFormationsBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43A0A9D825505F5300394193 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		43A0A9DA25505F5300394193 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 				43AB36B02576B0B1001F5DAB /* BoardTableViewCell.xib */,
 				4365F071258860DC002C366B /* ASWaveformPlayerView.swift */,
 				4365F08225886CEE002C366B /* AudioAnalyzer.swift */,
+				436C66C725B7411300FA777F /* OverlayScene.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -329,6 +332,7 @@
 				43AB36B12576B0B1001F5DAB /* BoardTableViewCell.swift in Sources */,
 				43A0A9FC2550600200394193 /* DancerViewModel.swift in Sources */,
 				43AB36A925744C57001F5DAB /* BoardViewModel.swift in Sources */,
+				436C66C825B7411500FA777F /* OverlayScene.swift in Sources */,
 				436C65C225ABE9CE00FA777F /* Formation+CoreDataClass.swift in Sources */,
 				4365F08325886CEE002C366B /* AudioAnalyzer.swift in Sources */,
 			);

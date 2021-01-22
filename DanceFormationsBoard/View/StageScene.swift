@@ -41,8 +41,9 @@ class StageScene: SKScene {
         gridWidth = view.bounds.width
         gridHeight = view.bounds.height
         var gridArray: [SKNode] = []
+        
+        ///Makes sure there is no grid
         self.enumerateChildNodes(withName: "grid") { (gridNode, stop) in
-            //dancerNode.removeFromParent()
             gridArray.append(gridNode )
         }
         
@@ -57,45 +58,38 @@ class StageScene: SKScene {
 
     //MARK: Scene Grid
     func drawGrid(){
-        
+        ///
         var xCounter: CGFloat = 0.0
         var yCounter: CGFloat = 0.0
-        var xIncrement: CGFloat = gridWidth/20
-        var yIncrement: CGFloat = gridHeight/10
-        let increment: CGFloat = gridHeight/10
-        var xNumLines: Int {
-            return Int(gridWidth/increment)
+        let xNumLines: Int = 20
+        let yNumLines: Int = 10
+        var xIncrement: CGFloat{
+            return gridWidth/20
         }
-        var yNumLines: Int{
-            return Int(gridHeight/increment)
+        var yIncrement: CGFloat{
+            return gridHeight/10
         }
-        for num in 0...20
+       //Adds vertical lines
+        for num in 0...xNumLines
         {
             let path = UIBezierPath()
             let start = CGPoint(x: xCounter, y: 0.0)
             let end = CGPoint(x: xCounter, y:gridHeight)
             path.move(to: start)
             path.addLine(to: end)
-            
-            
-            let lineNode = SKShapeNode(path: path.cgPath)
 
+            let lineNode = SKShapeNode(path: path.cgPath)
+            lineNode.strokeColor = #colorLiteral(red: 0.370555222, green: 0.3705646992, blue: 0.3705595732, alpha: 1)
+            lineNode.lineWidth = 0.5
+            lineNode.name = "grid"
             
-            
-            
-            if num != 0{
+            //As long as line is
+            if num != 0 && num != 20 {
                 xArray.append(xCounter)
             }
 
+                //xArray.append(xCounter)
 
-                lineNode.strokeColor = #colorLiteral(red: 0.5568627451, green: 0.6039215686, blue: 0.6745098039, alpha: 1)
-            lineNode.lineWidth = 0.5
-                xArray.append(xCounter)
-            
-            
-                
-            
-            lineNode.name = "grid"
             addChild(lineNode)
             xCounter += xIncrement
         }
@@ -114,19 +108,19 @@ class StageScene: SKScene {
         midYPath.move(to: midYStart)
         midYPath.addLine(to: midYEnd)
         let midXLineNode = SKShapeNode(path: midXPath.cgPath)
-        midXLineNode.strokeColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
-        midXLineNode.lineWidth = 1
+        midXLineNode.strokeColor =  #colorLiteral(red: 0.370555222, green: 0.3705646992, blue: 0.3705595732, alpha: 1)
+        midXLineNode.lineWidth = 2.5
         let midYLineNode = SKShapeNode(path: midYPath.cgPath)
-        midYLineNode.strokeColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
-        midYLineNode.lineWidth = 1
+        midYLineNode.strokeColor = #colorLiteral(red: 0.370555222, green: 0.3705646992, blue: 0.3705595732, alpha: 1)
+        midYLineNode.lineWidth = 2.5
         addChild(midXLineNode)
         addChild(midYLineNode)
         
         
-        let midXNode = SKShapeNode(path: midXPath.cgPath)
-        let midYNode = SKShapeNode(path: midYPath.cgPath)
-        
-        for num in 0...10
+        //let midXNode = SKShapeNode(path: midXPath.cgPath)
+        //let midYNode = SKShapeNode(path: midYPath.cgPath)
+        //Adds horizontal lines
+        for num in 0...yNumLines
         {
             let path = UIBezierPath()
             let start = CGPoint(x: 0, y: yCounter)
@@ -135,18 +129,19 @@ class StageScene: SKScene {
             path.addLine(to: end)
             
             let lineNode = SKShapeNode(path: path.cgPath)
-            if num == 0{
-                lineNode.strokeColor = #colorLiteral(red: 0.5587006807, green: 0.6035502553, blue: 0.6746274233, alpha: 1)
-                lineNode.lineWidth = 4
-                yArray.append(yCounter)
-            }
-            else{
-                lineNode.strokeColor = #colorLiteral(red: 0.5587006807, green: 0.6035502553, blue: 0.6746274233, alpha: 1)
+            lineNode.name = "grid"
+            
+            if num != 0 && num != yNumLines{
+                lineNode.strokeColor = #colorLiteral(red: 0.370555222, green: 0.3705646992, blue: 0.3705595732, alpha: 1)
                 lineNode.lineWidth = 0.5
                 yArray.append(yCounter)
-            
             }
-            lineNode.name = "grid"
+            if num == 0{
+                lineNode.strokeColor = #colorLiteral(red: 0.370555222, green: 0.3705646992, blue: 0.3705595732, alpha: 1)
+                lineNode.lineWidth = 4
+            }
+ 
+            
             addChild(lineNode)
             yCounter += yIncrement
         }
@@ -154,18 +149,18 @@ class StageScene: SKScene {
         var xLabelCounter = Double(xIncrement)
         
         //Button tapped once add grid lines starting from end, twice, add grid lines starting from one off of end, add grid lines to each
-        for num in 0...10
+        for num in 0...yNumLines
         {
             let path = UIBezierPath()
             let start = CGPoint(x: xLabelCounter, y: 0.0)
-            let end = CGPoint(x: xLabelCounter, y: Double(yIncrement/2))
+            let end = CGPoint(x: xLabelCounter, y: Double(yIncrement/3))
             path.move(to: start)
             path.addLine(to: end)
             
             let lineNode = SKShapeNode(path: path.cgPath)
 
-                lineNode.strokeColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
-                lineNode.lineWidth = 3
+                lineNode.strokeColor = #colorLiteral(red: 0.4508578777, green: 0.9882974029, blue: 0.8376303315, alpha: 1)
+            lineNode.lineWidth = 2.5
    
             
             lineNode.name = "markers"
@@ -546,7 +541,9 @@ class StageScene: SKScene {
                 //closestNode!.lineWidth = 20
                 
                 //n.position = CGPoint(x: CGFloat(dancer.xPos), y: CGFloat(dancer.yPos))
-                n.position = CGPoint(x: 0.0, y: 0.0)
+                let point = PositionManager.percentageToPosition(x: dancer.xPos, y: dancer.yPos, viewW: self.view?.bounds.width, viewH: self.view?.bounds.height)
+                let nextX = getNearestStartingPoint(endPointX: point.x)
+                n.position = CGPoint(x: nextX, y: point.y)
                 n.zPosition = 1
                 label.name = "labelName"
                 label.position = CGPoint(x: 0, y: 14 )
@@ -558,7 +555,8 @@ class StageScene: SKScene {
                 self.addChild(n)
                 currNodes.append(n)
                 
-                let point = PositionManager.percentageToPosition(x: dancer.xPos, y: dancer.yPos, viewW: self.view?.bounds.width, viewH: self.view?.bounds.height)
+
+                
                 let next = CGPoint(x: point.x, y: point.y)
                 
                 
@@ -628,6 +626,23 @@ class StageScene: SKScene {
         
     }
     
+    func getNearestStartingPoint(endPointX: CGFloat) -> CGFloat{
+        let nearestStartArray = [0.0, gridWidth]
+        
+        var nearestX: CGFloat {
+           
+            nearestStartArray.reduce(34.3 as CGFloat){
+                if abs($1 - endPointX) < abs($0 - endPointX){
+                    return CGFloat($1)
+                    
+                }
+                else{
+                    return CGFloat($0)
+                }
+            }
+        }
+        return nearestX
+    }
     
 }
 

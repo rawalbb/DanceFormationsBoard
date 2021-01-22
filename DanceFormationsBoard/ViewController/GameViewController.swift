@@ -21,7 +21,8 @@ class GameViewController: KeyUIViewController{
     
     @IBOutlet weak var musicToggleButton: UIButton!
     
-
+    @IBOutlet weak var musicTimingButton: UIButton!
+    
     
     
     
@@ -73,10 +74,10 @@ class GameViewController: KeyUIViewController{
         labelToggleButton.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(scale: .large), forImageIn: [.highlighted, .selected])
         
         
-        musicToggleButton.isEnabled = false
-        musicToggleButton.setImage(#imageLiteral(resourceName: "musicDeselectionIcon"),
-                                   for: [.highlighted, .selected])
-        musicToggleButton.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(scale: .large), forImageIn: [.highlighted, .selected])
+        //musicToggleButton.isEnabled = false
+//        musicToggleButton.setImage(#imageLiteral(resourceName: "defaultFormImage"),
+//                                   for: [.highlighted, .selected])
+//        musicToggleButton.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(scale: .large), forImageIn: [.highlighted, .selected])
         
         //Define Tableview properties
         formsTableView.register(UINib(nibName: "FormationSnapshotCell", bundle: nil), forCellReuseIdentifier: "ReusableCell")
@@ -87,7 +88,7 @@ class GameViewController: KeyUIViewController{
         nodeLabelTextField.delegate = self
         nodeLabelTextField.isHidden = true
         nodeLabelTextField.layer.borderWidth = 1
-        nodeLabelTextField.layer.borderColor = #colorLiteral(red: 0.3411764706, green: 0.768627451, blue: 0.8196078431, alpha: 1)
+        nodeLabelTextField.layer.borderColor = #colorLiteral(red: 0.4508578777, green: 0.9882974029, blue: 0.8376303315, alpha: 1)
         nodeLabelTextField.layer.cornerRadius = 2
         nodeColorButton.backgroundColor =  UIColor.yellow
         
@@ -125,10 +126,12 @@ class GameViewController: KeyUIViewController{
 //                    _ = try AVAudioPlayer(contentsOf: music)
                 musicUrl = URL(string: a)
                 musicToggleButton.isEnabled = true
+                musicTimingButton.isEnabled = true
             }
             else{
                 print("No song")
                 musicToggleButton.isEnabled = false
+                musicTimingButton.isEnabled = false
             }
             
         }
@@ -208,7 +211,7 @@ class GameViewController: KeyUIViewController{
     @IBAction func formTimingPressed(_ sender: UIButton) {
         let nextVC = storyboard?.instantiateViewController(identifier: "ViewController") as! ViewController
         nextVC.delegate = self
-        nextVC.audioURL = musicUrl!
+           nextVC.audioURL = musicUrl!
         
         let prev = formationVM.getFormation(type: FormationType.previous)?.songTime
         let curr = formationVM.getFormation(type: FormationType.current)?.songTime
@@ -259,7 +262,7 @@ class GameViewController: KeyUIViewController{
             if let nextFormation = formationVM.getFormation(type: FormationType.next){
                     let nextDancerForms = dancerVM.loadDancers(selectedFormation: nextFormation, current: false)
                 if let index = formationVM.getCurrentIndex(){
-                    let time = self.waitTimeCalculator()
+                    let time = self.calculateWaitHelper()
                    // print("Second Wait Time", time)
                     self.stage.playThroughFormations(dancers: nextDancerForms, waitTime: time, transitionTime: 2.0, formIndex: index, totalForms: formationVM.formationArray.count)
                 
@@ -384,9 +387,50 @@ class GameViewController: KeyUIViewController{
     
     
     @IBAction func musicTogglePressed(_ sender: UIButton) {
-        sender.isSelected.toggle()
-        ///print("Music Selection, ", sender.isSelected)
-        stage.musicEnabled = !sender.isSelected
+//        sender.isSelected = true
+//        ///print("Music Selection, ", sender.isSelected)
+        stage.musicEnabled = true
+        
+        self.stage.arrayOfActions = []
+        formationVM.setCurrentSelection(index: 0)
+        if let curr = formationVM.getFormation(type: FormationType.current){
+            let dancers = dancerVM.loadDancers(selectedFormation: curr, current: true)
+            stage.formationSelected(dancers: dancers)
+        }
+        else{
+            print("Error loading in play formations pressed ")
+        }
+        var waitT = 0.0
+        
+        ///The action is indeed cancelled(it actually finished when you start playing) but it will not stop the audio. Use SKAudioNode if you need to suddenly stop sounds
+        if let music = musicUrl{
+            self.stage.playSong(musicLink: music)
+        }
+        else{
+            print("Error playing song")
+        }
+        
+        for _ in 0..<formationVM.formationArray.count{
+
+             // print("In For loop")
+               // print(formationVM.currentFormation?.name)
+            if let nextFormation = formationVM.getFormation(type: FormationType.next){
+                    let nextDancerForms = dancerVM.loadDancers(selectedFormation: nextFormation, current: false)
+                if let index = formationVM.getCurrentIndex(){
+                    let time = self.calculateWaitHelper(withMusic: true)
+                   // print("Second Wait Time", time)
+                    self.stage.playThroughFormations(dancers: nextDancerForms, waitTime: time, transitionTime: 2.0, formIndex: index, totalForms: formationVM.formationArray.count)
+                
+                    waitT = 3.0
+
+                    formationVM.setCurrentSelection(index: index + 1)
+        }
+
+    }
+        
+            self.stage.run(SKAction.sequence(self.stage.arrayOfActions))
+        }
+        
     }
     
     

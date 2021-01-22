@@ -27,12 +27,12 @@ class FormationSnapshotCell: UITableViewCell {
         //formationImage.layer.borderWidth = 4
         ///formationImage.layer.borderColor = #colorLiteral(red: 0.4860776067, green: 0.5446216464, blue: 0.6717045903, alpha: 1)
         
-        self.layer.borderWidth = 3
-        self.layer.borderColor = selected ? #colorLiteral(red: 0.8784313725, green: 0.3058823529, blue: 0.4588235294, alpha: 1).cgColor : UIColor.clear.cgColor
+        self.layer.borderWidth = 2
+        self.layer.borderColor = selected ? UIColor(named: "color-heading")?.cgColor ?? #colorLiteral(red: 0.05882352963, green: 0.180392161, blue: 0.2470588237, alpha: 1).cgColor : UIColor.clear.cgColor
         }
     
 
-    
+
     
     
 }

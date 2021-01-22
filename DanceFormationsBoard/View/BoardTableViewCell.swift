@@ -28,7 +28,7 @@ class BoardTableViewCell: UITableViewCell {
         
         stageTypeSegmentedControl.layer.borderWidth = 2
         
-        stageTypeSegmentedControl.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1).cgColor
+        stageTypeSegmentedControl.layer.borderColor = UIColor.black.cgColor
         
         stageTypeSegmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: UIControl.State.normal)
     }
