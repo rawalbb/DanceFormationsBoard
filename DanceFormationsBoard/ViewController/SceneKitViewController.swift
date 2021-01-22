@@ -23,6 +23,8 @@ class SceneKitViewController: UIViewController {
     var nextNode: SKNode?
     var playNode: SKNode?
     var musicNode: SKNode?
+    var backgroundMusic: SCNAudioSource?
+    var musicEnabled: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -334,20 +336,23 @@ class SceneKitViewController: UIViewController {
 
         }
 
-
     }
-            
-
-        
+      
         let wait = SCNAction.wait(duration: waitTime)
         arrayOfActions.append(wait)
         arrayOfActions.append(actionA)
+        
+        if formIndex + 2 == totalForms && self.musicEnabled == true{
+            self.arrayOfActions.append(SCNAction.wait(duration: 2.0))
+            self.endSong()
+        }
 
         
 }
     
         func endActionsHelper(removeDancers: Bool = true){
-            
+            self.scene.rootNode.removeAction(forKey: "playMusic")
+            self.scene.rootNode.removeAllAudioPlayers()
             sceneView.scene?.rootNode.enumerateChildNodes({ (dancerNode, stop) in
                 sceneView.scene?.rootNode.removeAllActions()
                 if dancerNode.name == "boy"{
@@ -487,7 +492,46 @@ extension SceneKitViewController: OverlaySceneDelegate{
     
     func musicPressed() {
         print("YOO")
+        guard let songString = BoardViewModel.shared.getCurrentBoard()?.song else { return }
+        let music = URL(string: songString)
+        musicEnabled = true
+
+        self.arrayOfActions = []
+        self.endActionsHelper()
+        
+        formationVM.setCurrentSelection(index: 0)
+        
+        playSong(musicLink: music)
+        if let curr = formationVM.getFormation(type: FormationType.current){
+            let dancers = dancerVM.loadDancers(selectedFormation: curr, current: true)
+            self.formationSelected(dancers: dancers)
+        }
+        else{
+            print("Error loading in play formations pressed ")
+        }
+        var waitT = 0.0
+
+        for _ in 0..<formationVM.formationArray.count{
+
+            if let nextFormation = formationVM.getFormation(type: FormationType.next){
+                    let nextDancerForms = dancerVM.loadDancers(selectedFormation: nextFormation, current: false)
+                let time = self.calculateWaitHelper(withMusic: true)
+                if let index = formationVM.getCurrentIndex(){
+
+                    self.playThroughFormations(dancers: nextDancerForms, waitTime: time, transitionTime: 2.0, formIndex: index, totalForms: formationVM.formationArray.count)
+                
+                    waitT = 3.0
+
+                    formationVM.setCurrentSelection(index: index + 1)
+        }
+
     }
+        
+            scene.rootNode.runAction(SCNAction.sequence(self.arrayOfActions))
+        }
+        
+        }
+        
     
     
     
@@ -509,6 +553,7 @@ extension SceneKitViewController: OverlaySceneDelegate{
    //go through and set all the wait times, prev + 3 to a certain amount initially when music is loaded
         //when edited, select next song times to be + 3 seconds after
         //when
+        print("Wait   ", wait)
         return wait
     }
     
@@ -516,3 +561,61 @@ extension SceneKitViewController: OverlaySceneDelegate{
     
 }
 
+
+extension SceneKitViewController{
+    
+    
+    func playSong(musicLink: URL? = nil){
+
+        
+        sceneView.scene?.rootNode.enumerateChildNodes({ (musicNode, stop) in
+            sceneView.scene?.rootNode.removeAllActions()
+            if musicNode.name == "music"{
+                musicNode.removeFromParentNode()
+                musicNode.removeAllActions()
+                
+            }
+        })
+        
+        if let musicURL = musicLink{
+            backgroundMusic = SCNAudioSource(url: musicURL)
+            
+//            node.runAction(SCNAction.playAudio(sounds[sound]!, waitForCompletion: false))
+//
+//            backgroundMusic.name = "music"
+//            sceneView.scene?.rootNode.runAction(SCNAction.playAudio(backgroundMusic!, waitForCompletion: false))
+            
+            let actionB = SCNAction.run {_ in
+                self.sceneView.scene?.rootNode.runAction(SCNAction.playAudio(self.backgroundMusic!, waitForCompletion: false), forKey: "playMusic")
+            }
+            
+            arrayOfActions.append(actionB)
+        }
+
+        else{
+            print("Error in selecting music")
+        }
+
+        //scene.rootNode.runAction(SCNAction.sequence(self.arrayOfActions))
+    }
+    
+    
+    func endSong(){
+        //var musicNodeArray : [SKNode] = []
+
+        if backgroundMusic != nil{
+            
+            let actionC = SCNAction.run {_ in
+            
+                self.scene.rootNode.removeAction(forKey: "playMusic")
+                self.scene.rootNode.removeAllAudioPlayers()
+        }
+        
+        arrayOfActions.append(actionC)
+        }
+        else{
+            print("Error in stopping music")
+        }
+    }
+
+}

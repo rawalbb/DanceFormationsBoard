@@ -242,14 +242,14 @@ class GameViewController: KeyUIViewController{
         var waitT = 0.0
         
         ///The action is indeed cancelled(it actually finished when you start playing) but it will not stop the audio. Use SKAudioNode if you need to suddenly stop sounds
-        if let music = musicUrl{
-            if !musicToggleButton.isSelected{
-            self.stage.playSong(musicLink: music)
-            }
-            else{
-                print("Music Toggle Not Selected", musicToggleButton.isSelected)
-            }
-        }
+//        if let music = musicUrl{
+//            if !musicToggleButton.isSelected{
+//            self.stage.playSong(musicLink: music)
+//            }
+//            else{
+//                print("Music Toggle Not Selected", musicToggleButton.isSelected)
+//            }
+//        }
         
         //formationVM.setCurrentSelection(index: 0)
         

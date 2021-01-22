@@ -129,7 +129,7 @@ class OverlayScene: SKScene {
             self.overlayDelegate?.playPressed()
         }
         else if musicNode.contains(location){
-            self.overlayDelegate?.nextPressed()
+            self.overlayDelegate?.musicPressed()
         }
         
     }
