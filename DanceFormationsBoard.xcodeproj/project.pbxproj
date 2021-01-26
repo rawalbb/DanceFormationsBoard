@@ -35,6 +35,8 @@
 		436C65D825ABFA6E00FA777F /* FormationSnapshotCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4324B4662550976800B3060E /* FormationSnapshotCell.xib */; };
 		436C65DA25ABFA7500FA777F /* BoardTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43AB36B02576B0B1001F5DAB /* BoardTableViewCell.xib */; };
 		436C66C825B7411500FA777F /* OverlayScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C66C725B7411300FA777F /* OverlayScene.swift */; };
+		436C66CF25BF5C2C00FA777F /* DanceNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C66CE25BF5C2700FA777F /* DanceNavigationViewController.swift */; };
+		436C66D225BFD2CF00FA777F /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C66D125BFD2CE00FA777F /* UIViewController+Extensions.swift */; };
 		43A0A9D925505F5300394193 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0A9D825505F5300394193 /* AppDelegate.swift */; };
 		43A0A9DB25505F5300394193 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0A9DA25505F5300394193 /* SceneDelegate.swift */; };
 		43A0A9DD25505F5400394193 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0A9DC25505F5300394193 /* GameViewController.swift */; };
@@ -79,6 +81,8 @@
 		436C65C125ABE9CE00FA777F /* Dancer+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dancer+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		436C65CF25ABF3E200FA777F /* DataSharingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSharingManager.swift; sourceTree = "<group>"; };
 		436C66C725B7411300FA777F /* OverlayScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayScene.swift; sourceTree = "<group>"; };
+		436C66CE25BF5C2700FA777F /* DanceNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DanceNavigationViewController.swift; sourceTree = "<group>"; };
+		436C66D125BFD2CE00FA777F /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		43A0A9D525505F5300394193 /* DanceFormationsBoard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DanceFormationsBoard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43A0A9D825505F5300394193 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		43A0A9DA25505F5300394193 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -215,6 +219,8 @@
 				4315A2732592C02700A66F33 /* GameViewController+Music.swift */,
 				4315A2792592C3A700A66F33 /* GameViewController+Stage.swift */,
 				435C40ED25A7C8C600036FF4 /* SceneKitViewController.swift */,
+				436C66CE25BF5C2700FA777F /* DanceNavigationViewController.swift */,
+				436C66D125BFD2CE00FA777F /* UIViewController+Extensions.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -321,9 +327,11 @@
 				4324B4672550976800B3060E /* FormationSnapshotCell.swift in Sources */,
 				4315A27A2592C3A700A66F33 /* GameViewController+Stage.swift in Sources */,
 				43608F15257FD3BB002114C5 /* KeyboardViewController.swift in Sources */,
+				436C66CF25BF5C2C00FA777F /* DanceNavigationViewController.swift in Sources */,
 				43608ED4257DF10F002114C5 /* MusicViewController.swift in Sources */,
 				4365F08B25886E60002C366B /* ViewController.swift in Sources */,
 				43160D81255B9BB30038804F /* FormationTableView.swift in Sources */,
+				436C66D225BFD2CF00FA777F /* UIViewController+Extensions.swift in Sources */,
 				43A0AA052550601300394193 /* FormationViewModel.swift in Sources */,
 				43A0A9DB25505F5300394193 /* SceneDelegate.swift in Sources */,
 				435C40FE25A8F4A300036FF4 /* PositionManager.swift in Sources */,

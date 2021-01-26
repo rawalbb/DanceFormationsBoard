@@ -6,7 +6,6 @@
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -219,7 +218,7 @@
                     <navigationItem key="navigationItem" title="Formation" largeTitleDisplayMode="always" id="ab3-Lf-EWg">
                         <barButtonItem key="rightBarButtonItem" title="Item" id="cpE-xI-83i">
                             <imageReference key="image" image="info.circle.fill" catalog="system" symbolScale="large"/>
-                            <color key="tintColor" name="color-heading"/>
+                            <color key="tintColor" name="color-nav"/>
                             <connections>
                                 <action selector="infoButtonPressed:" destination="6mI-VL-OAy" id="AvH-FG-0HQ"/>
                             </connections>
@@ -242,7 +241,7 @@
             </objects>
             <point key="canvasLocation" x="1287.7232142857142" y="828.98550724637687"/>
         </scene>
-        <!--Formation Music Selection-->
+        <!--Music Scrubber-->
         <scene sceneID="X4Y-pI-Jjt">
             <objects>
                 <viewController storyboardIdentifier="ViewController" id="qaU-a9-LzJ" customClass="ViewController" customModule="DanceFormationsBoard" customModuleProvider="target" sceneMemberID="viewController">
@@ -250,9 +249,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="x60-Is-eit"/>
-                        <color key="backgroundColor" name="formsBackgroundColor"/>
+                        <color key="backgroundColor" name="color-black"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Formation Music Selection" id="wqH-D7-Zde">
+                    <navigationItem key="navigationItem" title="Music Scrubber" id="wqH-D7-Zde">
                         <barButtonItem key="rightBarButtonItem" title="Done" id="neG-C9-Hbg">
                             <color key="tintColor" name="color-nav"/>
                             <connections>
@@ -265,7 +264,7 @@
             </objects>
             <point key="canvasLocation" x="2031.0267857142856" y="-328.98550724637681"/>
         </scene>
-        <!--Music View Controller-->
+        <!--My Songs-->
         <scene sceneID="EHH-IW-A8M">
             <objects>
                 <viewController storyboardIdentifier="MusicViewController" id="2hs-kC-PFT" customClass="MusicViewController" customModule="DanceFormationsBoard" customModuleProvider="target" sceneMemberID="viewController">
@@ -284,12 +283,13 @@
                                             <rect key="frame" x="0.0" y="0.0" width="808" height="43.666667938232422"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" name="color-black"/>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="tAJ-FK-UKW"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="color-black"/>
                         <constraints>
                             <constraint firstItem="3uk-xV-Tkx" firstAttribute="top" secondItem="tAJ-FK-UKW" secondAttribute="top" id="LPj-8w-KZE"/>
                             <constraint firstItem="tAJ-FK-UKW" firstAttribute="bottom" secondItem="3uk-xV-Tkx" secondAttribute="bottom" id="Meb-lt-TQ3"/>
@@ -297,7 +297,7 @@
                             <constraint firstItem="tAJ-FK-UKW" firstAttribute="trailing" secondItem="3uk-xV-Tkx" secondAttribute="trailing" id="pWi-0F-yGg"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="thP-Lp-CTS"/>
+                    <navigationItem key="navigationItem" title="My Songs" id="thP-Lp-CTS"/>
                     <connections>
                         <outlet property="tableView" destination="3uk-xV-Tkx" id="So6-wO-W45"/>
                     </connections>
@@ -355,7 +355,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="My Boards" largeTitleDisplayMode="always" id="6g4-es-sin">
                         <barButtonItem key="backBarButtonItem" title="Boards" id="0Di-LA-83i">
-                            <color key="tintColor" name="color-heading"/>
+                            <color key="tintColor" name="color-nav"/>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Item" id="7kV-HI-6MA">
                             <imageReference key="image" image="plus.rectangle.fill.on.rectangle.fill" catalog="system" symbolScale="large"/>
@@ -417,7 +417,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Board Notes" largeTitleDisplayMode="always" id="TvP-Q7-lV8">
                         <barButtonItem key="rightBarButtonItem" title="Done" id="ihJ-oD-P3E">
-                            <color key="tintColor" name="color-heading"/>
+                            <color key="tintColor" name="color-nav"/>
                             <connections>
                                 <action selector="donePressed:" destination="FAy-EC-sk5" id="fRV-99-19M"/>
                             </connections>
@@ -474,17 +474,11 @@
         <namedColor name="color-black">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="color-heading">
-            <color red="0.8784313725490196" green="0.30588235294117649" blue="0.45882352941176469" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="color-icons">
-            <color red="0.32549019607843138" green="0.78823529411764703" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.011764705882352941" green="0.96862745098039216" blue="0.92156862745098034" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="color-nav">
-            <color red="0.78431373834609985" green="0.87058824300765991" blue="0.94509804248809814" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="formsBackgroundColor">
-            <color red="0.18400000035762787" green="0.20399999618530273" blue="0.21600000560283661" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.78823530673980713" green="0.85490196943283081" blue="0.91764706373214722" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="navBarColor">
             <color red="1" green="0.90200001001358032" blue="0.3449999988079071" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -492,8 +486,5 @@
         <namedColor name="textColor">
             <color red="0.75700002908706665" green="0.83899998664855957" blue="0.89800000190734863" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>

@@ -79,8 +79,8 @@ class ViewController: UIViewController {
                                              sampleCount: 1024,
                                              amplificationFactor: 500, prevTime: prevTiming, currTime: currTiming)
 
-        wformView.normalColor = .lightGray
-        wformView.progressColor = .orange
+        wformView.normalColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        wformView.progressColor = UIColor(named: "color-extra") ?? .blue
         wformView.allowSpacing = false
 
 

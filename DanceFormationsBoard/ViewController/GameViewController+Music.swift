@@ -37,6 +37,7 @@ extension GameViewController: MusicChosenDelegate{
         self.musicTimingButton.isEnabled = true
         boardVM.updateBoardSong(songUrl: "\(url)")
         self.setInitialSongTimes()
+        stage.musicEnabled = true
     }
     
     //Should be called when music is first added

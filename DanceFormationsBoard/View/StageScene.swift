@@ -11,6 +11,7 @@ protocol StageSceneUpdatesDelegate {
     func updateNodeColor(color: UIColor)
     func removedDancer(id: String)
     func updateFormationSelected(index: IndexPath)
+    func enableTouches()
 }
 
 class StageScene: SKScene {
@@ -159,7 +160,7 @@ class StageScene: SKScene {
             
             let lineNode = SKShapeNode(path: path.cgPath)
 
-                lineNode.strokeColor = #colorLiteral(red: 0.4508578777, green: 0.9882974029, blue: 0.8376303315, alpha: 1)
+                lineNode.strokeColor = UIColor(named: "color-icons") ?? #colorLiteral(red: 0.4508578777, green: 0.9882974029, blue: 0.8376303315, alpha: 1)
             lineNode.lineWidth = 2.5
    
             
@@ -249,9 +250,17 @@ class StageScene: SKScene {
             }
             else{
                 highlightedNode.position = touchedNodes[0].position
-                highlightedNode.fillColor = UIColor.black
+                if let nodeTouched = touchedNodes[0] as? SKSpriteNode{
+                    highlightedNode.fillColor = nodeTouched.color
+                    highlightedNode.strokeColor = nodeTouched.color
+                }
+                else{
+                    highlightedNode.fillColor = selectedColor
+                    highlightedNode.strokeColor = selectedColor
+                }
                 highlightedNode.lineWidth = 1
-                highlightedNode.strokeColor = UIColor.black
+                
+                highlightedNode.alpha = 0.5
                 highlightedNode.glowWidth = 4
                 highlightedNode.zPosition = 0
                 highlightedNode.name = "highlight"
@@ -298,6 +307,7 @@ class StageScene: SKScene {
        if let node = currentNode{
         
         node.fillColor = UIColor(hex: color)
+        node.strokeColor = UIColor(hex: color)
           
            }
 
@@ -587,9 +597,18 @@ class StageScene: SKScene {
             let wait = SKAction.wait(forDuration: waitTime)
         arrayOfActions.append(wait)
         arrayOfActions.append(actionA)
+        let enableTouchAction = SKAction.run {
+            self.myDelegate.enableTouches()
+        }
         if formIndex + 2 == totalForms && musicEnabled == true{
             arrayOfActions.append(SKAction.wait(forDuration: 2.0))
             self.endSong()
+            arrayOfActions.append(enableTouchAction)
+        }
+        else if formIndex + 2 == totalForms && musicEnabled == false{
+            arrayOfActions.append(SKAction.wait(forDuration: 2.0))
+            //self.endSong()
+            arrayOfActions.append(enableTouchAction)
         }
         
 }

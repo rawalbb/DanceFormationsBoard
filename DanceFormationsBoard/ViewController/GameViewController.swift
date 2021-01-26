@@ -7,7 +7,7 @@ import MediaPlayer
 
 class GameViewController: KeyUIViewController{
     
-    
+    //navigation
     @IBOutlet var hieracrchyView: UIView!
     @IBOutlet weak var formsTableView: UITableView!
     
@@ -22,6 +22,8 @@ class GameViewController: KeyUIViewController{
     @IBOutlet weak var musicToggleButton: UIButton!
     
     @IBOutlet weak var musicTimingButton: UIButton!
+    
+    
     
     
     
@@ -66,7 +68,7 @@ class GameViewController: KeyUIViewController{
         stageView.presentScene(stage) // TODO - have in viewdidload or viewdidappear
 
         
-        
+        self.title = boardVM.getCurrentBoard()?.name ?? "My Formations"
         
         //Define labelToggle properties
         labelToggleButton.setImage(UIImage(systemName: "person.fill.checkmark"),
@@ -127,16 +129,21 @@ class GameViewController: KeyUIViewController{
                 musicUrl = URL(string: a)
                 musicToggleButton.isEnabled = true
                 musicTimingButton.isEnabled = true
+                stage.musicEnabled = true
             }
             else{
                 print("No song")
                 musicToggleButton.isEnabled = false
                 musicTimingButton.isEnabled = false
+                stage.musicEnabled = false
             }
             
         }
         catch{
             print("Could Not do music")
+            musicToggleButton.isEnabled = false
+            musicTimingButton.isEnabled = false
+            stage.musicEnabled = false
         }
 
     }
@@ -148,16 +155,11 @@ class GameViewController: KeyUIViewController{
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        
-        //Don't need to update boards
-        //don't need to update label
-        //don't need to update board properties
+
         boardVM.updateBoardDate(date: Date())
         let image = formationVM.getFormation(type: .atLocation(0))?.image
         boardVM.updateBoardImage(imageData: image)
-        //Board image should be udpated as well when back pressed
-        //TODO: image is not getting updated
+        self.stage.endActionsHelper()
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -230,6 +232,14 @@ class GameViewController: KeyUIViewController{
     
     
     @IBAction func playFormationsPressed(_ sender: Any) {
+        
+        DispatchQueue.main.async {
+            self.detailView.isUserInteractionEnabled = false
+            self.detailView.alpha = 0.3
+        }
+        
+        
+        
         self.stage.arrayOfActions = []
         formationVM.setCurrentSelection(index: 0)
         if let curr = formationVM.getFormation(type: FormationType.current){
@@ -277,9 +287,12 @@ class GameViewController: KeyUIViewController{
     }
         
             self.stage.run(SKAction.sequence(self.stage.arrayOfActions))
+
         }
         
     }
+    
+
     
     @IBAction func labelTextFieldChanged(_ sender: UITextField) {
         //print("Label changed")
@@ -365,8 +378,8 @@ class GameViewController: KeyUIViewController{
 
         if let nextFormation = formationVM.getFormation(type: FormationType.previous){
                 let nextDancerForms = dancerVM.loadDancers(selectedFormation: nextFormation, current: false)
-            if let nextIndex = formationVM.getCurrentIndex(){
-                formationVM.setCurrentSelection(index: nextIndex + 1)
+            if let currIndex = formationVM.getCurrentIndex(){
+                formationVM.setCurrentSelection(index: currIndex - 1)
             }
             if let index = formationVM.getCurrentIndex(){
                 self.stage.playThroughFormations(dancers: nextDancerForms, waitTime: 0.0, transitionTime: 2.0, formIndex: index, totalForms: formationArray.count)
@@ -389,8 +402,9 @@ class GameViewController: KeyUIViewController{
     @IBAction func musicTogglePressed(_ sender: UIButton) {
 //        sender.isSelected = true
 //        ///print("Music Selection, ", sender.isSelected)
-        stage.musicEnabled = true
-        
+        //stage.musicEnabled = true
+        //guard case stage.musicEnabled == true else { return }
+        if stage.musicEnabled{
         self.stage.arrayOfActions = []
         formationVM.setCurrentSelection(index: 0)
         if let curr = formationVM.getFormation(type: FormationType.current){
@@ -430,8 +444,23 @@ class GameViewController: KeyUIViewController{
         
             self.stage.run(SKAction.sequence(self.stage.arrayOfActions))
         }
+        }
+        else{
+            showMusicAlert()
+        }
         
     }
+    
+    func showMusicAlert() {
+        let alert = UIAlertController(title: "Music", message: "No music detected",         preferredStyle: UIAlertController.Style.alert)
+
+        alert.addAction(UIAlertAction(title: "Continue",
+                                      style: UIAlertAction.Style.default,
+                                              handler: {(_: UIAlertAction!) in
+                }))
+           
+            self.present(alert, animated: true, completion: nil)
+        }
     
     
     @IBAction func infoButtonPressed(_ sender: Any) {

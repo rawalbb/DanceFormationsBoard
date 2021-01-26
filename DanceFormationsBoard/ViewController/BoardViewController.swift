@@ -22,26 +22,22 @@ class BoardViewController: KeyViewController {
         //Sets tableview in inherited class KeyboardViewController
         self.backgroundSV = boardTableView
         
-        boardVM.delegate = self
-        
         //Sets tableview properties
         boardTableView.register(UINib(nibName: "BoardTableViewCell", bundle: nil), forCellReuseIdentifier: "BoardReusableCell")
         boardTableView.delegate = self
         boardTableView.dataSource = self
         boardTableView.backgroundColor = UIColor.clear
         boardTableView.rowHeight = UITableView.automaticDimension
-        //boardTableView.estimatedRowHeight = 120
+        
+        boardVM.delegate = self
         
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
         
-        //Loads boards
         boardVM.loadBoards()
-        boardVMArray = boardVM.getBoardArray()
-        //**Don't need to call DispatchQueue - check for formations b/c already called from load boards delegate method
-        
+        //**check for formations b/c already called from load boards delegate method
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -71,8 +67,9 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let df = DateFormatter()
-        df.dateFormat = "yyyy-MM-dd"
+        df.dateFormat = "MM/dd/yyyy"
         
         let cell = self.boardTableView.dequeueReusableCell(withIdentifier: "BoardReusableCell") as! BoardTableViewCell
         
@@ -94,62 +91,66 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         let cell = tableView.cellForRow(at: indexPath) as! BoardTableViewCell
+        
         cell.boardNameTextField.resignFirstResponder()
         
         boardVM.setCurrentBoard(index: indexPath.row)
         
         switch cell.stageTypeSegmentedControl.selectedSegmentIndex
-            {
-            case 0:
-                let nextVC = storyboard?.instantiateViewController(identifier: "GameViewController") as! GameViewController
-                self.navigationController?.pushViewController(nextVC, animated: true)
-            case 1:
-                let nextVC = storyboard?.instantiateViewController(identifier: "SceneKitViewController") as! SceneKitViewController
-                nextVC.formationVM = FormationViewModel()
-                nextVC.dancerVM = DancerViewModel()
-                //nextVC.boardVM = boardVM
-                self.navigationController?.pushViewController(nextVC, animated: true)
-            default:
-                break
-            }
+        {
+        case 0:
+            let nextVC = storyboard?.instantiateViewController(identifier: "GameViewController") as! GameViewController
+            self.navigationController?.pushViewController(nextVC, animated: true)
+        case 1:
+            let nextVC = storyboard?.instantiateViewController(identifier: "SceneKitViewController") as! SceneKitViewController
+            self.navigationController?.pushViewController(nextVC, animated: true)
+        default:
+            break
+        }
         
-        
-       
     }
     
     private func handleMoveToTrash() {
         
-        if let toRemove = boardVM.getCurrentBoard(){
-            boardVM.removeBoard(board: toRemove)
-            allBoardUpdates()
-            //Don't need to call checkFormations in DispatchQuueue, already called in delegate method
-        }
-        else{
-            print("Error in Removing Board")
-        }
+        guard let toRemove = boardVM.getCurrentBoard() else { print("Error removing board")
+            return }
+        
+        let alert = UIAlertController(title: "Delete", message: "Are you sure you want to delete this dance board?",  preferredStyle: UIAlertController.Style.alert)
+
+        alert.addAction(UIAlertAction(title: "Cancel",
+                                      style: UIAlertAction.Style.default,
+                                              handler: { (_: UIAlertAction!) in
+                }))
+        
+        
+        alert.addAction(UIAlertAction(title: "Delete",
+                                      style: UIAlertAction.Style.default,
+                                              handler: { [weak self] (_: UIAlertAction!) in
+                                                
+                                                self?.boardVM.removeBoard(board: toRemove)
+                                                self?.allBoardUpdates()
+                }))
+           
+            self.present(alert, animated: true, completion: nil)
         
     }
     
     private func handleSendBoard() {
-        print("Send board pressed")
-      
         
         guard
             let sendingBoard = self.boardVM.getCurrentBoard(),
-            let url = sendingBoard.exportToURL(name: sendingBoard.name ?? "Heya")
-            else { return }
-          
-          // 2
+            let url = sendingBoard.exportToURL(name: sendingBoard.name ?? "DanceBoard")
+        else { return }
         
-          let activity = UIActivityViewController(
-            activityItems: ["Check out this book! I like using Book Tracker.", url],
+        let activity = UIActivityViewController(
+            activityItems: ["Check out this Dance Formation Board!", url],
             applicationActivities: nil
-          )
-
-          // 3
+        )
+        
         activity.excludedActivityTypes = [.openInIBooks, .markupAsPDF, .addToReadingList, .assignToContact, .postToFlickr, .postToTencentWeibo, .copyToPasteboard ]
-          present(activity, animated: true, completion: nil)
+        present(activity, animated: true, completion: nil)
         
     }
     
@@ -157,7 +158,7 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
         let nextVC = storyboard?.instantiateViewController(identifier: "NotesViewController") as! NotesViewController
         nextVC.delegate = self
         nextVC.notes = boardVM.getCurrentBoard()?.notes
-        //nextVC.navTitle = boardVM.getCurrentBoard()?.name ?? "Board Notes"
+        nextVC.navTitle = boardVM.getCurrentBoard()?.name ?? "Board Notes"
         self.navigationController?.pushViewController(nextVC, animated: true)
     }
     
@@ -221,7 +222,7 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
             defaultImageView.center = self.view.center
             
             defaultImageView.image = UIImage(systemName: "plus.rectangle.fill.on.rectangle.fill")
-            defaultImageView.tintColor = #colorLiteral(red: 0.7568627451, green: 0.8392156863, blue: 0.8980392157, alpha: 1)
+            defaultImageView.tintColor = UIColor(named: "color-nav")
             view.addSubview(defaultImageView)
             imageViewAnimate(imageView: defaultImageView)
             
@@ -230,7 +231,7 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
             defaultLabel.center = CGPoint(x: mid.x, y: mid.y + 148)
             defaultLabel.textAlignment = .center
             defaultLabel.text = "No formations yet :/. Select button at top-right to add"
-            defaultLabel.textColor = #colorLiteral(red: 0.7568627451, green: 0.8392156863, blue: 0.8980392157, alpha: 1)
+            defaultLabel.textColor = UIColor(named: "color-nav")
             self.view.addSubview(defaultLabel)
             
         }
@@ -241,6 +242,8 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
             self.boardTableView.reloadData()
         }
     }
+    
+
     
     func imageViewAnimate(imageView: UIImageView){
         
@@ -261,8 +264,8 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
         print(self.view.frame.size.height * 0.2)
         return self.view.frame.size.height * 0.2
     }
-
-     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return self.view.frame.size.height * 0.2
     }
     
@@ -290,15 +293,15 @@ extension BoardViewController: UITextFieldDelegate{
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         // get the current text, or use an empty string if that failed
         let currentText = textField.text ?? ""
-
+        
         // attempt to read the range they are trying to change, or exit if we can't
         guard let stringRange = Range(range, in: currentText) else { return false }
-
+        
         // add their new text to the existing text
         let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
-
+        
         // make sure the result is under 16 characters
-        return updatedText.count <= 30
+        return updatedText.count <= 24
     }
     
     public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
@@ -317,7 +320,7 @@ extension BoardViewController: UITextFieldDelegate{
 extension BoardViewController: BoardUpdatesDelegate{
     
     func boardUpdated(boardArray: [Board]) {
-        boardVMArray = boardVM.getBoardArray()
+        boardVMArray = boardArray
         
         DispatchQueue.main.async {
             self.checkForNoFormations()
@@ -332,5 +335,3 @@ extension BoardViewController: NotesUpdatedDelegate{
         allBoardUpdates()
     }
 }
-
-//TODO: Needs to be updated 

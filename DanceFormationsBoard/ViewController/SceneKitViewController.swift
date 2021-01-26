@@ -9,6 +9,7 @@ import UIKit
 import QuartzCore
 import SceneKit
 import SpriteKit
+import AVFoundation
 
 class SceneKitViewController: UIViewController {
 
@@ -30,6 +31,8 @@ class SceneKitViewController: UIViewController {
         super.viewDidLoad()
         setupScene()
         
+        formationVM = FormationViewModel()
+        dancerVM = DancerViewModel()
         self.spriteScene = OverlayScene(size: self.view.frame.size)
         self.spriteScene.isUserInteractionEnabled = true
         prevNode = self.spriteScene.childNode(withName: "prevNode") as! SKSpriteNode
@@ -48,6 +51,29 @@ class SceneKitViewController: UIViewController {
 // result.node is the node that the user tapped on
                 // perform any actions you want on it
         // Do any additional setup after loading the view.
+        
+        do{
+            //print("In Game View Controller getting song ", boardVM.getCurrentBoard()?.song)
+            if let a = BoardViewModel.shared.getCurrentBoard()?.song{
+                guard let music = URL(string: a) else { print("URL Nil");  return}
+                    _ = try AVAudioPlayer(contentsOf: music)
+
+                musicEnabled = true
+            }
+            else{
+                print("No song")
+                musicEnabled = false
+            }
+            
+        }
+        catch{
+            print("Could Not do music")
+
+            musicEnabled = false
+        }
+        
+        
+        
     }
     
     @objc func handleTap(_ gestureRecognize: UIGestureRecognizer) {
@@ -169,7 +195,7 @@ class SceneKitViewController: UIViewController {
             //sceneView.scene?.rootNode.addChildNode(cubeNode)
            // drawGrid()
             //playFormations()
-            
+            if formationVM.formationArray.count > 0{
             formationVM.setCurrentSelection(index: 0)
             if let curr = formationVM.getFormation(type: FormationType.current){
                 let dancers = dancerVM.loadDancers(selectedFormation: curr, current: true)
@@ -177,6 +203,10 @@ class SceneKitViewController: UIViewController {
             }
             else{
                 print("Error loading in play formations pressed ")
+            }
+            }
+            else{
+                print("No formations yet")
             }
             
         }
@@ -342,13 +372,30 @@ class SceneKitViewController: UIViewController {
         arrayOfActions.append(wait)
         arrayOfActions.append(actionA)
         
+        let enableTouchAction = SCNAction.run {_ in
+            self.enableTouches()
+        }
+        
         if formIndex + 2 == totalForms && self.musicEnabled == true{
             self.arrayOfActions.append(SCNAction.wait(duration: 2.0))
             self.endSong()
+            self.arrayOfActions.append(enableTouchAction)
+        }
+        else if formIndex + 2 == totalForms && self.musicEnabled == false{
+            self.arrayOfActions.append(SCNAction.wait(duration: 2.0))
+            self.arrayOfActions.append(enableTouchAction)
         }
 
         
 }
+    
+    func enableTouches() {
+        print("In Enable Detail View")
+        DispatchQueue.main.async {
+            self.sceneView.overlaySKScene?.isUserInteractionEnabled = true
+            self.sceneView.overlaySKScene?.alpha = 1.0
+        }
+    }
     
         func endActionsHelper(removeDancers: Bool = true){
             self.scene.rootNode.removeAction(forKey: "playMusic")
@@ -478,6 +525,8 @@ extension SceneKitViewController: OverlaySceneDelegate{
     func playPressed() {
         print("YOO")
         playFormations()
+        self.sceneView.overlaySKScene?.isUserInteractionEnabled = false
+        self.sceneView.overlaySKScene?.alpha = 0.3
     }
     
     func nextPressed() {
@@ -491,10 +540,14 @@ extension SceneKitViewController: OverlaySceneDelegate{
     }
     
     func musicPressed() {
-        print("YOO")
-        guard let songString = BoardViewModel.shared.getCurrentBoard()?.song else { return }
-        let music = URL(string: songString)
-        musicEnabled = true
+
+        
+        
+        if musicEnabled{
+            guard let songString = BoardViewModel.shared.getCurrentBoard()?.song else { return }
+            let music = URL(string: songString)
+            self.sceneView.overlaySKScene?.isUserInteractionEnabled = false
+            self.sceneView.overlaySKScene?.alpha = 0.3
 
         self.arrayOfActions = []
         self.endActionsHelper()
@@ -531,7 +584,21 @@ extension SceneKitViewController: OverlaySceneDelegate{
         }
         
         }
-        
+        else{
+            showMusicAlert()
+        }
+    }
+    
+    func showMusicAlert() {
+        let alert = UIAlertController(title: "Music", message: "No music detected",         preferredStyle: UIAlertController.Style.alert)
+
+        alert.addAction(UIAlertAction(title: "Continue",
+                                      style: UIAlertAction.Style.default,
+                                              handler: {(_: UIAlertAction!) in
+                }))
+           
+            self.present(alert, animated: true, completion: nil)
+        }
     
     
     
@@ -557,7 +624,8 @@ extension SceneKitViewController: OverlaySceneDelegate{
         return wait
     }
     
-      
+    
+    
     
 }
 
@@ -585,11 +653,17 @@ extension SceneKitViewController{
 //            backgroundMusic.name = "music"
 //            sceneView.scene?.rootNode.runAction(SCNAction.playAudio(backgroundMusic!, waitForCompletion: false))
             
-            let actionB = SCNAction.run {_ in
-                self.sceneView.scene?.rootNode.runAction(SCNAction.playAudio(self.backgroundMusic!, waitForCompletion: false), forKey: "playMusic")
-            }
+//            let enableTouchAction = SCNAction.run {_ in
+//                self.enableTouches()
+//            }
+            //self.sceneView.scene?.rootNode.runAction(SCNAction.playAudio(self.backgroundMusic!), forKey: "playMusic")
+            self.sceneView.scene?.rootNode.runAction(SCNAction.playAudio(self.backgroundMusic!, waitForCompletion: false), forKey: "playMusic")
             
-            arrayOfActions.append(actionB)
+//            let actionB = SCNAction.run {_ in
+//                self.sceneView.scene?.rootNode.runAction(SCNAction.playAudio(self.backgroundMusic!, waitForCompletion: false), forKey: "playMusic")
+//            }
+            
+            //arrayOfActions.append(actionB)
         }
 
         else{

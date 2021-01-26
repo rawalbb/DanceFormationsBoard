@@ -14,7 +14,6 @@ class NotesViewController: KeyboardViewController {
 
     
     @IBOutlet weak var notesTextView: UITextView!
-    
     @IBOutlet weak var notesScrollView: UIScrollView!
     
     var notes: String?
@@ -27,7 +26,7 @@ class NotesViewController: KeyboardViewController {
         notesTextView.text = notes
         self.backgroundSV = notesScrollView
         
-        self.navigationController?.navigationItem.title = navTitle
+        self.title = navTitle
         self.navigationController?.navigationBar.prefersLargeTitles = true
 
         // Do any additional setup after loading the view.

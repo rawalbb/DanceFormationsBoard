@@ -11,11 +11,8 @@ class BoardTableViewCell: UITableViewCell {
 
     
     @IBOutlet weak var boardNameTextField: UITextField!
-    
     @IBOutlet weak var boardDateTextField: UILabel!
-    
     @IBOutlet weak var boardImageField: UIImageView!
-    
     @IBOutlet weak var stageTypeSegmentedControl: UISegmentedControl!
     
     
@@ -31,6 +28,10 @@ class BoardTableViewCell: UITableViewCell {
         stageTypeSegmentedControl.layer.borderColor = UIColor.black.cgColor
         
         stageTypeSegmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: UIControl.State.normal)
+        
+        boardImageField.layer.borderWidth = 2
+        boardImageField.layer.borderColor = UIColor(named: "color-extra")?.cgColor ?? UIColor.black.cgColor
+        boardImageField.contentMode = .scaleAspectFill
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
