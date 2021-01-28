@@ -510,6 +510,9 @@ class StageScene: SKScene {
     }
     
     func playThroughFormations(dancers: [Dancer], waitTime: Double, transitionTime: Double, formIndex: Int, totalForms: Int){
+        
+        let wait = SKAction.wait(forDuration: waitTime)
+    arrayOfActions.append(wait)
    
         let actionA = SKAction.run { [unowned self] in
             //THIS IS THE PROBLEM
@@ -594,8 +597,7 @@ class StageScene: SKScene {
             
 
         
-            let wait = SKAction.wait(forDuration: waitTime)
-        arrayOfActions.append(wait)
+        
         arrayOfActions.append(actionA)
         let enableTouchAction = SKAction.run {
             self.myDelegate.enableTouches()

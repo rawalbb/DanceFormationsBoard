@@ -117,17 +117,7 @@ extension GameViewController: StageSceneUpdatesDelegate{
 extension GameViewController{
     //stored is start time
     //for formation 1, calculate wait time by getting next formation
-    func waitTimeCalculator() -> Double{
-//        if let nextStart = formationVM.getFormation(type: FormationType.next)?.songTime, let currStart = formationVM.getFormation(type: FormationType.current)?.songTime {
-//            return Double(nextStart - currStart)
-//        }
-//        else{
-//            return 3.0
-//        }
-        //calculatewait
-        
-        return 3.0
-    }
+
     
     func initialWaitCalculator(){
         guard let initial = formationVM.getFormation(type: FormationType.atLocation(0)) else { return }

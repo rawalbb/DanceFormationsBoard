@@ -58,15 +58,30 @@ class FormationViewModel{
             newFormation.dancers = nil
             newFormation.position = 0
         }
-        newFormation.songTime = -1.0
+        if let currIndex = getCurrentIndex(){
+            if let prev = self.getFormation(type: .atLocation(currentIndex!)){
+                newFormation.songTime = prev.songTime + 3.0
+            }
+            else{
+                newFormation.songTime = 3.0
+            }
+        }
+        else{
+            
+        }
+        
+        
         newFormation.uniqueId = UUID().uuidString
         newFormation.formationOwner = currentBoard
     }
     
     func getFormation(type: FormationType) -> Formation?{
         var returnVal: Formation? = nil
-        switch type{
         
+        if formationArray.count > 0{
+        
+        switch type{
+
         case .current:
             if let current = self.getCurrentIndex()
             {
@@ -107,6 +122,7 @@ class FormationViewModel{
             }
             
     }
+        }
         return returnVal
     }
     

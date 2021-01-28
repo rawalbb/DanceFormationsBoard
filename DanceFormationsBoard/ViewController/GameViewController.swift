@@ -249,7 +249,6 @@ class GameViewController: KeyUIViewController{
         else{
             print("Error loading in play formations pressed ")
         }
-        var waitT = 0.0
         
         ///The action is indeed cancelled(it actually finished when you start playing) but it will not stop the audio. Use SKAudioNode if you need to suddenly stop sounds
 //        if let music = musicUrl{
@@ -276,7 +275,7 @@ class GameViewController: KeyUIViewController{
                    // print("Second Wait Time", time)
                     self.stage.playThroughFormations(dancers: nextDancerForms, waitTime: time, transitionTime: 2.0, formIndex: index, totalForms: formationVM.formationArray.count)
                 
-                    waitT = 3.0
+                    //waitT = 3.0
 
                     formationVM.setCurrentSelection(index: index + 1)
             

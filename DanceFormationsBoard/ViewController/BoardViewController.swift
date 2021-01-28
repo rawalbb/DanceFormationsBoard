@@ -97,6 +97,7 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
         cell.boardNameTextField.resignFirstResponder()
         
         boardVM.setCurrentBoard(index: indexPath.row)
+        print("Set Current Board ", indexPath.row)
         
         switch cell.stageTypeSegmentedControl.selectedSegmentIndex
         {
@@ -105,6 +106,7 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
             self.navigationController?.pushViewController(nextVC, animated: true)
         case 1:
             let nextVC = storyboard?.instantiateViewController(identifier: "SceneKitViewController") as! SceneKitViewController
+            //boardVM.setCurrentBoard(index: indexPath.row)
             self.navigationController?.pushViewController(nextVC, animated: true)
         default:
             break

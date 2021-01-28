@@ -62,7 +62,7 @@ class ViewController: UIViewController {
         var prevTiming: CMTime
         var currTiming: CMTime
         if let prev = prevSongTiming{
-            prevTiming = CMTimeMake(value: Int64(prev), timescale: 1)
+            prevTiming = CMTimeMake(value: Int64(prev + 3.0), timescale: 1)
             
         }
         else{
@@ -75,6 +75,7 @@ class ViewController: UIViewController {
             currTiming = CMTimeMake(value: 0, timescale: 1)
         }
         print("Previous Time ", CMTimeGetSeconds(prevTiming))
+        print("Current Time ", CMTimeGetSeconds(currTiming))
         wformView = try ASWaveformPlayerView(audioURL: url,
                                              sampleCount: 1024,
                                              amplificationFactor: 500, prevTime: prevTiming, currTime: currTiming)
@@ -112,7 +113,7 @@ class ViewController: UIViewController {
         guard let currTiming = currSongTiming else { return }
         
         if let nextTiming = nextSongTiming{
-            if currTiming > nextTiming{
+            if nextTiming < currTiming + 3.0 {
                 self.delegate?.timeSelected(time: currTiming)
                 self.delegate?.updateFollowingForms()
                 self.navigationController?.popViewController(animated: true)

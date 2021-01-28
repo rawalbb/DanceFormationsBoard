@@ -107,6 +107,7 @@ class BoardViewModel{
     //Function: Set current Board
     func setCurrentBoard(index: Int){
         currentBoardIndex = index
+        print("Setting current board index ", currentBoardIndex)
     }
     
     

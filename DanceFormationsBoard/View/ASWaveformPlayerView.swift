@@ -57,9 +57,9 @@ public class ASWaveformPlayerView: UIView {
         audioPlayer = AVPlayer(url: audioURL)
         
         super.init(frame: .zero)
-        prevPlaybackTime = prevTime + CMTimeMake(value: 3, timescale: 60)
+        prevPlaybackTime = prevTime
         currentPlaybackTime = currTime
-        audioPlayer.seek(to: currentPlaybackTime, completionHandler: { [weak self] (_) in
+        audioPlayer.seek(to: currTime, completionHandler: { [weak self] (_) in
             print("Current Play Back Time when initially seeking", self?.currentPlaybackTime)
             self?.shouldAutoUpdateWaveform = true
         })

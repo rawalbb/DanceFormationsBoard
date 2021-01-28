@@ -19,7 +19,7 @@ class PositionManager{
             return CGPoint(x: newX, y: newY)
         }
         else{
-            print("ERRRROR COULD NOT CONVERT")
+            print("Could not convert position to percent")
             return CGPoint(x: 0.0, y: 0.0)
         }
     }
@@ -33,7 +33,7 @@ class PositionManager{
             return CGPoint(x: newX, y: newY)
         }
         else{
-            print("ERRRROR COULD NOT CONVERT")
+            print("Could not convert percent to position")
             return CGPoint(x: 0.0, y: 0.0)
         }
     }

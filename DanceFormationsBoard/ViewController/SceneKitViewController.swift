@@ -26,13 +26,15 @@ class SceneKitViewController: UIViewController {
     var musicNode: SKNode?
     var backgroundMusic: SCNAudioSource?
     var musicEnabled: Bool = false
+    var boardVM = BoardViewModel.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupScene()
         
         formationVM = FormationViewModel()
         dancerVM = DancerViewModel()
+        setupScene()
+        
         self.spriteScene = OverlayScene(size: self.view.frame.size)
         self.spriteScene.isUserInteractionEnabled = true
         prevNode = self.spriteScene.childNode(withName: "prevNode") as! SKSpriteNode
@@ -74,6 +76,10 @@ class SceneKitViewController: UIViewController {
         
         
         
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.endActionsHelper()
     }
     
     @objc func handleTap(_ gestureRecognize: UIGestureRecognizer) {
@@ -184,7 +190,10 @@ class SceneKitViewController: UIViewController {
             
             let stage = scene.rootNode.childNode(withName: "stage", recursively: true)!
             //let boy = templateScene.rootNode.childNode(withName: "boy", recursively: true)!
-            formationVM.currentBoard = BoardViewModel.shared.getCurrentBoard()
+            
+            formationVM.currentBoard = boardVM.getCurrentBoard()
+                
+                //BoardViewModel.shared.getCurrentBoard()
             formationVM.loadFormations()
             
   
@@ -420,13 +429,14 @@ class SceneKitViewController: UIViewController {
         self.arrayOfActions = []
         self.endActionsHelper()
         formationVM.setCurrentSelection(index: 0)
-        if let curr = formationVM.getFormation(type: FormationType.current){
+        
+        guard let curr = formationVM.getFormation(type: FormationType.current) else { return }
             let dancers = dancerVM.loadDancers(selectedFormation: curr, current: true)
             self.formationSelected(dancers: dancers)
-        }
-        else{
-            print("Error loading in play formations pressed ")
-        }
+        
+        self.sceneView.overlaySKScene?.isUserInteractionEnabled = false
+        self.sceneView.overlaySKScene?.alpha = 0.3
+
         var waitT = 0.0
 
         for _ in 0..<formationVM.formationArray.count{
@@ -525,8 +535,6 @@ extension SceneKitViewController: OverlaySceneDelegate{
     func playPressed() {
         print("YOO")
         playFormations()
-        self.sceneView.overlaySKScene?.isUserInteractionEnabled = false
-        self.sceneView.overlaySKScene?.alpha = 0.3
     }
     
     func nextPressed() {
