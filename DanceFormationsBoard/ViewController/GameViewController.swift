@@ -319,12 +319,16 @@ class GameViewController: KeyUIViewController{
     @IBAction func removeFormation(_ sender: UIButton) {
         //current 1
         if let toRemove = formationVM.getFormation(type: FormationType.current){
+            
             formationVM.updatePosition(type: PositionType.remove)
 
         
             if let currIndex = formationVM.getCurrentIndex(){
                 if currIndex - 1 == -1{
+
                     formationVM.createNewFormation()
+                    formationVM.setCurrentSelection(index: currIndex)
+                    
                 }
                 else if currIndex - 1 != -1 && currIndex + 2 <= formationArray.count{
                     formationVM.setCurrentSelection(index: currIndex)
@@ -341,6 +345,7 @@ class GameViewController: KeyUIViewController{
             
             if let curr = formationVM.getFormation(type: FormationType.current){
                 let dancers = dancerVM.loadDancers(selectedFormation: curr, current: true)
+                print("In remove form dancers count", dancers.count)
                 stage.formationSelected(dancers: dancers)
             }
             else{
@@ -477,6 +482,32 @@ class GameViewController: KeyUIViewController{
         
         formationVM.saveFormation()
         _ = formationVM.loadFormations()
+    }
+    
+    
+    
+    
+    func calculateWaitHelper(withMusic: Bool = false) -> Double{
+        var wait = 3.0
+        guard let curr = formationVM.getFormation(type: FormationType.current) else {
+            return wait
+        }
+        if  let prev = formationVM.getFormation(type: FormationType.previous) {
+        if !withMusic{
+                wait = 3.0
+            
+        }
+        if withMusic{
+            wait = Double(curr.songTime - prev.songTime)
+        }
+   //go through and set all the wait times, prev + 3 to a certain amount initially when music is loaded
+        //when edited, select next song times to be + 3 seconds after
+        //when
+        }
+        else{
+            wait = Double(curr.songTime)
+        }
+        return wait
     }
     
     

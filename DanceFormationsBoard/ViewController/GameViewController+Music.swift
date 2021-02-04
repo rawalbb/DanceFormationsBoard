@@ -8,39 +8,25 @@
 import UIKit
 import MediaPlayer
 
-extension GameViewController: MusicChosenDelegate{
-    
-    func calculateWaitHelper(withMusic: Bool = false) -> Double{
-        var wait = 3.0
-        guard let curr = formationVM.getFormation(type: FormationType.current) else {
-            return wait
-        }
-        if  let prev = formationVM.getFormation(type: FormationType.previous) {
-        if !withMusic{
-                wait = 3.0
-            
-        }
-        if withMusic{
-            wait = Double(curr.songTime - prev.songTime)
-        }
-   //go through and set all the wait times, prev + 3 to a certain amount initially when music is loaded
-        //when edited, select next song times to be + 3 seconds after
-        //when
-        }
-        else{
-            wait = Double(curr.songTime)
-        }
-        return wait
-    }
+extension GameViewController: MusicChosenDelegate {
     
     func musicChosen(url: URL) {
-        self.musicUrl = url
-        self.musicToggleButton.isEnabled = true
-        self.musicTimingButton.isEnabled = true
-        boardVM.updateBoardSong(songUrl: "\(url)")
-        self.setInitialSongTimes()
-        stage.musicEnabled = true
+                self.musicUrl = url
+                self.musicToggleButton.isEnabled = true
+                self.musicTimingButton.isEnabled = true
+                boardVM.updateBoardSong(songUrl: "\(url)")
+                self.setInitialSongTimes()
+                stage.musicEnabled = true
     }
+    
+//    func musicChosen(url: URL) {
+//        self.musicUrl = url
+//        self.musicToggleButton.isEnabled = true
+//        self.musicTimingButton.isEnabled = true
+//        boardVM.updateBoardSong(songUrl: "\(url)")
+//        self.setInitialSongTimes()
+//        stage.musicEnabled = true
+//    }
     
     //Should be called when music is first added
     //Should also be called when formationis are - no scratch that

@@ -87,16 +87,12 @@ class DancerViewModel{
     }
     
     func updateDancerPosition( id: String, xPosition: Float, yPosition: Float, owner: Formation){
-        //var toUpdate = [Dancer]()
-        print(" In update dancer position, printing dancer count")
-        print(owner.dancers?.count ?? "Error")
-        print("Printing Curr Array - I think it's not updated", currDancerArray.count)
+
         
         //
         if let toUpdateIndex = currDancerArray.firstIndex(where: {
             $0.id == id && $0.owner == owner
         }) {
-            print("TO UPDATE in dancerVM", xPosition, yPosition)
             
             currDancerArray[toUpdateIndex].xPos = xPosition
             currDancerArray[toUpdateIndex].yPos = yPosition

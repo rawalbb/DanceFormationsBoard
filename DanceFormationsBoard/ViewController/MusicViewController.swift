@@ -9,7 +9,7 @@ import UIKit
 import MediaPlayer
 import AVFoundation
 
-protocol MusicChosenDelegate{
+protocol MusicChosenDelegate: AnyObject  {
     
     func musicChosen(url: URL)
     
@@ -18,57 +18,35 @@ protocol MusicChosenDelegate{
 class MusicViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
 
-    @IBOutlet var tableView : UITableView?
-    //let myTableView: UITableView = UITableView( frame: CGRect.zero, style: .grouped )
+    @IBOutlet weak var tableView: UITableView!
     
-
-
-    var audio: AVAudioPlayer?
     var finalSongsArray: [MPMediaItem] = []
-    var delegate: MusicChosenDelegate? = nil
-
+    weak var delegate: MusicChosenDelegate?
+    //nil
+    
     override func viewDidLoad() {
 
         super.viewDidLoad()
-        tableView?.delegate = self
-        tableView?.dataSource = self
+        tableView.delegate = self
+        tableView.dataSource = self
         self.title = "Songs"
         
-        
-        //var finalSongsArray: [MPMediaItem] = []
                 let mediaItems = MPMediaQuery.songs().items
                      let mediaCollection = MPMediaItemCollection(items: mediaItems ?? [])
         finalSongsArray = mediaCollection.items
-        print("Final Array", finalSongsArray.count, mediaCollection.items.count)
-               // print("mediaCollectionItems: \(String(describing: mediaCollection.items[0].title))") //It's alwa
-                if mediaCollection.items.count > 0{
-                     let item = mediaCollection.items[0]
-                    _ = item.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
-        
-        
-                //let sound = NSURL(fileURLWithPath: Bundle.main.path(forResource: "Bulleya", ofType: "mp3")!)
-        
-                    tableView?.backgroundColor = UIColor.clear
-    }
-        
-//        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+//                if mediaCollection.items.count > 0{
+//                     let item = mediaCollection.items[0]
+//                    _ = item.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
+//
+//
+//    }
+        tableView?.backgroundColor = UIColor.clear
+
         self.navigationController?.navigationBar.tintColor = UIColor(named: "color-nav")
-    }
-
-
-    override func didReceiveMemoryWarning() {
-
-        super.didReceiveMemoryWarning()
-
-    }
-
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
     }
 
     func tableView( _ tableView: UITableView, numberOfRowsInSection section: Int ) -> Int  {
 
-        print("Count", finalSongsArray.count)
         return finalSongsArray.count
     }
 
@@ -80,15 +58,7 @@ class MusicViewController: UIViewController, UITableViewDelegate, UITableViewDat
         cell.textLabel?.textColor = UIColor.white
         cell.textLabel?.text = finalSongsArray[indexPath.row].title
         cell.selectedBackgroundView?.backgroundColor = UIColor(named: "color-heading")
-//        print("Text", finalSongsArray[indexPath.row].title, finalSongsArray[indexPath.row].persistentID)
-        //cell.labelMusicTitle?.text = albums[indexPath.section].songs[indexPath.row].songTitle
-        //cell.labelMusicDescription?.text = albums[indexPath.section].songs[indexPath.row].artistName
-        //let songId: NSNumber = albums[indexPath.section].songs[indexPath.row].songId
-        //let item: MPMediaItem = songQuery.getItem( songId: songId )
 
-//        if  let imageSound: MPMediaItemArtwork = item.value( forProperty: MPMediaItemPropertyArtwork ) as? MPMediaItemArtwork {
-//            cell.imageMusic?.image = imageSound.image(at: CGSize(width: cell.imageMusic.frame.size.width, height: cell.imageMusic.frame.size.height))
-//        }
         return cell;
     }
 
@@ -106,24 +76,7 @@ class MusicViewController: UIViewController, UITableViewDelegate, UITableViewDat
             print("Error")
         }
         
-        self.dismiss(animated: true, completion: nil)
+        //self.dismiss(animated: true, completion: nil)
     }
-//   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//
-//    let songId: NSNumber = albums[indexPath.section].songs[indexPath.row].songId
-//    let item: MPMediaItem = songQuery.getItem( songId: songId )
-//    let url: NSURL = item.value( forProperty: MPMediaItemPropertyAssetURL ) as! NSURL
-//    do {
-//        audio = try AVAudioPlayer(contentsOf: url as URL)
-//        guard let player = audio else { return }
-//
-//        player.prepareToPlay()
-//        player.play()
-//    } catch let error {
-//        print(error.localizedDescription)
-//    }
-//
-//    self.title = albums[indexPath.section].songs[indexPath.row].songTitle
-//  }
 
 }

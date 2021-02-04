@@ -16,7 +16,14 @@ protocol StageSceneUpdatesDelegate {
 
 class StageScene: SKScene {
     
-    var currentNode: DanceNode?
+    var currentNode: DanceNode? = nil {
+        didSet {
+            currentNode?.lineWidth = 4
+            currentNode?.strokeColor = UIColor(named: "color-icons") ?? #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
+        }
+    }
+    
+    
     var xArray: [CGFloat] = []
     var yArray: [CGFloat] = []
     var dancerLabel: String = ""
@@ -202,18 +209,30 @@ class StageScene: SKScene {
     
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        var spotTaken = false
+        if let prevNode = currentNode{
+            prevNode.lineWidth = 0
+        }
         currentNode = nil
         if let touch = touches.first {
             let location = touch.location(in: self)
             let gridLocation = getNearestIntersection(x: location.x, y: location.y)
             
             let touchedNodes = self.nodes(at: gridLocation)
+            //if touched nodes have name dancer don't add
             
-            if (touchedNodes.count == 2){
+            if touchedNodes.contains(where: { (node) -> Bool in
+                node.name == "dancers"
+            }){
+                print("Already dancer here")
+                spotTaken = true
+            }
+            //printing curr array - I
+            if !spotTaken {
                 
                 
                 //let n = DanceNode(imageNamed: "circle")
-                let n = DanceNode(circleOfRadius: 10.5)
+                let n = DanceNode(circleOfRadius: 11)
                 n.fillColor = selectedColor
                 n.strokeColor = selectedColor
  
@@ -233,6 +252,7 @@ class StageScene: SKScene {
                 n.name = "dancers"
                 n.addChild(label)
                 self.addChild(n)
+                currentNode = n
                 
                 
 
@@ -265,7 +285,9 @@ class StageScene: SKScene {
                 highlightedNode.zPosition = 0
                 highlightedNode.name = "highlight"
                 self.addChild(highlightedNode)
-                
+                if let prevNode = currentNode{
+                    prevNode.lineWidth = 0
+                }
                 self.currentNode = self.nodes(at: location).first as? DanceNode
                 self.myDelegate.enableTextField(enable: true, id: currentNode?.nodeId ?? "")
                 self.myDelegate.updateNodeColor(color: currentNode?.fillColor ?? selectedColor)
@@ -361,6 +383,9 @@ class StageScene: SKScene {
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let prevNode = currentNode{
+            prevNode.lineWidth = 0
+        }
         self.currentNode = nil
         self.myDelegate.enableTextField(enable: false, id: "")
     }
@@ -403,12 +428,15 @@ class StageScene: SKScene {
     func formationSelected(dancers: [Dancer]? = nil, index: IndexPath? = nil){
         
         endActionsHelper()
+        if let prevNode = currentNode{
+            prevNode.lineWidth = 0
+        }
         currentNode = nil
         self.myDelegate.enableTextField(enable: false, id: "")
         
         if let dancers = dancers{
         for dancer in dancers{
-            let n = DanceNode(circleOfRadius: 10)
+            let n = DanceNode(circleOfRadius: 11)
             n.fillColor = UIColor(hex: dancer.color)
             n.strokeColor = UIColor(hex: dancer.color)
             n.nodeId = dancer.id
@@ -537,7 +565,7 @@ class StageScene: SKScene {
         }
             else{
 
-                let n = DanceNode(circleOfRadius: 10)
+                let n = DanceNode(circleOfRadius: 11)
                 n.fillColor = UIColor(hex: dancer.color)
                 n.strokeColor = UIColor(hex: dancer.color)
                 n.nodeId = dancer.id
