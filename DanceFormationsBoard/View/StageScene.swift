@@ -20,10 +20,14 @@ class StageScene: SKScene {
         didSet {
             currentNode?.lineWidth = 4
             currentNode?.strokeColor = UIColor(named: "color-icons") ?? #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
+            
+            self.myDelegate.enableTextField(enable: true, id: currentNode?.nodeId ?? "")
+            self.myDelegate.updateNodeColor(color: currentNode?.fillColor ?? selectedColor)
+            self.selectedColor = currentNode?.fillColor ?? selectedColor
         }
     }
     
-    
+    var initialDancers: [Dancer] = []
     var xArray: [CGFloat] = []
     var yArray: [CGFloat] = []
     var dancerLabel: String = ""
@@ -32,7 +36,7 @@ class StageScene: SKScene {
     var myDelegate : StageSceneUpdatesDelegate!
     var arrayOfActions: [SKAction] = []
     var backgroundMuisc: SKAudioNode!
-    var selectedColor: UIColor!
+    var selectedColor: UIColor = #colorLiteral(red: 0.8549019694, green: 0.250980407, blue: 0.4784313738, alpha: 1)
     var showLabel: Bool = false
     var playMusic: Bool = false
     let highlightedNode = SKShapeNode(circleOfRadius: 6)
@@ -42,8 +46,13 @@ class StageScene: SKScene {
     
     override func sceneDidLoad() {
 
+        
+        
     }
+
     override func didMove(to view: SKView) {
+        
+        
 
         backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         gridWidth = view.bounds.width
@@ -88,7 +97,7 @@ class StageScene: SKScene {
 
             let lineNode = SKShapeNode(path: path.cgPath)
             lineNode.strokeColor = #colorLiteral(red: 0.370555222, green: 0.3705646992, blue: 0.3705595732, alpha: 1)
-            lineNode.lineWidth = 0.5
+            lineNode.lineWidth = 0.2
             lineNode.name = "grid"
             
             //As long as line is
@@ -141,7 +150,7 @@ class StageScene: SKScene {
             
             if num != 0 && num != yNumLines{
                 lineNode.strokeColor = #colorLiteral(red: 0.370555222, green: 0.3705646992, blue: 0.3705595732, alpha: 1)
-                lineNode.lineWidth = 0.5
+                lineNode.lineWidth = 0.2
                 yArray.append(yCounter)
             }
             if num == 0{
@@ -269,6 +278,11 @@ class StageScene: SKScene {
     
             }
             else{
+                if let prevNode = currentNode{
+                    prevNode.lineWidth = 0
+                }
+                self.currentNode = self.nodes(at: location).first as? DanceNode
+                print("Self.current node dance node", self.currentNode?.name)
                 highlightedNode.position = touchedNodes[0].position
                 if let nodeTouched = touchedNodes[0] as? SKSpriteNode{
                     highlightedNode.fillColor = nodeTouched.color
@@ -285,12 +299,10 @@ class StageScene: SKScene {
                 highlightedNode.zPosition = 0
                 highlightedNode.name = "highlight"
                 self.addChild(highlightedNode)
-                if let prevNode = currentNode{
-                    prevNode.lineWidth = 0
-                }
-                self.currentNode = self.nodes(at: location).first as? DanceNode
-                self.myDelegate.enableTextField(enable: true, id: currentNode?.nodeId ?? "")
-                self.myDelegate.updateNodeColor(color: currentNode?.fillColor ?? selectedColor)
+
+                
+//                self.myDelegate.enableTextField(enable: true, id: currentNode?.nodeId ?? "")
+//                self.myDelegate.updateNodeColor(color: currentNode?.fillColor ?? selectedColor)
             }
 
         }
@@ -358,12 +370,15 @@ class StageScene: SKScene {
             if node.position.x < 0.0 || node.position.x >= gridWidth{
                 node.removeFromParent()
                 self.myDelegate.removedDancer(id: node.nodeId)
+                currentNode = nil
+                self.myDelegate.enableTextField(enable: false, id: "")
                 
             }
             else if node.position.y < 0.0 || node.position.y >= gridHeight{
                 node.removeFromParent()
                 self.myDelegate.removedDancer(id: node.nodeId)
-                //currentNode = nil
+                currentNode = nil
+                self.myDelegate.enableTextField(enable: false, id: "")
                // print("Else If", self.children.count)
             }
             else{
@@ -449,11 +464,9 @@ class StageScene: SKScene {
             label.fontColor = UIColor.red
             
             
-            
-            //closestNode!.lineWidth = 20
-            
-            let point = PositionManager.percentageToPosition(x: dancer.xPos, y: dancer.yPos, viewW: self.view?.bounds.width, viewH: self.view?.bounds.height)
-            print("Formation Selected positions ", point.x, point.y, self.view?.bounds.width, self.view?.bounds.height)
+            let point = PositionManager.percentageToPosition(x: dancer.xPos, y: dancer.yPos, viewW: self.view?.frame.width, viewH: self.view?.frame.height)
+            print("Boundsss ", self.view?.bounds.width, self.view?.bounds.height)
+            print("Frameee  ", self.view?.frame.width, self.view?.frame.height)
             let point2 = getNearestIntersection(x: point.x, y: point.y)
             
             n.position = CGPoint(x: CGFloat(point2.x), y: CGFloat(point2.y))

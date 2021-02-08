@@ -9,12 +9,12 @@ import UIKit
 import MediaPlayer
 
 extension GameViewController: MusicChosenDelegate {
-    
-    func musicChosen(url: URL) {
+
+    func musicChosen(url: URL, songName: String) {
                 self.musicUrl = url
                 self.musicToggleButton.isEnabled = true
                 self.musicTimingButton.isEnabled = true
-                boardVM.updateBoardSong(songUrl: "\(url)")
+                boardVM.updateBoardSong(songUrl: "\(url)", songName: songName)
                 self.setInitialSongTimes()
                 stage.musicEnabled = true
     }

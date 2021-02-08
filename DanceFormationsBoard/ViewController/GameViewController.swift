@@ -23,9 +23,21 @@ class GameViewController: KeyUIViewController{
     
     @IBOutlet weak var musicTimingButton: UIButton!
     
+    @IBOutlet weak var deleteFormsButton: UIButton!
     
+    @IBOutlet weak var addFormsButton: UIButton!
     
+    @IBOutlet weak var playFormsButton: UIButton!
     
+    @IBOutlet weak var playMusicButton: UIButton!
+    
+    @IBOutlet weak var prevFormsButton: UIButton!
+    
+    @IBOutlet weak var nextFormsButton: UIButton!
+    
+    @IBOutlet weak var stopButton: UIButton!
+    
+    @IBOutlet weak var addMusicButton: UIButton!
     
     
     var boardVM = BoardViewModel.shared
@@ -33,10 +45,19 @@ class GameViewController: KeyUIViewController{
     var dancerVM = DancerViewModel()
     var formationArray: [Formation] = []
     var enableText: Bool = false
-    var selectedColor = #colorLiteral(red: 1, green: 0.9019607902, blue: 0.3450980484, alpha: 1)
+    var selectedColor = #colorLiteral(red: 0.8549019694, green: 0.250980407, blue: 0.4784313738, alpha: 1)
     var colorPicker = UIColorPickerViewController()
     var musicUrl: URL? = nil
     var stage: StageScene!
+    var enableMusic: Bool = false{
+        didSet{
+            self.musicToggleButton.isHidden = !enableMusic
+            self.musicTimingButton.isHidden = !enableMusic
+            self.stage.musicEnabled = enableMusic
+        }
+    }
+    
+    var songName: String = ""
     
     
     override func viewDidLoad() {
@@ -60,7 +81,7 @@ class GameViewController: KeyUIViewController{
         
         
         //Define Stage properties
-        stage = StageScene(size: stageView.bounds.size)
+        stage = StageScene(size: stageView.frame.size)
         stage.scaleMode = .fill
         stage.myDelegate = self
         stage.selectedColor = selectedColor
@@ -75,12 +96,9 @@ class GameViewController: KeyUIViewController{
                                    for: [.highlighted, .selected])
         labelToggleButton.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(scale: .large), forImageIn: [.highlighted, .selected])
         
+        stopButton.isHidden = true
         
-        //musicToggleButton.isEnabled = false
-//        musicToggleButton.setImage(#imageLiteral(resourceName: "defaultFormImage"),
-//                                   for: [.highlighted, .selected])
-//        musicToggleButton.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(scale: .large), forImageIn: [.highlighted, .selected])
-        
+
         //Define Tableview properties
         formsTableView.register(UINib(nibName: "FormationSnapshotCell", bundle: nil), forCellReuseIdentifier: "ReusableCell")
         formsTableView.dataSource = self
@@ -107,35 +125,51 @@ class GameViewController: KeyUIViewController{
             formationVM.setCurrentSelection(index: 0)
             if let curr = formationVM.getFormation(type: FormationType.current){
                 let dancers = dancerVM.loadDancers(selectedFormation: curr, current: true)
-                stage.formationSelected(dancers: dancers)
+                let indexPath = IndexPath(row: 0, section: 0)
+                stage.formationSelected(dancers: dancers, index: indexPath)
             }
         }
-        
         allFormUpdates()
         
     //Check if there is music,
 
+        
+
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if formationArray.count == 0{
+            formationVM.createNewFormation()
+            formationVM.setCurrentSelection(index: 0)
+        }
+        else{
+            formationVM.setCurrentSelection(index: 0)
+            if let curr = formationVM.getFormation(type: FormationType.current){
+                let dancers = dancerVM.loadDancers(selectedFormation: curr, current: true)
+                let indexPath = IndexPath(row: 0, section: 0)
+                stage.formationSelected(dancers: dancers, index: indexPath)
+            }
+        }
+        
         do{
             //print("In Game View Controller getting song ", boardVM.getCurrentBoard()?.song)
             if let a = boardVM.getCurrentBoard()?.song{
-                //AVAudioPlayer.prepareToPlay(<#T##self: AVAudioPlayer##AVAudioPlayer#>)
-                //let path = Bundle.main.path(forResource: a, ofType:nil)!
-                //let path = Bundle.main.path(forResource: <#T##String?#>, ofType: <#T##String?#>)
+
                 guard let music = URL(string: a) else { print("URL Nil");  return}
                     _ = try AVAudioPlayer(contentsOf: music)
 
                 
 //                    _ = try AVAudioPlayer(contentsOf: music)
                 musicUrl = URL(string: a)
-                musicToggleButton.isEnabled = true
-                musicTimingButton.isEnabled = true
-                stage.musicEnabled = true
+                enableMusic = true
+                //stage.musicEnabled = true
             }
             else{
                 print("No song")
-                musicToggleButton.isEnabled = false
-                musicTimingButton.isEnabled = false
-                stage.musicEnabled = false
+                enableMusic = false
+                //stage.musicEnabled = false
             }
             
         }
@@ -146,10 +180,6 @@ class GameViewController: KeyUIViewController{
             stage.musicEnabled = false
         }
 
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         
     }
     
@@ -214,6 +244,7 @@ class GameViewController: KeyUIViewController{
         let nextVC = storyboard?.instantiateViewController(identifier: "ViewController") as! ViewController
         nextVC.delegate = self
            nextVC.audioURL = musicUrl!
+        nextVC.song = boardVM.getCurrentBoard()?.songName ?? ""
         
         let prev = formationVM.getFormation(type: FormationType.previous)?.songTime
         let curr = formationVM.getFormation(type: FormationType.current)?.songTime
@@ -232,11 +263,9 @@ class GameViewController: KeyUIViewController{
     
     
     @IBAction func playFormationsPressed(_ sender: Any) {
+        guard formationArray.count > 1 else { return }
         
-        DispatchQueue.main.async {
-            self.detailView.isUserInteractionEnabled = false
-            self.detailView.alpha = 0.3
-        }
+        self.disableDetailButtons()
         
         
         
@@ -404,6 +433,9 @@ class GameViewController: KeyUIViewController{
     
     
     @IBAction func musicTogglePressed(_ sender: UIButton) {
+        
+        guard formationArray.count > 1 else { return }
+        self.disableDetailButtons()
 //        sender.isSelected = true
 //        ///print("Music Selection, ", sender.isSelected)
         //stage.musicEnabled = true
@@ -469,14 +501,31 @@ class GameViewController: KeyUIViewController{
     
     @IBAction func infoButtonPressed(_ sender: Any) {
         
-        let nextVC = storyboard?.instantiateViewController(identifier: "SceneKitViewController") as! SceneKitViewController
-        nextVC.formationVM = formationVM
-        nextVC.dancerVM = dancerVM
-        //nextVC.boardVM = boardVM
+        let nextVC = storyboard?.instantiateViewController(identifier: "InstructionsTableViewController") as! InstructionsTableViewController
         self.navigationController?.pushViewController(nextVC, animated: true)
         
     }
     
+    @IBAction func stopButtonPressed(_ sender: UIButton) {
+        
+        //func to make unhide all buttons
+        stage.endActionsHelper()
+        
+        
+        
+        if let curr = formationVM.getFormation(type: FormationType.current){
+            let dancers = dancerVM.loadDancers(selectedFormation: curr, current: true)
+            let indexPath = IndexPath(row: Int(curr.position), section: 0)
+            stage.formationSelected(dancers: dancers, index: indexPath)
+
+        }
+        else{
+            print("Error loading in didSelect")
+        }
+        
+        enableDetailButtons()
+        
+    }
     
     func allFormUpdates(){
         
@@ -509,8 +558,61 @@ class GameViewController: KeyUIViewController{
         }
         return wait
     }
-    
-    
+    func disableDetailButtons(){
+       
+        DispatchQueue.main.async {
+            //self.detailView.isUserInteractionEnabled = false
+            //self.detailView.alpha = 0.3
+            
+            self.nodeColorButton.isHidden = true
+            self.nodeLabelTextField.isHidden = true
+            self.musicToggleButton.isHidden = true
+            self.musicTimingButton.isHidden = true
+            
+            self.addFormsButton.isHidden = true
+            
+            self.deleteFormsButton.isHidden = true
+            
+            self.prevFormsButton.isHidden = true
+            
+            self.nextFormsButton.isHidden = true
+            
+            self.addMusicButton.isHidden = true
+            
+            self.labelToggleButton.isHidden = true
+            
+            self.playFormsButton.isHidden = true
+            self.stopButton.isHidden = false
+        
+        }
+        
+        
+    }
+    func enableDetailButtons(){
+        
+        //music button enabling should be based on music
+        self.nodeColorButton.isHidden = false
+        self.musicToggleButton.isHidden = !enableMusic
+        self.musicTimingButton.isHidden = !enableMusic
+        //THIS TODo
+        self.addMusicButton.isHidden = false
+        self.addFormsButton.isHidden = false
+        
+        self.deleteFormsButton.isHidden = false
+        
+        self.prevFormsButton.isHidden = false
+        
+        self.nextFormsButton.isHidden = false
+
+        
+        self.labelToggleButton.isHidden = false
+        
+        self.playFormsButton.isHidden = false
+        
+        self.stopButton.isHidden = true
+        
+        
+    }
     
 }
 
@@ -620,6 +722,21 @@ extension GameViewController: UITextFieldDelegate{
                 return retVal
         }
         //return enableText
+    }
+    
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        // get the current text, or use an empty string if that failed
+        let currentText = textField.text ?? ""
+        
+        // attempt to read the range they are trying to change, or exit if we can't
+        guard let stringRange = Range(range, in: currentText) else { return false }
+        
+        // add their new text to the existing text
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+        
+        // make sure the result is under 16 characters
+        return updatedText.count <= 8
     }
     
 }

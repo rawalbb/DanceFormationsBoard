@@ -135,9 +135,10 @@ class BoardViewModel{
         getCurrentBoard()?.lastEdited = date
     }
     
-    func updateBoardSong(songUrl: String){
+    func updateBoardSong(songUrl: String, songName: String){
         getCurrentBoard()?.song = songUrl
         print("Setting Board Song URL ", songUrl)
+        getCurrentBoard()?.songName = songName
     }
     
     

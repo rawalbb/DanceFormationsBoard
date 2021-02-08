@@ -18,11 +18,11 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="UFX-8Z-uBa" userLabel="labelStackView">
-                        <rect key="frame" x="40" y="8" width="284.5" height="73"/>
+                        <rect key="frame" x="40" y="8" width="170.5" height="73"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="252" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kKN-mF-uhQ">
-                                <rect key="frame" x="0.0" y="0.0" width="284.5" height="41"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <rect key="frame" x="0.0" y="0.0" width="170.5" height="41"/>
+                                <color key="backgroundColor" red="0.070530615482233494" green="0.070530615482233494" blue="0.070530615482233494" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="textColor" name="color-heading"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done"/>
@@ -31,7 +31,7 @@
                                 </variation>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="idz-QV-4xN" userLabel="Board Date Text View">
-                                <rect key="frame" x="0.0" y="49" width="284.5" height="24"/>
+                                <rect key="frame" x="0.0" y="49" width="170.5" height="24"/>
                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="14"/>
                                 <color key="textColor" name="color-nav"/>
                                 <nil key="highlightedColor"/>
@@ -42,10 +42,13 @@
                         </subviews>
                     </stackView>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="59s-GE-ocT">
-                        <rect key="frame" x="442.5" y="8" width="86.5" height="57"/>
+                        <rect key="frame" x="361" y="8" width="168" height="57"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="168" id="bST-uO-frR"/>
+                        </constraints>
                     </imageView>
                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Zcr-mV-PSA">
-                        <rect key="frame" x="341" y="21" width="85.5" height="32"/>
+                        <rect key="frame" x="259.5" y="21" width="85.5" height="32"/>
                         <color key="backgroundColor" red="0.75686274509999996" green="0.83921568629999999" blue="0.8980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <segments>
                             <segment title="2D"/>
@@ -58,13 +61,11 @@
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstItem="Zcr-mV-PSA" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="7Ur-UR-Wfj"/>
-                    <constraint firstItem="UFX-8Z-uBa" firstAttribute="width" secondItem="H2p-sc-9uM" secondAttribute="width" multiplier="0.5" id="9Vh-Z9-gQw"/>
+                    <constraint firstItem="UFX-8Z-uBa" firstAttribute="width" secondItem="H2p-sc-9uM" secondAttribute="width" multiplier="0.3" id="9Vh-Z9-gQw"/>
                     <constraint firstItem="59s-GE-ocT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="GEu-Lc-Iut"/>
-                    <constraint firstItem="Zcr-mV-PSA" firstAttribute="leading" secondItem="UFX-8Z-uBa" secondAttribute="trailing" priority="994" constant="16.5" id="NlK-8Y-yFJ"/>
                     <constraint firstAttribute="trailing" secondItem="59s-GE-ocT" secondAttribute="trailing" constant="40" id="R16-D9-LoY"/>
                     <constraint firstItem="Zcr-mV-PSA" firstAttribute="width" secondItem="H2p-sc-9uM" secondAttribute="width" multiplier="0.15" id="RFg-D6-nBo"/>
                     <constraint firstItem="UFX-8Z-uBa" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="SAl-em-aq2"/>
-                    <constraint firstItem="Zcr-mV-PSA" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="UFX-8Z-uBa" secondAttribute="trailing" constant="16.5" id="grc-to-APk"/>
                     <constraint firstItem="59s-GE-ocT" firstAttribute="leading" secondItem="Zcr-mV-PSA" secondAttribute="trailing" constant="16" id="hwD-Ez-hos"/>
                     <constraint firstAttribute="bottom" secondItem="59s-GE-ocT" secondAttribute="bottom" constant="8" id="imT-L7-3yz"/>
                     <constraint firstItem="UFX-8Z-uBa" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="40" id="mhi-Eh-Qa3"/>
@@ -82,10 +83,10 @@
     </objects>
     <resources>
         <namedColor name="color-heading">
-            <color red="0.6705882352941176" green="0.13725490196078433" blue="0.27450980392156865" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.67100000381469727" green="0.13699999451637268" blue="0.27500000596046448" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="color-nav">
-            <color red="0.78823530673980713" green="0.85490196943283081" blue="0.91764706373214722" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.78799998760223389" green="0.85500001907348633" blue="0.9179999828338623" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

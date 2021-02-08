@@ -16,8 +16,9 @@ extension GameViewController: StageSceneUpdatesDelegate{
     func enableTouches() {
         print("In Enable Detail View")
         DispatchQueue.main.async {
-            self.detailView.isUserInteractionEnabled = true
-            self.detailView.alpha = 1.0
+            //self.detailView.isUserInteractionEnabled = true
+            //self.detailView.alpha = 1.0
+            self.enableDetailButtons()
         }
     }
     

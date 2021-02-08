@@ -30,7 +30,7 @@ class BoardTableViewCell: UITableViewCell {
         stageTypeSegmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: UIControl.State.normal)
         
         boardImageField.layer.borderWidth = 2
-        boardImageField.layer.borderColor = UIColor(named: "color-extra")?.cgColor ?? UIColor.black.cgColor
+        boardImageField.layer.borderColor = UIColor(named: "color-icons")?.cgColor ?? UIColor.black.cgColor
         boardImageField.contentMode = .scaleAspectFill
     }
 

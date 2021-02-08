@@ -22,6 +22,7 @@ extension Board {
     @NSManaged public var notes: String?
     @NSManaged public var song: String?
     @NSManaged public var uniqueId: String
+    @NSManaged public var songName: String?
     @NSManaged public var subFormations: NSSet?
     
 }

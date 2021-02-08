@@ -16,13 +16,16 @@ protocol ScrubberUpdates{
 
 class ViewController: UIViewController {
 
+
     var wformView: ASWaveformPlayerView!
     let timeLabel = UILabel()
+    let songLabel = UILabel()
     var delegate: ScrubberUpdates? = nil
     var currSongTiming: Float?
     var prevSongTiming: Float?
     var nextSongTiming: Float?
     var audioURL: URL?
+    var song: String = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,10 +44,21 @@ class ViewController: UIViewController {
 //        wformView.addTarget(self, action: #selector(rangeSliderValueChanged(_:)),
 //                              for: .valueChanged)
         wformView.translatesAutoresizingMaskIntoConstraints = false
+        
         view.addSubview(timeLabel)
-                timeLabel.frame = CGRect(x: 350, y: 150, width: 100, height: 32)
+        view.addSubview(songLabel)
+        
+            //timeLabel.frame = CGRect(x: 350, y: 150, width: 100, height: 32)
+        //timeLabel.frame = CGRect()
                 timeLabel.textColor = UIColor.white
-                timeLabel.font = UIFont(name: "Helvetica", size: 28)
+                timeLabel.font = UIFont(name: "Helvetica", size: 22)
+        timeLabel.textAlignment = .center
+        timeLabel.translatesAutoresizingMaskIntoConstraints = false
+        songLabel.text = "Song: \(song)"
+        songLabel.textColor = UIColor(named: "color-heading") ?? UIColor.white
+        songLabel.font = UIFont(name: "Helvetica", size: 18)
+songLabel.textAlignment = .center
+songLabel.translatesAutoresizingMaskIntoConstraints = false
         let safeArea = view.safeAreaLayoutGuide
 
         let constrs = [
@@ -55,6 +69,26 @@ class ViewController: UIViewController {
             wformView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor)
         ]
         NSLayoutConstraint.activate(constrs)
+        
+        let timeLabelConstr = [
+            timeLabel.bottomAnchor.constraint(equalTo: wformView.topAnchor, constant: 24),
+            timeLabel.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
+            timeLabel.heightAnchor.constraint(equalToConstant: 32),
+            timeLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
+            timeLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor)
+        ]
+        NSLayoutConstraint.activate(timeLabelConstr)
+        
+        let songLabelConstr = [
+            songLabel.topAnchor.constraint(equalTo: wformView.bottomAnchor, constant: 24),
+            songLabel.centerXAnchor.constraint(equalTo: safeArea.centerXAnchor),
+            songLabel.heightAnchor.constraint(equalToConstant: 32),
+            songLabel.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
+            songLabel.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor)
+        ]
+        NSLayoutConstraint.activate(songLabelConstr)
+        
+        
 
     }
 

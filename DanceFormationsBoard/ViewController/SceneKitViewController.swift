@@ -27,9 +27,30 @@ class SceneKitViewController: UIViewController {
     var backgroundMusic: SCNAudioSource?
     var musicEnabled: Bool = false
     var boardVM = BoardViewModel.shared
+    var stageWidth: Float = 0.0
+    var stageHeight: Float = 0.0
+    var stageWidthMin: Float = 0.0
+    var stageHeightMin: Float = 0.0
+    var stopActionButton: UIBarButtonItem?
+    
+    var stage: SCNNode? = nil {
+        didSet{
+            guard let stage = stage else { return }
+            stageWidth = (stage.boundingBox.max.x - stage.boundingBox.min.x) * 2.0
+            stageHeight = ((stage.boundingBox.max.z - stage.boundingBox.min.z) * 1.8) - 1.8
+            stageWidthMin = stage.boundingBox.min.x * 2.0
+            stageHeightMin = stage.boundingBox.min.z * 1.8
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        self.stopActionButton = UIBarButtonItem(image: UIImage(systemName: "stop.fill"), style: .plain, target: self, action: #selector(stopAction(_:)))
+//            self.stopActionButton = UIBarButtonItem(title: "Stop", style: .plain, target: self, action: #selector(stopAction(_:)))
+        self.stopActionButton?.tintColor = UIColor(named: "color-nav")
+
         
         formationVM = FormationViewModel()
         dancerVM = DancerViewModel()
@@ -81,7 +102,31 @@ class SceneKitViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         self.endActionsHelper()
     }
+
     
+
+@objc func stopAction(_ sender: UIBarButtonItem) {
+    //self.navigationItem.setRightBarButton(stopActionButton, animated: true)
+    print("Ayy")
+    self.endActionsHelper()
+    
+    
+    if formationVM.formationArray.count > 0{
+    formationVM.setCurrentSelection(index: 0)
+    if let curr = formationVM.getFormation(type: FormationType.current){
+        let dancers = dancerVM.loadDancers(selectedFormation: curr, current: true)
+        self.formationSelected(dancers: dancers)
+    }
+    else{
+        print("Error loading in play formations pressed ")
+    }
+    }
+    else{
+        print("No formations yet")
+    }
+    
+    
+}
     @objc func handleTap(_ gestureRecognize: UIGestureRecognizer) {
      //retrieve the SCNView
     let scnView = self.view as! SCNView
@@ -124,55 +169,6 @@ class SceneKitViewController: UIViewController {
     }
     }
        
-            // create a new scene
-    //        let scene = SCNScene(named: "art.scnassets/ship.scn")!
-    //
-    //        // create and add a camera to the scene
-    //        let cameraNode = SCNNode()
-    //        cameraNode.camera = SCNCamera()
-    //        scene.rootNode.addChildNode(cameraNode)
-    //
-    //        // place the camera
-    //        cameraNode.position = SCNVector3(x: 0, y: 0, z: 15)
-    //
-    //        // create and add a light to the scene
-    //        let lightNode = SCNNode()
-    //        lightNode.light = SCNLight()
-    //        lightNode.light!.type = .omni
-    //        lightNode.position = SCNVector3(x: 0, y: 10, z: 10)
-    //        scene.rootNode.addChildNode(lightNode)
-    //
-    //        // create and add an ambient light to the scene
-    //        let ambientLightNode = SCNNode()
-    //        ambientLightNode.light = SCNLight()
-    //        ambientLightNode.light!.type = .ambient
-    //        ambientLightNode.light!.color = UIColor.darkGray
-    //        scene.rootNode.addChildNode(ambientLightNode)
-    //
-    //        // retrieve the ship node
-    //        let ship = scene.rootNode.childNode(withName: "ship", recursively: true)!
-    //
-    //        // animate the 3d object
-    //        ship.runAction(SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: 2, z: 0, duration: 1)))
-    //
-    //        // retrieve the SCNView
-    //        let scnView = self.view as! SCNView
-    //
-    //        // set the scene to the view
-    //        scnView.scene = scene
-    //
-    //        // allows the user to manipulate the camera
-    //        scnView.allowsCameraControl = true
-    //
-    //        // show statistics such as fps and timing information
-    //        scnView.showsStatistics = true
-    //
-    //        // configure the view
-    //        scnView.backgroundColor = UIColor.black
-    //
-    //        // add a tap gesture recognizer
-    //        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
-    //        scnView.addGestureRecognizer(tapGesture)
       
     override func didMove(toParent parent: UIViewController?) {
         print("HI there")
@@ -188,7 +184,7 @@ class SceneKitViewController: UIViewController {
             print("HI there setup")
             templateScene = SCNScene(named: "art.scnassets/Nodes.scn")
             
-            let stage = scene.rootNode.childNode(withName: "stage", recursively: true)!
+            self.stage = scene.rootNode.childNode(withName: "stage", recursively: true)!
             //let boy = templateScene.rootNode.childNode(withName: "boy", recursively: true)!
             
             formationVM.currentBoard = boardVM.getCurrentBoard()
@@ -226,68 +222,19 @@ class SceneKitViewController: UIViewController {
            }
     
     func convertToStageDimensions(originalX: Float, originalY: Float) -> SCNVector3{
-        let stage = scene.rootNode.childNode(withName: "stage", recursively: true)!
-
-        let width = (stage.boundingBox.max.x - stage.boundingBox.min.x) * 2.0
-        let length = (stage.boundingBox.max.z - stage.boundingBox.min.z) * 1.8
+//        let stage = scene.rootNode.childNode(withName: "stage", recursively: true)!
+//
+//        let width = (stage.boundingBox.max.x - stage.boundingBox.min.x) * 2.0
+//        let length = (stage.boundingBox.max.z - stage.boundingBox.min.z) * 1.8
         
-        let point = PositionManager.percentageToPosition(x: originalX, y: originalY, viewW: CGFloat(width), viewH: CGFloat(length))
+        let point = PositionManager.percentageToPosition(x: originalX, y: originalY, viewW: CGFloat(self.stageWidth), viewH: CGFloat(self.stageHeight))
+//0.5
 
-
-        let newVector = SCNVector3(point.x + CGFloat(stage.boundingBox.min.x * 2.0), 5, -(point.y + CGFloat(stage.boundingBox.min.z * 1.8)))
+        let newVector = SCNVector3(point.x + CGFloat(stageWidthMin), 5, -(point.y + CGFloat(stageHeightMin)))
         return newVector
 
     }
     
-    
-    func drawGrid(){
-        let stage = scene.rootNode.childNode(withName: "stage", recursively: true)!
-        
-        let gridWidth = CGFloat(stage.boundingBox.max.x - stage.boundingBox.min.x) * 2.0 - 4
-        let gridZ = CGFloat(stage.boundingBox.max.z - stage.boundingBox.min.z) * 1.8 - 4
-        print("Grid Height, Grid Width ", gridZ, gridWidth)
-        let box = SCNBox(width: 0.5, height: 0.5, length: gridZ, chamferRadius: 0)
-        let box2 = SCNBox(width: gridWidth, height: 0.5, length: 0.5, chamferRadius: 0)
-        
-        
-        var xCounter: CGFloat = CGFloat(stage.boundingBox.min.x) * 2.0 + 2
-        print("XCounter Original", xCounter)
-        var yCounter: CGFloat = CGFloat(stage.boundingBox.min.z) * 1.8 + 2
-        let increment: CGFloat = gridWidth/10
-        let yIncrement: CGFloat = gridZ/10
-        var xNumLines: Int {
-            return Int(gridWidth/increment)
-        }
-        var yNumLines: Int{
-            return Int(gridZ/yIncrement)
-        }
-        for num in 1...xNumLines
-        {
-            
-            let lineNode = SCNNode(geometry: box)
-            lineNode.position = SCNVector3(xCounter, 6, CGFloat(stage.position.z))
-            
-            lineNode.name = "grid"
-            sceneView.scene?.rootNode.addChildNode(lineNode)
-            //addChild(lineNode)
-            xCounter += increment
-        }
-        
-        for num in 0...yNumLines
-        {
-            
-            let lineNode = SCNNode(geometry: box2)
-            lineNode.position = SCNVector3(CGFloat(stage.position.x), 6, yCounter)
-            
-            lineNode.name = "grid"
-            sceneView.scene?.rootNode.addChildNode(lineNode)
-            //addChild(lineNode)
-            yCounter += yIncrement
-        }
-        
-        
-    }
-        
 
         
        // @objc
@@ -345,7 +292,7 @@ class SceneKitViewController: UIViewController {
 
     
     func playThroughFormations(dancers: [Dancer], waitTime: Double, transitionTime: Double, formIndex: Int, totalForms: Int){
-
+        
         let actionA = SCNAction.run {[weak self] _ in
             //THIS IS THE PROBLEM
             var currNodes: [SCNNode] = []
@@ -369,11 +316,43 @@ class SceneKitViewController: UIViewController {
         }
             else{
                     print("Not found")
+                self?.templateScene = SCNScene(named: "art.scnassets/Nodes.scn")
+                let cubeNode = self?.templateScene.rootNode.childNode(withName: "boy", recursively: true)! as! SCNNode
+                
+                cubeNode.geometry?.material(named: "headColor")?.diffuse.contents = UIColor(hex: dancer.color)
+                
+                cubeNode.geometry?.material(named: "legColor")?.diffuse.contents = UIColor(hex: dancer.color)
+                cubeNode.geometry?.material(named: "bodyColor")?.diffuse.contents = UIColor(hex: dancer.color)
+                
+                cubeNode.accessibilityLabel = dancer.id
+                let point = self?.convertToStageDimensions(originalX: dancer.xPos, originalY: dancer.yPos)
+                guard let stageWidthMin = self?.stageWidthMin, let stageHeightMin = self?.stageHeightMin else { return }
+                self?.sceneView.scene?.rootNode.addChildNode(cubeNode)
+                                currNodes.append(cubeNode)
+                                
+                let newVector = SCNVector3(CGFloat(stageWidthMin), 5, -(CGFloat(stageHeightMin)))
+                cubeNode.position = newVector
+                                
+                let action = SCNAction.move(to: point!, duration: 2.0)
+                    cubeNode.runAction(action)
 
             }
             //TODO - handle case when dancers are removed from one formation
 
         }
+            
+            for nodes in currNodes{
+                
+                            if dancers.firstIndex(where: { $0.id == nodes.accessibilityLabel }) != nil {
+
+                        }
+                            else{
+              
+                                nodes.removeFromParentNode()
+                            }
+                            
+                        }
+
 
     }
       
@@ -401,6 +380,7 @@ class SceneKitViewController: UIViewController {
     func enableTouches() {
         print("In Enable Detail View")
         DispatchQueue.main.async {
+            self.navigationItem.rightBarButtonItems?.removeAll()
             self.sceneView.overlaySKScene?.isUserInteractionEnabled = true
             self.sceneView.overlaySKScene?.alpha = 1.0
         }
@@ -422,15 +402,22 @@ class SceneKitViewController: UIViewController {
                     dancerNode.removeFromParentNode()
                  }
             })
+            
+            self.navigationItem.rightBarButtonItems?.removeAll()
+            self.sceneView.overlaySKScene?.isUserInteractionEnabled = true
+            self.sceneView.overlaySKScene?.alpha = 1.0
             }
 
     
     func playFormations(){
+        
+        guard formationVM.formationArray.count > 1 else { return }
         self.arrayOfActions = []
         self.endActionsHelper()
         formationVM.setCurrentSelection(index: 0)
         
         guard let curr = formationVM.getFormation(type: FormationType.current) else { return }
+        self.navigationItem.setRightBarButton(stopActionButton, animated: true)
             let dancers = dancerVM.loadDancers(selectedFormation: curr, current: true)
             self.formationSelected(dancers: dancers)
         
@@ -481,12 +468,12 @@ class SceneKitViewController: UIViewController {
                 
             
             cubeNode.accessibilityLabel = dancer.id
-            let width = (stage.boundingBox.max.x - stage.boundingBox.min.x) * 2.0
-            let height = (stage.boundingBox.max.z - stage.boundingBox.min.z) * 1.8
+//            let width = (stage.boundingBox.max.x - stage.boundingBox.min.x) * 2.0
+//            let height = (stage.boundingBox.max.z - stage.boundingBox.min.z) * 1.8
             
-            let point = PositionManager.percentageToPosition(x: dancer.xPos, y: dancer.yPos, viewW: CGFloat(width), viewH: CGFloat(height))
+            let point = PositionManager.percentageToPosition(x: dancer.xPos, y: dancer.yPos, viewW: CGFloat(self.stageWidth), viewH: CGFloat(self.stageHeight))
 
-            cubeNode.position = SCNVector3(point.x + CGFloat(stage.boundingBox.min.x * 2.0), 5, -(point.y + CGFloat(stage.boundingBox.min.z * 1.8))) // SceneKit/AR coordinates are in meters
+            cubeNode.position = SCNVector3(point.x + CGFloat(self.stageWidthMin), 5, -(point.y + CGFloat(self.stageHeightMin))) // SceneKit/AR coordinates are in meters
 
             sceneView.scene?.rootNode.addChildNode(cubeNode)
             //closestNode!.lineWidth = 20
@@ -550,15 +537,18 @@ extension SceneKitViewController: OverlaySceneDelegate{
     func musicPressed() {
 
         
-        
         if musicEnabled{
+            guard formationVM.formationArray.count > 1 else { return }
             guard let songString = BoardViewModel.shared.getCurrentBoard()?.song else { return }
+            self.arrayOfActions = []
+            self.endActionsHelper()
+
             let music = URL(string: songString)
             self.sceneView.overlaySKScene?.isUserInteractionEnabled = false
             self.sceneView.overlaySKScene?.alpha = 0.3
+            
+            self.navigationItem.setRightBarButton(stopActionButton, animated: true)
 
-        self.arrayOfActions = []
-        self.endActionsHelper()
         
         formationVM.setCurrentSelection(index: 0)
         
@@ -609,28 +599,31 @@ extension SceneKitViewController: OverlaySceneDelegate{
         }
     
     
-    
     func calculateWaitHelper(withMusic: Bool = false) -> Double{
         var wait = 3.0
-        guard let next = formationVM.getFormation(type: FormationType.next) else {
-            return wait
-        }
         guard let curr = formationVM.getFormation(type: FormationType.current) else {
             return wait
         }
+        if  let prev = formationVM.getFormation(type: FormationType.previous) {
         if !withMusic{
                 wait = 3.0
             
         }
         if withMusic{
-            wait = Double(next.songTime - curr.songTime)
+            wait = Double(curr.songTime - prev.songTime)
         }
    //go through and set all the wait times, prev + 3 to a certain amount initially when music is loaded
         //when edited, select next song times to be + 3 seconds after
         //when
-        print("Wait   ", wait)
+        }
+        else{
+            wait = Double(curr.songTime)
+        }
         return wait
     }
+    
+    
+    
     
     
     

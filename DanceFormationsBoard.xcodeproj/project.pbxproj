@@ -49,6 +49,7 @@
 		43AB36A925744C57001F5DAB /* BoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB36A825744C57001F5DAB /* BoardViewModel.swift */; };
 		43AB36B12576B0B1001F5DAB /* BoardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB36AF2576B0B1001F5DAB /* BoardTableViewCell.swift */; };
 		43AB36B52576E509001F5DAB /* NotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB36B42576E508001F5DAB /* NotesViewController.swift */; };
+		43F5F15825CE015F00299D04 /* InstructionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F5F15725CE015F00299D04 /* InstructionsTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -98,6 +99,7 @@
 		43AB36AF2576B0B1001F5DAB /* BoardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardTableViewCell.swift; sourceTree = "<group>"; };
 		43AB36B02576B0B1001F5DAB /* BoardTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BoardTableViewCell.xib; sourceTree = "<group>"; };
 		43AB36B42576E508001F5DAB /* NotesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesViewController.swift; sourceTree = "<group>"; };
+		43F5F15725CE015F00299D04 /* InstructionsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionsTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,6 +223,7 @@
 				435C40ED25A7C8C600036FF4 /* SceneKitViewController.swift */,
 				436C66CE25BF5C2700FA777F /* DanceNavigationViewController.swift */,
 				436C66D125BFD2CE00FA777F /* UIViewController+Extensions.swift */,
+				43F5F15725CE015F00299D04 /* InstructionsTableViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -325,6 +328,7 @@
 				43621D312571E2BD00D3B0DB /* UIColor+Extension.swift in Sources */,
 				436C65D025ABF3E200FA777F /* DataSharingManager.swift in Sources */,
 				4324B4672550976800B3060E /* FormationSnapshotCell.swift in Sources */,
+				43F5F15825CE015F00299D04 /* InstructionsTableViewController.swift in Sources */,
 				4315A27A2592C3A700A66F33 /* GameViewController+Stage.swift in Sources */,
 				43608F15257FD3BB002114C5 /* KeyboardViewController.swift in Sources */,
 				436C66CF25BF5C2C00FA777F /* DanceNavigationViewController.swift in Sources */,

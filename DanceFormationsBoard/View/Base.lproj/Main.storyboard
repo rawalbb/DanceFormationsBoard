@@ -9,6 +9,36 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Instructions-->
+        <scene sceneID="UvH-wn-Hdj">
+            <objects>
+                <tableViewController storyboardIdentifier="InstructionsTableViewController" title="Instructions" id="moO-l7-s9H" customClass="InstructionsTableViewController" customModule="DanceFormationsBoard" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="55v-XS-xIP">
+                        <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" name="color-black"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="instructionCell" id="vbQ-16-EST">
+                                <rect key="frame" x="0.0" y="28" width="896" height="43.666667938232422"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vbQ-16-EST" id="OHR-Vb-Akx">
+                                    <rect key="frame" x="44" y="0.0" width="808" height="43.666667938232422"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="backgroundColor" name="color-black"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" name="color-black"/>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="moO-l7-s9H" id="YNN-Om-rbp"/>
+                            <outlet property="delegate" destination="moO-l7-s9H" id="oNz-DV-goD"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rmq-of-Hsi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1220" y="-348"/>
+        </scene>
         <!--Formation-->
         <scene sceneID="LJV-bT-5d2">
             <objects>
@@ -124,12 +154,15 @@
                                                     <action selector="playFormationsPressed:" destination="6mI-VL-OAy" eventType="touchUpInside" id="nOb-fE-vr8"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J44-aW-1bU">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J44-aW-1bU" userLabel="stopButton">
                                                 <rect key="frame" x="428.33333333333331" y="18.333333333333371" width="21.333333333333314" height="22"/>
                                                 <color key="tintColor" name="color-icons"/>
                                                 <state key="normal">
                                                     <imageReference key="image" image="stop.fill" catalog="system" symbolScale="large"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="stopButtonPressed:" destination="6mI-VL-OAy" eventType="touchUpInside" id="Zom-cc-Dh3"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5lC-EW-fIw" userLabel="playMusic">
                                                 <rect key="frame" x="479.66666666666669" y="17" width="29.333333333333314" height="24.666666666666671"/>
@@ -232,6 +265,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="addFormsButton" destination="coJ-4r-bti" id="PAh-Dy-nMF"/>
+                        <outlet property="addMusicButton" destination="foS-3t-kg9" id="QxA-JP-Sg5"/>
+                        <outlet property="deleteFormsButton" destination="QOa-ZT-f3p" id="lJF-5S-uZf"/>
                         <outlet property="detailView" destination="CTd-Iw-4qb" id="aCE-j2-grV"/>
                         <outlet property="formOptionsView" destination="CTd-Iw-4qb" id="pLs-cU-1EH"/>
                         <outlet property="formsTableView" destination="1lt-HL-pxQ" id="obn-Y0-dTc"/>
@@ -239,9 +275,14 @@
                         <outlet property="labelToggleButton" destination="6Q1-Tz-DJH" id="JD4-Kp-N8z"/>
                         <outlet property="musicTimingButton" destination="aUV-y0-MRO" id="JCk-1Z-LS4"/>
                         <outlet property="musicToggleButton" destination="5lC-EW-fIw" id="Zj1-s4-ntW"/>
+                        <outlet property="nextFormsButton" destination="8PH-Aw-pKR" id="b9f-fv-bGO"/>
                         <outlet property="nodeColorButton" destination="t8c-kT-pJd" id="sgW-j2-ESG"/>
                         <outlet property="nodeLabelTextField" destination="H2Q-8d-X0A" id="hM8-iU-fJ2"/>
+                        <outlet property="playFormsButton" destination="qdh-BM-qXd" id="mdE-jb-x4Y"/>
+                        <outlet property="playMusicButton" destination="eGE-wm-H9t" id="E5g-EP-kRJ"/>
+                        <outlet property="prevFormsButton" destination="eGE-wm-H9t" id="njG-DM-Drl"/>
                         <outlet property="stageView" destination="K0L-qv-hQn" id="JPL-lZ-0ju"/>
+                        <outlet property="stopButton" destination="J44-aW-1bU" id="jQK-pW-aob"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kGy-Gg-DbK" sceneMemberID="firstResponder"/>
