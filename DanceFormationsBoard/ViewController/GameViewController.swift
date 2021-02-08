@@ -17,42 +17,36 @@ class GameViewController: KeyUIViewController{
     
     @IBOutlet weak var nodeLabelTextField: UITextField!
     @IBOutlet weak var nodeColorButton: UIButton!
-    @IBOutlet weak var labelToggleButton: UIButton!
+    @IBOutlet weak var nodeLabelButton: UIButton!
     
-    @IBOutlet weak var musicToggleButton: UIButton!
-    
-    @IBOutlet weak var musicTimingButton: UIButton!
+    @IBOutlet weak var playMusicButton: UIButton!
+    @IBOutlet weak var musicScrubberButton: UIButton!
+    @IBOutlet weak var addMusicButton: UIButton!
     
     @IBOutlet weak var deleteFormsButton: UIButton!
-    
     @IBOutlet weak var addFormsButton: UIButton!
     
     @IBOutlet weak var playFormsButton: UIButton!
-    
-    @IBOutlet weak var playMusicButton: UIButton!
-    
     @IBOutlet weak var prevFormsButton: UIButton!
-    
     @IBOutlet weak var nextFormsButton: UIButton!
-    
     @IBOutlet weak var stopButton: UIButton!
-    
-    @IBOutlet weak var addMusicButton: UIButton!
+
     
     
     var boardVM = BoardViewModel.shared
     var formationVM = FormationViewModel()
     var dancerVM = DancerViewModel()
     var formationArray: [Formation] = []
+    
     var enableText: Bool = false
-    var selectedColor = #colorLiteral(red: 0.8549019694, green: 0.250980407, blue: 0.4784313738, alpha: 1)
+    var selectedColor = #colorLiteral(red: 0.112767078, green: 0.2972872257, blue: 0.2571491301, alpha: 1)
     var colorPicker = UIColorPickerViewController()
     var musicUrl: URL? = nil
     var stage: StageScene!
     var enableMusic: Bool = false{
         didSet{
-            self.musicToggleButton.isHidden = !enableMusic
-            self.musicTimingButton.isHidden = !enableMusic
+            self.playMusicButton.isHidden = !enableMusic
+            self.musicScrubberButton.isHidden = !enableMusic
             self.stage.musicEnabled = enableMusic
         }
     }
@@ -62,12 +56,9 @@ class GameViewController: KeyUIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        navigationItem.backBarButtonItem = UIBarButtonItem(
-//            title: "Something Else", style: .plain, target: nil, action: nil)
 
         
-        //Formation Options Properties
+        //Formation Options Properties //delegate
         formOptionsView.layer.cornerRadius = 20
         formOptionsView.backgroundColor = #colorLiteral(red: 0.1298420429, green: 0.1298461258, blue: 0.1298439503, alpha: 1)
         formOptionsView.layer.borderWidth = 2
@@ -92,9 +83,9 @@ class GameViewController: KeyUIViewController{
         self.title = boardVM.getCurrentBoard()?.name ?? "My Formations"
         
         //Define labelToggle properties
-        labelToggleButton.setImage(UIImage(systemName: "person.fill.checkmark"),
+        nodeLabelButton.setImage(UIImage(systemName: "person.fill.checkmark"),
                                    for: [.highlighted, .selected])
-        labelToggleButton.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(scale: .large), forImageIn: [.highlighted, .selected])
+        nodeLabelButton.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(scale: .large), forImageIn: [.highlighted, .selected])
         
         stopButton.isHidden = true
         
@@ -175,8 +166,8 @@ class GameViewController: KeyUIViewController{
         }
         catch{
             print("Could Not do music")
-            musicToggleButton.isEnabled = false
-            musicTimingButton.isEnabled = false
+            playMusicButton.isEnabled = false
+            musicScrubberButton.isEnabled = false
             stage.musicEnabled = false
         }
 
@@ -566,8 +557,8 @@ class GameViewController: KeyUIViewController{
             
             self.nodeColorButton.isHidden = true
             self.nodeLabelTextField.isHidden = true
-            self.musicToggleButton.isHidden = true
-            self.musicTimingButton.isHidden = true
+            self.playMusicButton.isHidden = true
+            self.musicScrubberButton.isHidden = true
             
             self.addFormsButton.isHidden = true
             
@@ -579,7 +570,7 @@ class GameViewController: KeyUIViewController{
             
             self.addMusicButton.isHidden = true
             
-            self.labelToggleButton.isHidden = true
+            self.nodeLabelButton.isHidden = true
             
             self.playFormsButton.isHidden = true
             self.stopButton.isHidden = false
@@ -592,8 +583,8 @@ class GameViewController: KeyUIViewController{
         
         //music button enabling should be based on music
         self.nodeColorButton.isHidden = false
-        self.musicToggleButton.isHidden = !enableMusic
-        self.musicTimingButton.isHidden = !enableMusic
+        self.playMusicButton.isHidden = !enableMusic
+        self.musicScrubberButton.isHidden = !enableMusic
         //THIS TODo
         self.addMusicButton.isHidden = false
         self.addFormsButton.isHidden = false
@@ -605,7 +596,7 @@ class GameViewController: KeyUIViewController{
         self.nextFormsButton.isHidden = false
 
         
-        self.labelToggleButton.isHidden = false
+        self.nodeLabelButton.isHidden = false
         
         self.playFormsButton.isHidden = false
         

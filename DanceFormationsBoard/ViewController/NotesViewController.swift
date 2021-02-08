@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol NotesUpdatedDelegate{
+protocol NotesUpdatedDelegate: AnyObject{
     func updateNotes(notes: String)
 }
 class NotesViewController: KeyboardViewController {
@@ -17,7 +17,7 @@ class NotesViewController: KeyboardViewController {
     @IBOutlet weak var notesScrollView: UIScrollView!
     
     var notes: String?
-    var delegate: NotesUpdatedDelegate? = nil
+    weak var delegate: NotesUpdatedDelegate? = nil
     var navTitle: String = "Board Notes"
     
     override func viewDidLoad() {

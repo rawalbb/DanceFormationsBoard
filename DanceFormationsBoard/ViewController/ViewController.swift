@@ -8,7 +8,7 @@
 import UIKit
 import AVFoundation
 
-protocol ScrubberUpdates{
+protocol ScrubberUpdates: AnyObject{
     func timeSelected(time: Float)
     func updateFollowingForms()
 }
@@ -20,7 +20,7 @@ class ViewController: UIViewController {
     var wformView: ASWaveformPlayerView!
     let timeLabel = UILabel()
     let songLabel = UILabel()
-    var delegate: ScrubberUpdates? = nil
+    weak var delegate: ScrubberUpdates? = nil
     var currSongTiming: Float?
     var prevSongTiming: Float?
     var nextSongTiming: Float?

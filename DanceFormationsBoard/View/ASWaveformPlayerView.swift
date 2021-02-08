@@ -1,7 +1,7 @@
 import UIKit
 import AVFoundation
 
-protocol TimeDelegate{
+protocol TimeDelegate: AnyObject{
     func updateTime(time: Float)
 }
 
@@ -33,7 +33,7 @@ public class ASWaveformPlayerView: UIView {
     public var prevPlaybackTime: CMTime = CMTimeMake(value: 0, timescale: 1)
     
     private var shouldAutoUpdateWaveform = true
-    var delegate: TimeDelegate?
+    weak var delegate: TimeDelegate?
     
     
     

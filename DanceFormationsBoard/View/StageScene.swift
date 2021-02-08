@@ -3,7 +3,7 @@ import UIKit
 import CoreData
 
 
-protocol StageSceneUpdatesDelegate {
+protocol StageSceneUpdatesDelegate: AnyObject {
     func dancerToAdd(xPosition: Float, yPosition: Float, id: String, color: String, label: String)
     func dancerMoved(id: String, xPosition: Float, yPosition: Float)
     //func updateDancerLabel(id: String, label: String)
@@ -33,7 +33,7 @@ class StageScene: SKScene {
     var dancerLabel: String = ""
     var gridWidth: CGFloat = 0.0
     var gridHeight: CGFloat = 0.0
-    var myDelegate : StageSceneUpdatesDelegate!
+    weak var myDelegate : StageSceneUpdatesDelegate!
     var arrayOfActions: [SKAction] = []
     var backgroundMuisc: SKAudioNode!
     var selectedColor: UIColor = #colorLiteral(red: 0.8549019694, green: 0.250980407, blue: 0.4784313738, alpha: 1)
@@ -300,9 +300,6 @@ class StageScene: SKScene {
                 highlightedNode.name = "highlight"
                 self.addChild(highlightedNode)
 
-                
-//                self.myDelegate.enableTextField(enable: true, id: currentNode?.nodeId ?? "")
-//                self.myDelegate.updateNodeColor(color: currentNode?.fillColor ?? selectedColor)
             }
 
         }

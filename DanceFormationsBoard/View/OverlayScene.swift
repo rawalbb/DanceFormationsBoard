@@ -8,7 +8,7 @@
 import UIKit
 import SpriteKit
 
-protocol OverlaySceneDelegate{
+protocol OverlaySceneDelegate: AnyObject{
     
     func playPressed()
     
@@ -26,7 +26,7 @@ class OverlayScene: SKScene {
     var playNode = SKSpriteNode()
     var nextNode = SKSpriteNode()
     var musicNode = SKSpriteNode()
-    var overlayDelegate: OverlaySceneDelegate?
+    weak var overlayDelegate: OverlaySceneDelegate?
     
     override init(size: CGSize) {
         super.init(size: size)

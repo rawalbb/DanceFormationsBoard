@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import CoreData
 
-protocol BoardUpdatesDelegate{
+protocol BoardUpdatesDelegate: AnyObject{
     func boardUpdated(boardArray: [Board])
 }
 
@@ -18,7 +18,7 @@ class BoardViewModel{
     
     var boardsArray = [Board]()
     var currentBoardIndex: Int?
-    var delegate: BoardUpdatesDelegate?
+    weak var delegate: BoardUpdatesDelegate?
     static let shared = BoardViewModel()
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext

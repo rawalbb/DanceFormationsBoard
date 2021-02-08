@@ -71,12 +71,7 @@ extension GameViewController: StageSceneUpdatesDelegate{
             nodeLabelTextField.text = dancerVM.getDancer(id: id)?.label ?? ""
         }
         else{
-//            switch enableText{
-//            case true:
-//                <#code#>
-//            case false:
-//                <#code#>
-//            }
+
             nodeLabelTextField.isHidden = true
             nodeLabelTextField.text = ""
         }

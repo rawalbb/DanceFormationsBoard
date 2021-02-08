@@ -12,8 +12,8 @@ extension GameViewController: MusicChosenDelegate {
 
     func musicChosen(url: URL, songName: String) {
                 self.musicUrl = url
-                self.musicToggleButton.isEnabled = true
-                self.musicTimingButton.isEnabled = true
+                self.playMusicButton.isEnabled = true
+                self.musicScrubberButton.isEnabled = true
                 boardVM.updateBoardSong(songUrl: "\(url)", songName: songName)
                 self.setInitialSongTimes()
                 stage.musicEnabled = true

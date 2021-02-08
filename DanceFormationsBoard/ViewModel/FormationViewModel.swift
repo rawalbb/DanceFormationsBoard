@@ -5,7 +5,7 @@ import SpriteKit
 import CoreData
 
 
-protocol FormUpdatesDelegate{
+protocol FormUpdatesDelegate: AnyObject{
     
     func formUpdated(formArray: [Formation])
     
@@ -17,7 +17,7 @@ class FormationViewModel{
     var formationArray = [Formation]()
     var danceVM = DancerViewModel()
     var currentBoard: Board!
-    var delegate: FormUpdatesDelegate?
+    weak var delegate: FormUpdatesDelegate?
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
