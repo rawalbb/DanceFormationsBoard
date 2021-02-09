@@ -166,7 +166,7 @@ class FormationViewModel{
         
     }
     
-    func loadFormations() -> [Formation]{
+    func loadFormations(callDelegate: Bool = true) -> [Formation]{
 
         let request : NSFetchRequest<Formation> = Formation.fetchRequest()
 
@@ -183,7 +183,9 @@ class FormationViewModel{
         catch{
             print("Error Fetching Data from Context in Formation ViewModel \(error)")
         }
+        if callDelegate {
         self.delegate?.formUpdated(formArray: formationArray)
+        }
 
         return formationArray
     }

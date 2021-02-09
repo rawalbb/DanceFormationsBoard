@@ -30,6 +30,7 @@ class SceneKitViewController: UIViewController {
     var stageWidth: Float = 0.0
     var stageHeight: Float = 0.0
     var stageWidthMin: Float = 0.0
+    var stageWidthMax: Float = 0.0
     var stageHeightMin: Float = 0.0
     var stopActionButton: UIBarButtonItem?
     
@@ -37,8 +38,9 @@ class SceneKitViewController: UIViewController {
         didSet{
             guard let stage = stage else { return }
             stageWidth = (stage.boundingBox.max.x - stage.boundingBox.min.x) * 2.0
-            stageHeight = ((stage.boundingBox.max.z - stage.boundingBox.min.z) * 1.8) - 1.8
+            stageHeight = ((stage.boundingBox.max.z - stage.boundingBox.min.z) * 1.8) - (1.8 * 2)
             stageWidthMin = stage.boundingBox.min.x * 2.0
+            stageWidthMax = stage.boundingBox.max.x * 2.0
             stageHeightMin = stage.boundingBox.min.z * 1.8
         }
     }
@@ -113,13 +115,7 @@ class SceneKitViewController: UIViewController {
         
         if formationVM.formationArray.count > 0{
             formationVM.setCurrentSelection(index: 0)
-            if let curr = formationVM.getFormation(type: FormationType.current){
-                let dancers = dancerVM.loadDancers(selectedFormation: curr, current: true)
-                self.formationSelected(dancers: dancers)
-            }
-            else{
-                print("Error loading in play formations pressed ")
-            }
+            presentCurrentFormation()
         }
         else{
             print("No formations yet")
@@ -127,6 +123,14 @@ class SceneKitViewController: UIViewController {
         
         
     }
+    
+    func presentCurrentFormation(){
+        
+        guard let curr = formationVM.getFormation(type: FormationType.current) else { return }
+                let dancers = dancerVM.loadDancers(selectedFormation: curr, current: true)
+                self.formationSelected(dancers: dancers)
+    }
+    
     @objc func handleTap(_ gestureRecognize: UIGestureRecognizer) {
         //retrieve the SCNView
         let scnView = self.view as! SCNView
@@ -202,13 +206,7 @@ class SceneKitViewController: UIViewController {
         //playFormations()
         if formationVM.formationArray.count > 0{
             formationVM.setCurrentSelection(index: 0)
-            if let curr = formationVM.getFormation(type: FormationType.current){
-                let dancers = dancerVM.loadDancers(selectedFormation: curr, current: true)
-                self.formationSelected(dancers: dancers)
-            }
-            else{
-                print("Error loading in play formations pressed ")
-            }
+            presentCurrentFormation()
         }
         else{
             print("No formations yet")
@@ -325,15 +323,17 @@ class SceneKitViewController: UIViewController {
                     cubeNode.geometry?.material(named: "bodyColor")?.diffuse.contents = UIColor(hex: dancer.color)
                     
                     cubeNode.accessibilityLabel = dancer.id
-                    let point = self?.convertToStageDimensions(originalX: dancer.xPos, originalY: dancer.yPos)
-                    guard let stageWidthMin = self?.stageWidthMin, let stageHeightMin = self?.stageHeightMin else { return }
+
+                    guard let stageWidthMin = self?.stageWidthMin, let stageHeightMin = self?.stageHeightMin, let point = self?.convertToStageDimensions(originalX: dancer.xPos, originalY: dancer.yPos) else { return }
                     self?.sceneView.scene?.rootNode.addChildNode(cubeNode)
                     currNodes.append(cubeNode)
                     
-                    let newVector = SCNVector3(CGFloat(stageWidthMin), 5, -(CGFloat(stageHeightMin)))
+                    let startingX = self?.getNearestStartingPoint(endPointX: point.x)
+                    
+                    let newVector = SCNVector3(CGFloat(startingX ?? 0.0), 5, -(CGFloat(point.y)))
                     cubeNode.position = newVector
                     
-                    let action = SCNAction.move(to: point!, duration: 2.0)
+                    let action = SCNAction.move(to: point, duration: 2.0)
                     cubeNode.runAction(action)
                     
                 }
@@ -418,8 +418,7 @@ class SceneKitViewController: UIViewController {
         
         guard let curr = formationVM.getFormation(type: FormationType.current) else { return }
         self.navigationItem.setRightBarButton(stopActionButton, animated: true)
-        let dancers = dancerVM.loadDancers(selectedFormation: curr, current: true)
-        self.formationSelected(dancers: dancers)
+        presentCurrentFormation()
         
         self.sceneView.overlaySKScene?.isUserInteractionEnabled = false
         self.sceneView.overlaySKScene?.alpha = 0.3
@@ -553,13 +552,7 @@ extension SceneKitViewController: OverlaySceneDelegate{
             formationVM.setCurrentSelection(index: 0)
             
             playSong(musicLink: music)
-            if let curr = formationVM.getFormation(type: FormationType.current){
-                let dancers = dancerVM.loadDancers(selectedFormation: curr, current: true)
-                self.formationSelected(dancers: dancers)
-            }
-            else{
-                print("Error loading in play formations pressed ")
-            }
+            presentCurrentFormation()
             var waitT = 0.0
             
             for _ in 0..<formationVM.formationArray.count{
@@ -622,7 +615,23 @@ extension SceneKitViewController: OverlaySceneDelegate{
         return wait
     }
     
-    
+    func getNearestStartingPoint(endPointX: Float) -> Float{
+        let nearestStartArray = [stageWidthMin, stageWidthMax]
+        
+        var nearestX: Float {
+           
+            nearestStartArray.reduce(34.3 as Float){
+                if abs($1 - endPointX) < abs($0 - endPointX){
+                    return Float($1)
+                    
+                }
+                else{
+                    return Float($0)
+                }
+            }
+        }
+        return nearestX
+    }
     
     
     

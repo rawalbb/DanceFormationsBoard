@@ -545,6 +545,7 @@ class StageScene: SKScene {
             danceNode.removeAllActions()
  
     }
+        
     }
     
     func playThroughFormations(dancers: [Dancer], waitTime: Double, transitionTime: Double, formIndex: Int, totalForms: Int){
