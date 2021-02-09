@@ -58,7 +58,7 @@ class FormationViewModel{
             newFormation.dancers = nil
             newFormation.position = 0
         }
-        if let currIndex = getCurrentIndex(){
+        if getCurrentIndex() != nil{
             if let prev = self.getFormation(type: .atLocation(currentIndex!)){
                 newFormation.songTime = prev.songTime + 3.0
             }

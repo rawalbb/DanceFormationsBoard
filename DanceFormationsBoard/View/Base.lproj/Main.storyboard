@@ -66,10 +66,10 @@
                                 </prototypes>
                             </tableView>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CTd-Iw-4qb" userLabel="DetailView">
-                                <rect key="frame" x="76.666666666666686" y="330.33333333333331" width="743" height="62.666666666666686"/>
+                                <rect key="frame" x="48.666666666666686" y="330.33333333333331" width="798.66666666666652" height="62.666666666666686"/>
                                 <subviews>
                                     <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="pzS-aj-Tfg" userLabel="detailStackView">
-                                        <rect key="frame" x="8" y="3.9999999999999964" width="727" height="58.666666666666657"/>
+                                        <rect key="frame" x="8" y="3.9999999999999964" width="782.66666666666663" height="58.666666666666657"/>
                                         <subviews>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t8c-kT-pJd">
                                                 <rect key="frame" x="0.0" y="17.333333333333371" width="24" height="24"/>
@@ -86,7 +86,7 @@
                                                 </connections>
                                             </button>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="H2Q-8d-X0A">
-                                                <rect key="frame" x="53.999999999999986" y="12.333333333333371" width="112.00000000000001" height="34"/>
+                                                <rect key="frame" x="54" y="12.333333333333371" width="112" height="34"/>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
@@ -119,8 +119,19 @@
                                                     <action selector="labelTogglePressed:" destination="6mI-VL-OAy" eventType="touchUpInside" id="j8x-mU-BdJ"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aS7-iW-JKV" userLabel="addNodeButton">
+                                                <rect key="frame" x="256.33333333333331" y="16.666666666666686" width="25.666666666666686" height="25.666666666666671"/>
+                                                <color key="tintColor" name="color-icons"/>
+                                                <state key="normal">
+                                                    <imageReference key="image" image="person.fill.badge.plus" catalog="system" symbolScale="large"/>
+                                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="addStageNode:" destination="6mI-VL-OAy" eventType="touchUpInside" id="OxH-az-UKs"/>
+                                                </connections>
+                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="coJ-4r-bti" userLabel="addFormsButton">
-                                                <rect key="frame" x="256.33333333333331" y="18.333333333333371" width="29.333333333333314" height="22"/>
+                                                <rect key="frame" x="312" y="18.333333333333371" width="29.333333333333314" height="22"/>
                                                 <color key="tintColor" name="color-icons"/>
                                                 <state key="normal">
                                                     <color key="titleColor" name="navBarColor"/>
@@ -132,7 +143,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QOa-ZT-f3p" userLabel="deleteFormsButton">
-                                                <rect key="frame" x="315.66666666666663" y="16.666666666666686" width="23.333333333333314" height="25.666666666666671"/>
+                                                <rect key="frame" x="371.33333333333331" y="16.666666666666686" width="23.333333333333314" height="25.666666666666671"/>
                                                 <color key="tintColor" name="color-icons"/>
                                                 <state key="normal">
                                                     <imageReference key="image" image="trash.fill" catalog="system" symbolScale="large"/>
@@ -143,7 +154,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qdh-BM-qXd" userLabel="playFormsButton">
-                                                <rect key="frame" x="369" y="18.333333333333371" width="29.333333333333314" height="22"/>
+                                                <rect key="frame" x="424.66666666666663" y="18.333333333333371" width="29.333333333333314" height="22"/>
                                                 <color key="tintColor" name="color-icons"/>
                                                 <state key="normal">
                                                     <color key="titleColor" red="0.30588236451148987" green="0.80392158031463623" blue="0.76862746477127075" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -155,7 +166,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J44-aW-1bU" userLabel="stopButton">
-                                                <rect key="frame" x="428.33333333333331" y="18.333333333333371" width="21.333333333333314" height="22"/>
+                                                <rect key="frame" x="483.99999999999994" y="18.333333333333371" width="21.333333333333314" height="22"/>
                                                 <color key="tintColor" name="color-icons"/>
                                                 <state key="normal">
                                                     <imageReference key="image" image="stop.fill" catalog="system" symbolScale="large"/>
@@ -165,10 +176,10 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5lC-EW-fIw" userLabel="playMusic">
-                                                <rect key="frame" x="479.66666666666669" y="17" width="29.333333333333314" height="24.666666666666671"/>
+                                                <rect key="frame" x="535.33333333333337" y="17" width="29.333333333333371" height="24.666666666666671"/>
                                                 <color key="tintColor" name="color-icons"/>
                                                 <state key="normal">
-                                                    <imageReference key="image" image="music.house.fill" catalog="system" symbolScale="large"/>
+                                                    <imageReference key="image" image="music.note.house.fill" catalog="system" symbolScale="large"/>
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="medium"/>
                                                 </state>
                                                 <state key="selected" image="musicSelectionIcon"/>
@@ -177,7 +188,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eGE-wm-H9t" userLabel="prevFormsButton">
-                                                <rect key="frame" x="539" y="18.333333333333371" width="23.666666666666629" height="22"/>
+                                                <rect key="frame" x="594.66666666666674" y="18.333333333333371" width="23.666666666666629" height="22"/>
                                                 <color key="tintColor" name="color-icons"/>
                                                 <state key="normal">
                                                     <color key="titleColor" red="0.3058823645" green="0.80392158030000005" blue="0.76862746479999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -189,7 +200,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8PH-Aw-pKR" userLabel="nextFormsButton">
-                                                <rect key="frame" x="592.66666666666674" y="18.333333333333371" width="23.666666666666629" height="22"/>
+                                                <rect key="frame" x="648.33333333333337" y="18.333333333333371" width="23.666666666666629" height="22"/>
                                                 <color key="tintColor" name="color-icons"/>
                                                 <state key="normal">
                                                     <color key="titleColor" name="navBarColor"/>
@@ -201,7 +212,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="753" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="foS-3t-kg9" userLabel="addMusic">
-                                                <rect key="frame" x="646.33333333333337" y="17.333333333333371" width="29.666666666666629" height="24"/>
+                                                <rect key="frame" x="702" y="17.333333333333371" width="29.666666666666629" height="24"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <color key="tintColor" name="color-icons"/>
                                                 <state key="normal">
@@ -213,14 +224,14 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aUV-y0-MRO" userLabel="musicScrubberButton">
-                                                <rect key="frame" x="706" y="18.333333333333371" width="21" height="22"/>
+                                                <rect key="frame" x="761.66666666666674" y="18.333333333333371" width="21" height="22"/>
                                                 <color key="tintColor" name="color-icons"/>
                                                 <state key="normal">
                                                     <imageReference key="image" image="waveform" catalog="system" symbolScale="large"/>
                                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="medium"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="formTimingPressed:" destination="6mI-VL-OAy" eventType="touchUpInside" id="ski-as-0l2"/>
+                                                    <action selector="musicScrubberPressed:" destination="6mI-VL-OAy" eventType="touchUpInside" id="ski-as-0l2"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -267,6 +278,7 @@
                     <connections>
                         <outlet property="addFormsButton" destination="coJ-4r-bti" id="PAh-Dy-nMF"/>
                         <outlet property="addMusicButton" destination="foS-3t-kg9" id="QxA-JP-Sg5"/>
+                        <outlet property="addNodeButton" destination="aS7-iW-JKV" id="Rfh-fa-u8v"/>
                         <outlet property="deleteFormsButton" destination="QOa-ZT-f3p" id="lJF-5S-uZf"/>
                         <outlet property="formOptionsView" destination="CTd-Iw-4qb" id="pLs-cU-1EH"/>
                         <outlet property="formsTableView" destination="1lt-HL-pxQ" id="obn-Y0-dTc"/>
@@ -290,7 +302,7 @@
         <!--Music Scrubber-->
         <scene sceneID="X4Y-pI-Jjt">
             <objects>
-                <viewController storyboardIdentifier="ViewController" id="qaU-a9-LzJ" customClass="ViewController" customModule="DanceFormationsBoard" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MusicScrubberViewController" id="qaU-a9-LzJ" customClass="MusicScrubberViewController" customModule="DanceFormationsBoard" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="fZo-tD-MgT">
                         <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -508,8 +520,9 @@
         <image name="chevron.right.square.fill" catalog="system" width="128" height="114"/>
         <image name="info.circle.fill" catalog="system" width="128" height="121"/>
         <image name="memories.badge.plus" catalog="system" width="128" height="104"/>
-        <image name="music.house.fill" catalog="system" width="128" height="106"/>
+        <image name="music.note.house.fill" catalog="system" width="128" height="106"/>
         <image name="musicSelectionIcon" width="32" height="32"/>
+        <image name="person.fill.badge.plus" catalog="system" width="128" height="124"/>
         <image name="person.fill.checkmark" catalog="system" width="128" height="88"/>
         <image name="person.fill.xmark" catalog="system" width="128" height="88"/>
         <image name="play.rectangle.fill" catalog="system" width="128" height="93"/>

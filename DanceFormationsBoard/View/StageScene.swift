@@ -166,7 +166,7 @@ class StageScene: SKScene {
         var xLabelCounter = Double(xIncrement)
         
         //Button tapped once add grid lines starting from end, twice, add grid lines starting from one off of end, add grid lines to each
-        for num in 0...yNumLines
+        for _ in 0...yNumLines
         {
             let path = UIBezierPath()
             let start = CGPoint(x: xLabelCounter, y: 0.0)
@@ -215,7 +215,46 @@ class StageScene: SKScene {
         
     }
     
-    
+    func addStageNode(){
+        
+        let n = DanceNode(circleOfRadius: 11)
+        n.fillColor = selectedColor
+        n.strokeColor = selectedColor
+
+        let label = SKLabelNode(text: "")
+        
+        let middleX = gridWidth/2
+        let middleY = gridHeight/2
+        let nearest = CGPoint(x: middleX, y: middleY)
+        
+        label.fontSize = 14.0
+        //label.color = UIColor.red
+        label.fontColor = UIColor.red
+        label.fontName = "GillSans-SemiBold"
+        
+        n.position = nearest
+        n.zPosition = 1
+        label.name = "labelName"
+        label.position = CGPoint(x: 20, y: 20 )
+        //label.color = UIColor.blue
+        n.name = "dancers"
+        n.addChild(label)
+        self.addChild(n)
+        currentNode = n
+        
+        
+
+        let point = PositionManager.positionToPercentage(x: n.position.x, y: n.position.y, viewW: self.view?.bounds.width, viewH: self.view?.bounds.height)
+
+        let xPos = Float(point.x)
+        let yPos = Float(point.y)
+        print("PRINTING POINTS", xPos, yPos)
+        n.nodeId = UUID().uuidString
+        let color = selectedColor.toHexString()
+        let dancerId = n.nodeId
+        self.myDelegate.dancerToAdd(xPosition: xPos, yPosition: yPos, id: dancerId, color: color, label: label.text ?? "")
+        
+    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         var spotTaken = false
@@ -239,42 +278,42 @@ class StageScene: SKScene {
             //printing curr array - I
             if !spotTaken {
                 
-                
-                //let n = DanceNode(imageNamed: "circle")
-                let n = DanceNode(circleOfRadius: 11)
-                n.fillColor = selectedColor
-                n.strokeColor = selectedColor
- 
-                let label = SKLabelNode(text: "")
-                let nearest = getNearestIntersection(x: location.x, y: location.y)
-                
-                label.fontSize = 14.0
-                //label.color = UIColor.red
-                label.fontColor = UIColor.red
-                label.fontName = "GillSans-SemiBold"
-                
-                n.position = nearest
-                n.zPosition = 1
-                label.name = "labelName"
-                label.position = CGPoint(x: 20, y: 20 )
-                //label.color = UIColor.blue
-                n.name = "dancers"
-                n.addChild(label)
-                self.addChild(n)
-                currentNode = n
-                
-                
-
-                let point = PositionManager.positionToPercentage(x: n.position.x, y: n.position.y, viewW: self.view?.bounds.width, viewH: self.view?.bounds.height)
-
-                let xPos = Float(point.x)
-                let yPos = Float(point.y)
-                print("PRINTING POINTS", xPos, yPos)
-                n.nodeId = UUID().uuidString
-                let color = selectedColor.toHexString()
-                let dancerId = n.nodeId
-                self.myDelegate.dancerToAdd(xPosition: xPos, yPosition: yPos, id: dancerId, color: color, label: label.text ?? "")
-                //self.saveDancers()
+                print("Spot is taken")
+//                //let n = DanceNode(imageNamed: "circle")
+//                let n = DanceNode(circleOfRadius: 11)
+//                n.fillColor = selectedColor
+//                n.strokeColor = selectedColor
+//
+//                let label = SKLabelNode(text: "")
+//                let nearest = getNearestIntersection(x: location.x, y: location.y)
+//
+//                label.fontSize = 14.0
+//                //label.color = UIColor.red
+//                label.fontColor = UIColor.red
+//                label.fontName = "GillSans-SemiBold"
+//
+//                n.position = nearest
+//                n.zPosition = 1
+//                label.name = "labelName"
+//                label.position = CGPoint(x: 20, y: 20 )
+//                //label.color = UIColor.blue
+//                n.name = "dancers"
+//                n.addChild(label)
+//                self.addChild(n)
+//                currentNode = n
+//
+//
+//
+//                let point = PositionManager.positionToPercentage(x: n.position.x, y: n.position.y, viewW: self.view?.bounds.width, viewH: self.view?.bounds.height)
+//
+//                let xPos = Float(point.x)
+//                let yPos = Float(point.y)
+//                print("PRINTING POINTS", xPos, yPos)
+//                n.nodeId = UUID().uuidString
+//                let color = selectedColor.toHexString()
+//                let dancerId = n.nodeId
+//                self.myDelegate.dancerToAdd(xPosition: xPos, yPosition: yPos, id: dancerId, color: color, label: label.text ?? "")
+//                //self.saveDancers()
     
             }
             else{
@@ -282,7 +321,7 @@ class StageScene: SKScene {
                     prevNode.lineWidth = 0
                 }
                 self.currentNode = self.nodes(at: location).first as? DanceNode
-                print("Self.current node dance node", self.currentNode?.name)
+
                 highlightedNode.position = touchedNodes[0].position
                 if let nodeTouched = touchedNodes[0] as? SKSpriteNode{
                     highlightedNode.fillColor = nodeTouched.color
@@ -315,7 +354,7 @@ class StageScene: SKScene {
                 childLabelNodes.append(node as! SKLabelNode)
             }
             if childLabelNodes.count != 0{
-                let a = childLabelNodes[0] as! SKLabelNode
+                let a = childLabelNodes[0] 
             let childToUpdate = a
                 childToUpdate.fontSize = 14
                 childToUpdate.fontName = "GillSans-SemiBold"
@@ -462,8 +501,7 @@ class StageScene: SKScene {
             
             
             let point = PositionManager.percentageToPosition(x: dancer.xPos, y: dancer.yPos, viewW: self.view?.frame.width, viewH: self.view?.frame.height)
-            print("Boundsss ", self.view?.bounds.width, self.view?.bounds.height)
-            print("Frameee  ", self.view?.frame.width, self.view?.frame.height)
+
             let point2 = getNearestIntersection(x: point.x, y: point.y)
             
             n.position = CGPoint(x: CGFloat(point2.x), y: CGFloat(point2.y))
@@ -498,6 +536,7 @@ class StageScene: SKScene {
         }
         if let musicURL = musicLink{
             backgroundMuisc = SKAudioNode(url: musicURL)
+            
             
             backgroundMuisc.name = "music"
             self.addChild(backgroundMuisc)

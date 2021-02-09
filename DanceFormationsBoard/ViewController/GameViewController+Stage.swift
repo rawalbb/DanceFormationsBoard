@@ -33,7 +33,7 @@ extension GameViewController: StageSceneUpdatesDelegate{
         dancerVM.addDancer(xPosition: xPosition, yPosition: yPosition, label: label, id: id, color: color, selectedFormation: curr)
             
             dancerVM.saveDancer()
-            dancerVM.loadDancers(selectedFormation: curr, current: true)
+            _ = dancerVM.loadDancers(selectedFormation: curr, current: true)
         }
         
         if let imageData = ImageDataManager.sceneToData(view: stageView){
@@ -112,15 +112,34 @@ extension GameViewController: StageSceneUpdatesDelegate{
 }
 
 extension GameViewController{
-    //stored is start time
-    //for formation 1, calculate wait time by getting next formation
-
     
-    func initialWaitCalculator(){
-        guard let initial = formationVM.getFormation(type: FormationType.atLocation(0)) else { return }
-        let wait = SKAction.wait(forDuration: Double(initial.songTime))
-        stage.arrayOfActions.append(wait)
-        
+    func disableStageTouch(){
+        stage.isUserInteractionEnabled = false
+    }
+    
+    func enableStageTouch(){
+        stage.isUserInteractionEnabled = true
+    }
+    
+    func calculateWaitHelper(withMusic: Bool = false) -> Double{
+        var wait = 3.0
+        guard let curr = formationVM.getFormation(type: FormationType.current) else {
+            return wait
+        }
+        if  let prev = formationVM.getFormation(type: FormationType.previous) {
+            if !withMusic{
+                wait = 3.0
+                
+            }
+            if withMusic{
+                wait = Double(curr.songTime - prev.songTime)
+            }
+
+        }
+        else{
+            wait = Double(curr.songTime)
+        }
+        return wait
     }
     
 }

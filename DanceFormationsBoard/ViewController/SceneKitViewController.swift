@@ -143,7 +143,7 @@ class SceneKitViewController: UIViewController {
         if hitResults.count > 0 {
             // retrieved the first clicked object
             let result: AnyObject = hitResults[0]
-            print(prevNode?.position.x, prevNode?.position.y)
+
             if prevNode!.contains(p){
                 print("PREV NODEIT IS")
             }
@@ -181,7 +181,7 @@ class SceneKitViewController: UIViewController {
     }
     
     func setupScene(){
-        sceneView = self.view as! SCNView
+        sceneView = (self.view as! SCNView)
         sceneView.allowsCameraControl = true
         scene = SCNScene(named: "art.scnassets/MainScene.scn")
         sceneView.scene = scene
@@ -189,21 +189,11 @@ class SceneKitViewController: UIViewController {
         templateScene = SCNScene(named: "art.scnassets/Nodes.scn")
         
         self.stage = scene.rootNode.childNode(withName: "stage", recursively: true)!
-        //let boy = templateScene.rootNode.childNode(withName: "boy", recursively: true)!
-        
         formationVM.currentBoard = boardVM.getCurrentBoard()
         
-        //BoardViewModel.shared.getCurrentBoard()
-        formationVM.loadFormations()
+        _ = formationVM.loadFormations()
         
-        
-        //let cubeNode = boy
-        
-        //cubeNode.position = stage.position
-        //cubeNode.position = SCNVector3(0, 8, 0) // SceneKit/AR coordinates are in meters
-        //sceneView.scene?.rootNode.addChildNode(cubeNode)
-        // drawGrid()
-        //playFormations()
+
         if formationVM.formationArray.count > 0{
             formationVM.setCurrentSelection(index: 0)
             presentCurrentFormation()
@@ -295,7 +285,7 @@ class SceneKitViewController: UIViewController {
             //THIS IS THE PROBLEM
             var currNodes: [SCNNode] = []
             self?.scene.rootNode.childNodes.filter({ $0.name == "boy" }).forEach({
-                                                                                    currNodes.append($0 as! SCNNode) })
+                                                                                    currNodes.append($0 ) })
             
             
             for dancer in dancers{
@@ -315,7 +305,7 @@ class SceneKitViewController: UIViewController {
                 else{
                     print("Not found")
                     self?.templateScene = SCNScene(named: "art.scnassets/Nodes.scn")
-                    let cubeNode = self?.templateScene.rootNode.childNode(withName: "boy", recursively: true)! as! SCNNode
+                    let cubeNode = self?.templateScene.rootNode.childNode(withName: "boy", recursively: true) as! SCNNode
                     
                     cubeNode.geometry?.material(named: "headColor")?.diffuse.contents = UIColor(hex: dancer.color)
                     
@@ -324,7 +314,7 @@ class SceneKitViewController: UIViewController {
                     
                     cubeNode.accessibilityLabel = dancer.id
 
-                    guard let stageWidthMin = self?.stageWidthMin, let stageHeightMin = self?.stageHeightMin, let point = self?.convertToStageDimensions(originalX: dancer.xPos, originalY: dancer.yPos) else { return }
+                    guard let point = self?.convertToStageDimensions(originalX: dancer.xPos, originalY: dancer.yPos) else { return }
                     self?.sceneView.scene?.rootNode.addChildNode(cubeNode)
                     currNodes.append(cubeNode)
                     
@@ -423,7 +413,7 @@ class SceneKitViewController: UIViewController {
         self.sceneView.overlaySKScene?.isUserInteractionEnabled = false
         self.sceneView.overlaySKScene?.alpha = 0.3
         
-        var waitT = 0.0
+        
         
         for _ in 0..<formationVM.formationArray.count{
             
@@ -433,7 +423,7 @@ class SceneKitViewController: UIViewController {
                     
                     self.playThroughFormations(dancers: nextDancerForms, waitTime: 3.0, transitionTime: 2.0, formIndex: index, totalForms: formationVM.formationArray.count)
                     
-                    waitT = 3.0
+                    
                     
                     formationVM.setCurrentSelection(index: index + 1)
                     
@@ -457,8 +447,8 @@ class SceneKitViewController: UIViewController {
             for dancer in dancers{
                 
                 templateScene = SCNScene(named: "art.scnassets/Nodes.scn")
-                let stage = scene.rootNode.childNode(withName: "stage", recursively: true)!
-                let cubeNode = templateScene.rootNode.childNode(withName: "boy", recursively: true)! as! SCNNode
+
+                let cubeNode = templateScene.rootNode.childNode(withName: "boy", recursively: true)!
                 
                 cubeNode.geometry?.material(named: "headColor")?.diffuse.contents = UIColor(hex: dancer.color)
                 
@@ -467,8 +457,7 @@ class SceneKitViewController: UIViewController {
                 
                 
                 cubeNode.accessibilityLabel = dancer.id
-                //            let width = (stage.boundingBox.max.x - stage.boundingBox.min.x) * 2.0
-                //            let height = (stage.boundingBox.max.z - stage.boundingBox.min.z) * 1.8
+
                 
                 let point = PositionManager.percentageToPosition(x: dancer.xPos, y: dancer.yPos, viewW: CGFloat(self.stageWidth), viewH: CGFloat(self.stageHeight))
                 
@@ -553,7 +542,7 @@ extension SceneKitViewController: OverlaySceneDelegate{
             
             playSong(musicLink: music)
             presentCurrentFormation()
-            var waitT = 0.0
+
             
             for _ in 0..<formationVM.formationArray.count{
                 
@@ -563,8 +552,7 @@ extension SceneKitViewController: OverlaySceneDelegate{
                     if let index = formationVM.getCurrentIndex(){
                         
                         self.playThroughFormations(dancers: nextDancerForms, waitTime: time, transitionTime: 2.0, formIndex: index, totalForms: formationVM.formationArray.count)
-                        
-                        waitT = 3.0
+                      
                         
                         formationVM.setCurrentSelection(index: index + 1)
                     }

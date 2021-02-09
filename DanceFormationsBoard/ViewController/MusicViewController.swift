@@ -58,7 +58,7 @@ class MusicViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let status = MPMediaLibrary.requestAuthorization { (stat) in
+        MPMediaLibrary.requestAuthorization { (stat) in
             switch stat{
             case .authorized:
                 self.permission = stat

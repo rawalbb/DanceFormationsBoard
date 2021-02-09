@@ -115,7 +115,7 @@ class OverlayScene: SKScene {
 
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard  let touch = touches.first as? UITouch else { return }
+        guard  let touch = touches.first else { return }
         let location = touch.location(in: self)
         
         if prevNode.contains(location){

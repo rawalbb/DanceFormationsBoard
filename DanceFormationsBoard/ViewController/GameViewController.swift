@@ -18,6 +18,8 @@ class GameViewController: KeyUIViewController{
     @IBOutlet weak var nodeColorButton: UIButton!
     @IBOutlet weak var nodeLabelButton: UIButton!
     
+    @IBOutlet weak var addNodeButton: UIButton!
+    
     @IBOutlet weak var playMusicButton: UIButton!
     @IBOutlet weak var musicScrubberButton: UIButton!
     @IBOutlet weak var addMusicButton: UIButton!
@@ -55,7 +57,7 @@ class GameViewController: KeyUIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         //Gets the board
         formationVM.currentBoard = boardVM.getCurrentBoard()
         
@@ -108,34 +110,25 @@ class GameViewController: KeyUIViewController{
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-            //formationVM.setCurrentSelection(index: 0)
-            presentCurrentFormation()
         
+        presentCurrentFormation()
         allFormUpdates()
-
+        
         do{
-            //print("In Game View Controller getting song ", boardVM.getCurrentBoard()?.song)
-            if let a = boardVM.getCurrentBoard()?.song{
-                
-                guard let music = URL(string: a) else { print("URL Nil");  return}
+            if let boardSong = boardVM.getCurrentBoard()?.song{
+                guard let music = URL(string: boardSong) else { print("GVC: Music -> URL error");  return}
                 _ = try AVAudioPlayer(contentsOf: music)
-                
-                
-                //                    _ = try AVAudioPlayer(contentsOf: music)
-                musicUrl = URL(string: a)
+                musicUrl = music
                 enableMusic = true
-                //stage.musicEnabled = true
             }
             else{
                 print("No song")
                 enableMusic = false
-                //stage.musicEnabled = false
             }
             
         }
         catch{
-            print("Could Not do music")
+            print("GVC: Music setup error")
             playMusicButton.isEnabled = false
             musicScrubberButton.isEnabled = false
             stage.musicEnabled = false
@@ -159,37 +152,25 @@ class GameViewController: KeyUIViewController{
     
     
     @IBAction func addFormationPressed(_ sender: Any) {
-        //TODO - sometimes the image is not updated, so update here? by calling load
-        formationArray = formationVM.loadFormations() //TODO - is this needed
         
-        if let newSceneData = ImageDataManager.sceneToData(view: stageView){
-            formationVM.updateFormImage(imageData: newSceneData)
-            
-            if let curr = formationVM.getCurrentIndex(){
-                if curr + 1 != formationArray.count{
-                    formationVM.updatePosition(type: PositionType.add)
-                }
-            }
-            formationVM.createNewFormation(imageData: newSceneData)
-            
-            if let curr = formationVM.getCurrentIndex(){
-                formationVM.setCurrentSelection(index: curr + 1)
-            }
-            //TODO *** check to see where/when all form updates is called b/c everytime its called selection is set
-            allFormUpdates()
-            if let currForm = formationVM.getFormation(type: FormationType.current){
-                _ = dancerVM.loadDancers(selectedFormation: currForm, current: true)
-            }
-            else{
-                print("Error finding current formation in load dancers")
-            }
-            
+        let newSceneData = ImageDataManager.sceneToData(view: stageView) ?? #imageLiteral(resourceName: "defaultFormImage").jpegData(compressionQuality: 1.0)
+        formationVM.updateFormImage(imageData: newSceneData)
+        
+        guard let currIndex = formationVM.getCurrentIndex() else { return }
+        if currIndex + 1 != formationArray.count{
+            formationVM.updatePosition(type: PositionType.add)
+        }
+        
+        formationVM.createNewFormation(imageData: newSceneData)
+        formationVM.setCurrentSelection(index: currIndex + 1)
+        allFormUpdates()
+        
+        if let currForm = formationVM.getFormation(type: FormationType.current){
+            _ = dancerVM.loadDancers(selectedFormation: currForm, current: true)
         }
         else{
-            
-            print("Error in setting imageData when formation is added")
+            print("GVC - Error in getFormation Current")
         }
-        
         
     }
     
@@ -201,24 +182,23 @@ class GameViewController: KeyUIViewController{
     }
     
     
-    @IBAction func formTimingPressed(_ sender: UIButton) {
-        let nextVC = storyboard?.instantiateViewController(identifier: "ViewController") as! ViewController
+    @IBAction func musicScrubberPressed(_ sender: UIButton) {
+        
+        guard let music = musicUrl else { return }
+        let nextVC = storyboard?.instantiateViewController(identifier: "MusicScrubberViewController") as! MusicScrubberViewController
         nextVC.delegate = self
-        nextVC.audioURL = musicUrl!
+        nextVC.audioURL = music
         nextVC.song = boardVM.getCurrentBoard()?.songName ?? ""
         
         let prev = formationVM.getFormation(type: FormationType.previous)?.songTime
         let curr = formationVM.getFormation(type: FormationType.current)?.songTime
         let next = formationVM.getFormation(type: FormationType.next)?.songTime
-        //print("Prev Curr Next", prev, curr, next)
         
         nextVC.prevSongTiming = prev
         nextVC.currSongTiming = curr
         nextVC.nextSongTiming = next
         
         self.navigationController?.pushViewController(nextVC, animated: true)
-        
-        
         
     }
     
@@ -232,44 +212,21 @@ class GameViewController: KeyUIViewController{
         
         
         self.stage.arrayOfActions = []
-        formationVM.setCurrentSelection(index: 0)
-        presentCurrentFormation()
         
-        ///The action is indeed cancelled(it actually finished when you start playing) but it will not stop the audio. Use SKAudioNode if you need to suddenly stop sounds
-        //        if let music = musicUrl{
-        //            if !musicToggleButton.isSelected{
-        //            self.stage.playSong(musicLink: music)
-        //            }
-        //            else{
-        //                print("Music Toggle Not Selected", musicToggleButton.isSelected)
-        //            }
-        //        }
-        
-        //formationVM.setCurrentSelection(index: 0)
-        
-        //Gets initial wait time
-        
-        for _ in 0..<formationVM.formationArray.count{
-            
-            // print("In For loop")
-            // print(formationVM.currentFormation?.name)
+        guard let currIndex = formationVM.getCurrentIndex() else { return }
+
+        for _ in currIndex..<formationVM.formationArray.count{
+
             if let nextFormation = formationVM.getFormation(type: FormationType.next){
                 let nextDancerForms = dancerVM.loadDancers(selectedFormation: nextFormation, current: false)
                 if let index = formationVM.getCurrentIndex(){
                     let time = 3.0
-                    // print("Second Wait Time", time)
                     self.stage.playThroughFormations(dancers: nextDancerForms, waitTime: time, transitionTime: 2.0, formIndex: index, totalForms: formationVM.formationArray.count)
                     
-                    //waitT = 3.0
-                    
                     formationVM.setCurrentSelection(index: index + 1)
-                    
-                    
-                    
                 }
                 
             }
-            
             self.stage.run(SKAction.sequence(self.stage.arrayOfActions))
             
         }
@@ -297,8 +254,15 @@ class GameViewController: KeyUIViewController{
     
     @IBAction func colorPickerButton(_ sender: UIButton) {
         colorPicker.supportsAlpha = true
+        colorPicker.selectedColor = selectedColor
         present(colorPicker, animated: true)
-        selectedColor = colorPicker.selectedColor
+
+    }
+    
+    
+    @IBAction func addStageNode(_ sender: UIButton) {
+        stage.addStageNode()
+        
     }
     
     @IBAction func removeFormation(_ sender: UIButton) {
@@ -310,9 +274,10 @@ class GameViewController: KeyUIViewController{
             
             if let currIndex = formationVM.getCurrentIndex(){
                 formationVM.removeFormation(form: toRemove)
-                formationVM.loadFormations(callDelegate: false)
+                self.formationArray = formationVM.loadFormations(callDelegate: false)
                 if currIndex - 1 == -1 && formationArray.count < 1{
                     formationVM.createNewFormation()
+                    formationVM.setCurrentSelection(index: currIndex)
                     
                 }
                 else if currIndex - 1 == -1 && formationArray.count > 1{
@@ -395,9 +360,7 @@ class GameViewController: KeyUIViewController{
             self.stage.arrayOfActions = []
             formationVM.setCurrentSelection(index: 0)
             presentCurrentFormation()
-            var waitT = 0.0
-            
-            ///The action is indeed cancelled(it actually finished when you start playing) but it will not stop the audio. Use SKAudioNode if you need to suddenly stop sounds
+
             if let music = musicUrl{
                 self.stage.playSong(musicLink: music)
             }
@@ -415,8 +378,6 @@ class GameViewController: KeyUIViewController{
                         let time = self.calculateWaitHelper(withMusic: true)
                         // print("Second Wait Time", time)
                         self.stage.playThroughFormations(dancers: nextDancerForms, waitTime: time, transitionTime: 2.0, formIndex: index, totalForms: formationVM.formationArray.count)
-                        
-                        waitT = 3.0
                         
                         formationVM.setCurrentSelection(index: index + 1)
                     }
@@ -479,37 +440,13 @@ class GameViewController: KeyUIViewController{
         _ = formationVM.loadFormations()
     }
     
-    
-    
-    
-    func calculateWaitHelper(withMusic: Bool = false) -> Double{
-        var wait = 3.0
-        guard let curr = formationVM.getFormation(type: FormationType.current) else {
-            return wait
-        }
-        if  let prev = formationVM.getFormation(type: FormationType.previous) {
-            if !withMusic{
-                wait = 3.0
-                
-            }
-            if withMusic{
-                wait = Double(curr.songTime - prev.songTime)
-            }
-            //go through and set all the wait times, prev + 3 to a certain amount initially when music is loaded
-            //when edited, select next song times to be + 3 seconds after
-            //when
-        }
-        else{
-            wait = Double(curr.songTime)
-        }
-        return wait
-    }
     func disableDetailButtons(){
         
         DispatchQueue.main.async {
             
             self.nodeColorButton.isHidden = true
             self.nodeLabelTextField.isHidden = true
+            self.addNodeButton.isHidden = true
             self.playMusicButton.isHidden = true
             self.musicScrubberButton.isHidden = true
             
@@ -532,14 +469,7 @@ class GameViewController: KeyUIViewController{
         
         
     }
-    
-    func disableStageTouch(){
-        stage.isUserInteractionEnabled = false
-    }
-    
-    func enableStageTouch(){
-        stage.isUserInteractionEnabled = true
-    }
+
     func enableDetailButtons(){
         
         //music button enabling should be based on music
@@ -558,6 +488,7 @@ class GameViewController: KeyUIViewController{
         
         
         self.nodeLabelButton.isHidden = false
+        self.addNodeButton.isHidden = false
         
         self.playFormsButton.isHidden = false
         

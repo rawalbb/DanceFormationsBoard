@@ -104,7 +104,7 @@ public class ASWaveformPlayerView: UIView {
         populateWithData()
         addOverlay()
         
-        if audioPlayer.rate == 0 && currentPlaybackTime != nil {
+        if audioPlayer.rate == 0{
             // When orientation changes, update plot with currentPlaybackTime value.
             print("Current Playback Time", currentPlaybackTime)
             updatePlotWith(currentPlaybackTime)
@@ -165,7 +165,7 @@ public class ASWaveformPlayerView: UIView {
     @objc func sliderValueChanged(_ sender:UISlider!, event: UIEvent) {
 
         
-        let roundedValue = sender.value.rounded()
+        _ = sender.value.rounded()
         guard let touchEvent = event.allTouches?.first else { return }
         
         switch touchEvent.phase {
@@ -182,13 +182,10 @@ public class ASWaveformPlayerView: UIView {
                     return
                 }
                 let roundedValue = sender.value.rounded()
-                //let xLocation = recognizer.location(in: self).x
+
                 
-                //let percentageInSelf = Double(xLocation / bounds.width)
-                
-                let totalAudioDurationSeconds = CMTimeGetSeconds(totalAudioDuration)
-                
-                //let scrubbedDutation = totalAudioDurationSeconds * percentageInSelf
+                _ = CMTimeGetSeconds(totalAudioDuration)
+
                 
                 let scrubbedDutationMediaTime = CMTimeMakeWithSeconds(Float64(roundedValue), preferredTimescale: 1000)
                 

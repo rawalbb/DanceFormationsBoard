@@ -40,7 +40,7 @@ extension GameViewController: MusicChosenDelegate {
         
         }
         formationVM.saveFormation()
-        formationVM.loadFormations()
+        _ = formationVM.loadFormations()
         
         //TODO: Print to see timings ..withMusic
         for formNum in 0..<formationArray.count{
@@ -65,7 +65,7 @@ extension GameViewController: ScrubberUpdates{
         }
         
         formationVM.saveFormation()
-        formationVM.loadFormations()
+        _ = formationVM.loadFormations()
     }
     
     
