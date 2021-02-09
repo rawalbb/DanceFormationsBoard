@@ -18,8 +18,9 @@ extension GameViewController: StageSceneUpdatesDelegate{
         DispatchQueue.main.async {
             //self.detailView.isUserInteractionEnabled = true
             //self.detailView.alpha = 1.0
-            self.enableDetailButtons()
+            self.showDetailButtons()
             self.enableStageTouch()
+            self.ableDetailButtons(enable: true)()
         }
     }
     

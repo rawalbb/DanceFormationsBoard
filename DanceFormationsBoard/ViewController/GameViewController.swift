@@ -101,8 +101,7 @@ class GameViewController: KeyUIViewController{
             formationVM.setCurrentSelection(index: 0)
         }
         else{
-            formationVM.setCurrentSelection(index: 0)
-            presentCurrentFormation()
+            presentFormation(first: true)
         }
         allFormUpdates()
         
@@ -111,7 +110,7 @@ class GameViewController: KeyUIViewController{
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        presentCurrentFormation()
+        presentFormation()
         allFormUpdates()
         
         do{
@@ -204,25 +203,21 @@ class GameViewController: KeyUIViewController{
     
     
     @IBAction func playFormationsPressed(_ sender: Any) {
-        guard formationArray.count > 1 else { return }
         
-        self.disableDetailButtons()
-        self.disableStageTouch()
+        guard formationArray.count > 1, let currIndex = formationVM.getCurrentIndex() else { return }
         
+        hideDetailButtons()
+        disableStageTouch()
+        stage.arrayOfActions = []
+        let defaultWait  = 3.0
         
-        
-        self.stage.arrayOfActions = []
-        
-        guard let currIndex = formationVM.getCurrentIndex() else { return }
-
         for _ in currIndex..<formationVM.formationArray.count{
-
+            
             if let nextFormation = formationVM.getFormation(type: FormationType.next){
                 let nextDancerForms = dancerVM.loadDancers(selectedFormation: nextFormation, current: false)
                 if let index = formationVM.getCurrentIndex(){
-                    let time = 3.0
-                    self.stage.playThroughFormations(dancers: nextDancerForms, waitTime: time, transitionTime: 2.0, formIndex: index, totalForms: formationVM.formationArray.count)
                     
+                    stage.playThroughFormations(dancers: nextDancerForms, waitTime: defaultWait, transitionTime: 2.0, formIndex: index, totalForms: formationVM.formationArray.count)
                     formationVM.setCurrentSelection(index: index + 1)
                 }
                 
@@ -234,13 +229,12 @@ class GameViewController: KeyUIViewController{
     }
     
     
-    
     @IBAction func labelTextFieldChanged(_ sender: UITextField) {
-        //print("Label changed")
+        
         if let text = nodeLabelTextField.text{
-            self.stage.updateDancerLabel(label: text)
+            stage.updateDancerLabel(label: text) //update on stage
             if let nodeId = self.stage.currentNode?.nodeId{
-                dancerVM.updateDancerLabel(id: nodeId, label: text)
+                dancerVM.updateDancerLabel(id: nodeId, label: text) //update on backend
                 if let imageData = ImageDataManager.sceneToData(view: stageView){
                     formationVM.updateFormImage(imageData: imageData)
                     allFormUpdates()
@@ -256,11 +250,12 @@ class GameViewController: KeyUIViewController{
         colorPicker.supportsAlpha = true
         colorPicker.selectedColor = selectedColor
         present(colorPicker, animated: true)
-
+        
     }
     
     
     @IBAction func addStageNode(_ sender: UIButton) {
+        
         stage.addStageNode()
         
     }
@@ -292,11 +287,8 @@ class GameViewController: KeyUIViewController{
                 }
                 
             }
-            
             allFormUpdates()
-            
-            
-            presentCurrentFormation()
+            presentFormation()
             
         }
     }
@@ -306,13 +298,20 @@ class GameViewController: KeyUIViewController{
         self.stage.arrayOfActions = []
         
         if let nextFormation = formationVM.getFormation(type: FormationType.next){
+            disableStageTouch()
+            ableDetailButtons(enable: false)
             
             let nextDancerForms = dancerVM.loadDancers(selectedFormation: nextFormation, current: false)
-            if let nextIndex = formationVM.getCurrentIndex(){
-                formationVM.setCurrentSelection(index: nextIndex + 1)
+            if let currIndex = formationVM.getCurrentIndex(){
+                formationVM.setCurrentSelection(index: currIndex + 1)
             }
             if let index = formationVM.getCurrentIndex(){
-                self.stage.playThroughFormations(dancers: nextDancerForms, waitTime: 0.0, transitionTime: 2.0, formIndex: index, totalForms: formationArray.count)
+                self.stage.playThroughFormations(dancers: nextDancerForms, waitTime: 0.0, transitionTime: 2.0, formIndex: index, totalForms: formationArray.count, playAll: false)
+                let enableTouchAction = SKAction.run {
+                    self.enableTouches()
+                }
+                stage.arrayOfActions.append(SKAction.wait(forDuration: 2.0))
+                stage.arrayOfActions.append(enableTouchAction)
             }
         }
         
@@ -325,13 +324,21 @@ class GameViewController: KeyUIViewController{
         self.stage.arrayOfActions = []
         
         if let nextFormation = formationVM.getFormation(type: FormationType.previous){
+            disableStageTouch()
+            ableDetailButtons(enable: false)
             let nextDancerForms = dancerVM.loadDancers(selectedFormation: nextFormation, current: false)
             if let currIndex = formationVM.getCurrentIndex(){
                 formationVM.setCurrentSelection(index: currIndex - 1)
             }
             if let index = formationVM.getCurrentIndex(){
-                self.stage.playThroughFormations(dancers: nextDancerForms, waitTime: 0.0, transitionTime: 2.0, formIndex: index, totalForms: formationArray.count)
+                self.stage.playThroughFormations(dancers: nextDancerForms, waitTime: 0.0, transitionTime: 2.0, formIndex: index, totalForms: formationArray.count, playAll: false)
             }
+            
+            let enableTouchAction = SKAction.run {
+                self.enableTouches()
+            }
+            stage.arrayOfActions.append(SKAction.wait(forDuration: 2.0))
+            stage.arrayOfActions.append(enableTouchAction)
         }
         
         
@@ -350,69 +357,35 @@ class GameViewController: KeyUIViewController{
     @IBAction func musicTogglePressed(_ sender: UIButton) {
         
         guard formationArray.count > 1 else { return }
-        self.disableDetailButtons()
+        guard stage.musicEnabled == true, let music = musicUrl else { print("GVC - error retrieving music URL")
+            return }
+        
+        self.stage.arrayOfActions = []
+        self.hideDetailButtons()
         self.disableStageTouch()
-        //        sender.isSelected = true
-        //        ///print("Music Selection, ", sender.isSelected)
-        //stage.musicEnabled = true
-        //guard case stage.musicEnabled == true else { return }
-        if stage.musicEnabled{
-            self.stage.arrayOfActions = []
-            formationVM.setCurrentSelection(index: 0)
-            presentCurrentFormation()
-
-            if let music = musicUrl{
-                self.stage.playSong(musicLink: music)
-            }
-            else{
-                print("Error playing song")
-            }
+        
+        presentFormation(first: true)
+        
+        self.stage.playSong(musicLink: music)
+        
+        for _ in 0..<formationVM.formationArray.count{
             
-            for _ in 0..<formationVM.formationArray.count{
-                
-                // print("In For loop")
-                // print(formationVM.currentFormation?.name)
-                if let nextFormation = formationVM.getFormation(type: FormationType.next){
-                    let nextDancerForms = dancerVM.loadDancers(selectedFormation: nextFormation, current: false)
-                    if let index = formationVM.getCurrentIndex(){
-                        let time = self.calculateWaitHelper(withMusic: true)
-                        // print("Second Wait Time", time)
-                        self.stage.playThroughFormations(dancers: nextDancerForms, waitTime: time, transitionTime: 2.0, formIndex: index, totalForms: formationVM.formationArray.count)
-                        
-                        formationVM.setCurrentSelection(index: index + 1)
-                    }
+            if let nextFormation = formationVM.getFormation(type: FormationType.next){
+                let nextDancerForms = dancerVM.loadDancers(selectedFormation: nextFormation, current: false)
+                if let index = formationVM.getCurrentIndex(){
+                    let time = self.calculateWaitHelper(withMusic: true)
                     
+                    self.stage.playThroughFormations(dancers: nextDancerForms, waitTime: time, transitionTime: 2.0, formIndex: index, totalForms: formationVM.formationArray.count)
+                    
+                    formationVM.setCurrentSelection(index: index + 1)
                 }
                 
-                self.stage.run(SKAction.sequence(self.stage.arrayOfActions))
             }
+            
+            self.stage.run(SKAction.sequence(self.stage.arrayOfActions))
         }
-        else{
-            showMusicAlert()
-        }
         
     }
-    
-    func showMusicAlert() {
-        let alert = UIAlertController(title: "Music", message: "No music detected",         preferredStyle: UIAlertController.Style.alert)
-        
-        alert.addAction(UIAlertAction(title: "Continue",
-                                      style: UIAlertAction.Style.default,
-                                      handler: {(_: UIAlertAction!) in
-                                      }))
-        
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-    func presentCurrentFormation(){
-        
-        guard let curr = formationVM.getFormation(type: FormationType.current) else { return }
-        print("CURRENT POSITIONNNNNN", curr.position)
-                let dancers = dancerVM.loadDancers(selectedFormation: curr, current: true)
-                let indexPath = IndexPath(row: Int(curr.position), section: 0)
-                stage.formationSelected(dancers: dancers, index: indexPath)
-    }
-    
     
     @IBAction func infoButtonPressed(_ sender: Any) {
         
@@ -423,14 +396,9 @@ class GameViewController: KeyUIViewController{
     
     @IBAction func stopButtonPressed(_ sender: UIButton) {
         
-        //func to make unhide all buttons
         stage.endActionsHelper()
-        
-        
-        
-       presentCurrentFormation()
-        
-        enableDetailButtons()
+        presentFormation()
+        showDetailButtons()
         
     }
     
@@ -440,7 +408,17 @@ class GameViewController: KeyUIViewController{
         _ = formationVM.loadFormations()
     }
     
-    func disableDetailButtons(){
+    func presentFormation(first: Bool = false){
+        if first{
+            formationVM.setCurrentSelection(index: 0)
+        }
+        guard let curr = formationVM.getFormation(type: FormationType.current) else { return }
+        let dancers = dancerVM.loadDancers(selectedFormation: curr, current: true)
+        let indexPath = IndexPath(row: Int(curr.position), section: 0)
+        stage.formationSelected(dancers: dancers, index: indexPath)
+    }
+    
+    func hideDetailButtons(){
         
         DispatchQueue.main.async {
             
@@ -466,17 +444,14 @@ class GameViewController: KeyUIViewController{
             self.stopButton.isHidden = false
             
         }
-        
-        
     }
-
-    func enableDetailButtons(){
+    
+    
+    func showDetailButtons(){
         
-        //music button enabling should be based on music
         self.nodeColorButton.isHidden = false
         self.playMusicButton.isHidden = !enableMusic
         self.musicScrubberButton.isHidden = !enableMusic
-        //THIS TODo
         self.addMusicButton.isHidden = false
         self.addFormsButton.isHidden = false
         
@@ -493,8 +468,29 @@ class GameViewController: KeyUIViewController{
         self.playFormsButton.isHidden = false
         
         self.stopButton.isHidden = true
-        
-        
+    }
+    
+    
+    func ableDetailButtons(enable: Bool){
+        DispatchQueue.main.async {
+            
+            self.nodeColorButton.isEnabled = enable
+            self.playMusicButton.isEnabled = enable
+            self.musicScrubberButton.isEnabled = enable
+            self.addMusicButton.isEnabled = enable
+            self.addFormsButton.isEnabled = enable
+            
+            self.deleteFormsButton.isEnabled = enable
+            
+            self.prevFormsButton.isEnabled = enable
+            self.nextFormsButton.isEnabled = enable
+            
+            
+            self.nodeLabelButton.isEnabled = enable
+            self.addNodeButton.isEnabled = enable
+            
+            self.playFormsButton.isEnabled = enable
+        }
     }
     
 }
@@ -540,7 +536,7 @@ extension GameViewController: UITableViewDataSource, UITableViewDelegate{
         _ = tableView.cellForRow(at: indexPath) as! FormationSnapshotCell
         //currentCell.se
         formationVM.setCurrentSelection(index: indexPath.row)
-        presentCurrentFormation()
+        presentFormation()
         enableTouches()
         
     }

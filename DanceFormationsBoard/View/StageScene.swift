@@ -587,22 +587,19 @@ class StageScene: SKScene {
         
     }
     
-    func playThroughFormations(dancers: [Dancer], waitTime: Double, transitionTime: Double, formIndex: Int, totalForms: Int){
+    func playThroughFormations(dancers: [Dancer], waitTime: Double, transitionTime: Double, formIndex: Int, totalForms: Int, playAll: Bool = true){
         
         let wait = SKAction.wait(forDuration: waitTime)
     arrayOfActions.append(wait)
    
         let actionA = SKAction.run { [unowned self] in
-            //THIS IS THE PROBLEM
+            
             var currNodes: [DanceNode] = []
                 self.enumerateChildNodes(withName: "dancers") { (node, stop) in
                 currNodes.append(node as! DanceNode)
             }
         
         for dancer in dancers{
-            
-            //IF there isn't a dancer at that position - not found, add that node
-            
 
             if let toUpdateIndex = currNodes.firstIndex(where: { $0.nodeId == dancer.id }) {
                 let point = PositionManager.percentageToPosition(x: dancer.xPos, y: dancer.yPos, viewW: self.view?.bounds.width, viewH: self.view?.bounds.height)
@@ -677,19 +674,24 @@ class StageScene: SKScene {
         
         
         arrayOfActions.append(actionA)
+       
         let enableTouchAction = SKAction.run {
             self.myDelegate.enableTouches()
         }
+        guard playAll == true else { return }
+        
         if formIndex + 2 == totalForms && musicEnabled == true{
             arrayOfActions.append(SKAction.wait(forDuration: 2.0))
             self.endSong()
             arrayOfActions.append(enableTouchAction)
         }
-        else if formIndex + 2 == totalForms && musicEnabled == false{
+        else if formIndex + 1 == totalForms && musicEnabled == false{
             arrayOfActions.append(SKAction.wait(forDuration: 2.0))
             //self.endSong()
             arrayOfActions.append(enableTouchAction)
         }
+        
+
         
 }
     
