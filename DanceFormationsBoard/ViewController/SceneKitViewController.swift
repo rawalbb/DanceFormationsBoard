@@ -218,7 +218,7 @@ class SceneKitViewController: UIViewController {
         let point = PositionManager.percentageToPosition(x: originalX, y: originalY, viewW: CGFloat(self.stageWidth), viewH: CGFloat(self.stageHeight))
         //0.5
         
-        let newVector = SCNVector3(point.x + CGFloat(stageWidthMin), 5, -(point.y + CGFloat(stageHeightMin)))
+        let newVector = SCNVector3(point.x + CGFloat(stageWidthMin), 3, -(point.y + CGFloat(stageHeightMin)))
         return newVector
         
     }
@@ -286,8 +286,7 @@ class SceneKitViewController: UIViewController {
             var currNodes: [SCNNode] = []
             self?.scene.rootNode.childNodes.filter({ $0.name == "boy" }).forEach({
                                                                                     currNodes.append($0 ) })
-            
-            
+
             for dancer in dancers{
                 
                 //IF there isn't a dancer at that position - not found, add that node
@@ -320,7 +319,7 @@ class SceneKitViewController: UIViewController {
                     
                     let startingX = self?.getNearestStartingPoint(endPointX: point.x)
                     
-                    let newVector = SCNVector3(CGFloat(startingX ?? 0.0), 5, -(CGFloat(point.y)))
+                    let newVector = SCNVector3(CGFloat(startingX ?? 0.0), 3, (CGFloat(point.z)))
                     cubeNode.position = newVector
                     
                     let action = SCNAction.move(to: point, duration: 2.0)
@@ -461,7 +460,7 @@ class SceneKitViewController: UIViewController {
                 
                 let point = PositionManager.percentageToPosition(x: dancer.xPos, y: dancer.yPos, viewW: CGFloat(self.stageWidth), viewH: CGFloat(self.stageHeight))
                 
-                cubeNode.position = SCNVector3(point.x + CGFloat(self.stageWidthMin), 5, -(point.y + CGFloat(self.stageHeightMin))) // SceneKit/AR coordinates are in meters
+                cubeNode.position = SCNVector3(point.x + CGFloat(self.stageWidthMin), 3, -(point.y + CGFloat(self.stageHeightMin))) // SceneKit/AR coordinates are in meters
                 
                 sceneView.scene?.rootNode.addChildNode(cubeNode)
                 //closestNode!.lineWidth = 20
@@ -531,7 +530,8 @@ extension SceneKitViewController: OverlaySceneDelegate{
             self.arrayOfActions = []
             self.endActionsHelper()
             
-            let music = URL(string: songString)
+            guard let music = URL(string: songString) else { print("Error setting music URL")
+                return }
             self.sceneView.overlaySKScene?.isUserInteractionEnabled = false
             self.sceneView.overlaySKScene?.alpha = 0.3
             
@@ -540,9 +540,36 @@ extension SceneKitViewController: OverlaySceneDelegate{
             
             formationVM.setCurrentSelection(index: 0)
             
-            playSong(musicLink: music)
+            
             presentCurrentFormation()
+            sceneView.scene?.rootNode.enumerateChildNodes({ (musicNode, stop) in
+                sceneView.scene?.rootNode.removeAllActions()
+                if musicNode.name == "music"{
+                    musicNode.removeFromParentNode()
+                    musicNode.removeAllActions()
+                    
+                }
+            })
+                guard let musicSource = SCNAudioSource(url: music) else { print("error setting music source")
+                    return
+                }
 
+                    let  musicPlayerNode = SCNNode()
+            
+                musicPlayerNode.name = "music"
+                musicSource.isPositional = false
+                musicSource.shouldStream = false
+                musicSource.load()
+                let musicPlayer = SCNAudioPlayer(source: musicSource)
+                //musicPlayerNode.addAudioPlayer(musicPlayer)
+            self.sceneView.scene?.rootNode.addAudioPlayer(musicPlayer)
+            //let actionZ = SCNAction.playAudio(musicSource, waitForCompletion: false)
+            
+            
+//            let playSongAction = SCNAction.run { [weak self] _ in
+//                self?.playSong(musicLink: music)
+//            }
+           // arrayOfActions.append(playSongAction)
             
             for _ in 0..<formationVM.formationArray.count{
                 
@@ -558,8 +585,8 @@ extension SceneKitViewController: OverlaySceneDelegate{
                     }
                     
                 }
-                
-                scene.rootNode.runAction(SCNAction.sequence(self.arrayOfActions))
+                scene.rootNode.runAction(SCNAction.group([SCNAction.sequence(self.arrayOfActions)]))
+               // scene.rootNode.runAction(SCNAction.sequence(self.arrayOfActions))
             }
             
         }
@@ -632,7 +659,9 @@ extension SceneKitViewController{
     
     
     func playSong(musicLink: URL? = nil){
-        
+        guard let songString = BoardViewModel.shared.getCurrentBoard()?.song else { return }
+        guard let music = URL(string: songString) else { print("Error setting music URL")
+            return }
         
         sceneView.scene?.rootNode.enumerateChildNodes({ (musicNode, stop) in
             sceneView.scene?.rootNode.removeAllActions()
@@ -643,8 +672,10 @@ extension SceneKitViewController{
             }
         })
         
-        if let musicURL = musicLink{
-            backgroundMusic = SCNAudioSource(url: musicURL)
+      
+            guard let musicSource = SCNAudioSource(url: music) else { print("error setting music source")
+                return
+            }
             
             //            node.runAction(SCNAction.playAudio(sounds[sound]!, waitForCompletion: false))
             //
@@ -655,18 +686,46 @@ extension SceneKitViewController{
             //                self.enableTouches()
             //            }
             //self.sceneView.scene?.rootNode.runAction(SCNAction.playAudio(self.backgroundMusic!), forKey: "playMusic")
-            self.sceneView.scene?.rootNode.runAction(SCNAction.playAudio(self.backgroundMusic!, waitForCompletion: false), forKey: "playMusic")
+                let  musicPlayerNode = SCNNode()
+        
+            musicPlayerNode.name = "music"
+            musicSource.isPositional = false
+            musicSource.shouldStream = false
+            musicSource.load()
+            let musicPlayer = SCNAudioPlayer(source: musicSource)
+            musicPlayerNode.addAudioPlayer(musicPlayer)
+            self.sceneView.scene?.rootNode.addChildNode(musicPlayerNode)
+            musicPlayerNode.runAction(SCNAction.playAudio(musicSource, waitForCompletion: false), forKey: "playMusic")
+        print("End of sceneview")
             
             //            let actionB = SCNAction.run {_ in
             //                self.sceneView.scene?.rootNode.runAction(SCNAction.playAudio(self.backgroundMusic!, waitForCompletion: false), forKey: "playMusic")
             //            }
             
             //arrayOfActions.append(actionB)
-        }
-        
-        else{
-            print("Error in selecting music")
-        }
+            
+            //        guard let musicSource = SCNAudioSource(url: musicLink) else { return }
+            //        let  musicPlayerNode = SCNNode()
+            //
+            //    musicPlayerNode.name = "music"
+            //    musicSource.isPositional = false
+            //    musicSource.shouldStream = false
+            //    musicSource.load()
+            //    let musicPlayer = SCNAudioPlayer(source: musicSource)
+            //    musicPlayerNode.addAudioPlayer(musicPlayer)
+            //    self.sceneView.scene?.rootNode.addChildNode(musicPlayerNode)
+            //
+            //
+            //    let play = SCNAction.playAudio(musicSource, waitForCompletion: false)
+            //
+            //        let actionMusic = SCNAction.run {[unowned self] _ in
+            //
+            //            musicPlayerNode.runAction(play)
+            //
+            //    }
+            //
+            //    arrayOfActions.append(actionMusic)
+
         
         //scene.rootNode.runAction(SCNAction.sequence(self.arrayOfActions))
     }

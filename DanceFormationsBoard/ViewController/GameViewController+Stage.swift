@@ -20,7 +20,7 @@ extension GameViewController: StageSceneUpdatesDelegate{
             //self.detailView.alpha = 1.0
             self.showDetailButtons()
             self.enableStageTouch()
-            self.ableDetailButtons(enable: true)()
+            self.ableDetailButtons(enable: true)
         }
     }
     
