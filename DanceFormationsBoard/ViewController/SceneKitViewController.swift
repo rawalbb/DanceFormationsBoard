@@ -14,17 +14,18 @@ import AVFoundation
 class SceneKitViewController: UIViewController {
     
     var sceneView: SCNView!
-    var scene: SCNScene!
-    var templateScene: SCNScene!
-    var formationVM: FormationViewModel!
-    var dancerVM: DancerViewModel!
+    var stageScene: SCNScene!
+    var dancerScene: SCNScene!
+    var formationVM = FormationViewModel()
+    var dancerVM = DancerViewModel()
     var arrayOfActions: [SCNAction] = []
     var spriteScene: OverlayScene!
     var prevNode: SKNode?
     var nextNode: SKNode?
     var playNode: SKNode?
     var musicNode: SKNode?
-    var backgroundMusic: SCNAudioSource?
+    var stopNode: SKNode?
+    var backgroundAudioSource: SCNAudioSource?
     var musicEnabled: Bool = false
     var boardVM = BoardViewModel.shared
     var stageWidth: Float = 0.0
@@ -33,147 +34,85 @@ class SceneKitViewController: UIViewController {
     var stageWidthMax: Float = 0.0
     var stageHeightMin: Float = 0.0
     var stopActionButton: UIBarButtonItem?
+    let stageScale: Float = 2.0
     
     var stage: SCNNode? = nil {
         didSet{
             guard let stage = stage else { return }
-            stageWidth = (stage.boundingBox.max.x - stage.boundingBox.min.x) * 2.0
-            stageHeight = ((stage.boundingBox.max.z - stage.boundingBox.min.z) * 1.8) - (1.8 * 2)
-            stageWidthMin = stage.boundingBox.min.x * 2.0
-            stageWidthMax = stage.boundingBox.max.x * 2.0
-            stageHeightMin = stage.boundingBox.min.z * 1.8
+            stageWidth = (stage.boundingBox.max.x - stage.boundingBox.min.x) * stageScale
+            stageHeight = ((stage.boundingBox.max.z - stage.boundingBox.min.z) * stageScale) - (stageScale * 2)
+            stageWidthMin = stage.boundingBox.min.x * stageScale
+            stageWidthMax = stage.boundingBox.max.x * stageScale
+            stageHeightMin = stage.boundingBox.min.z * stageScale
         }
     }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //sets stopActionButton properties
+        stopActionButton = UIBarButtonItem(image: UIImage(systemName: "stop.fill"), style: .plain, target: self, action: #selector(stopAction(_:)))
+        stopActionButton?.tintColor = UIColor(named: "color-nav")
         
-        self.stopActionButton = UIBarButtonItem(image: UIImage(systemName: "stop.fill"), style: .plain, target: self, action: #selector(stopAction(_:)))
-        //            self.stopActionButton = UIBarButtonItem(title: "Stop", style: .plain, target: self, action: #selector(stopAction(_:)))
-        self.stopActionButton?.tintColor = UIColor(named: "color-nav")
-        
-        
-        formationVM = FormationViewModel()
-        dancerVM = DancerViewModel()
         setupScene()
         
-        self.spriteScene = OverlayScene(size: self.view.frame.size)
-        self.spriteScene.isUserInteractionEnabled = true
-        prevNode = self.spriteScene.childNode(withName: "prevNode") as! SKSpriteNode
-        nextNode = self.spriteScene.childNode(withName: "nextNode") as! SKSpriteNode
-        playNode = self.spriteScene.childNode(withName: "playNode") as! SKSpriteNode
-        musicNode = self.spriteScene.childNode(withName: "musicNode") as! SKSpriteNode
-        self.spriteScene.overlayDelegate = self
-        self.sceneView.overlaySKScene = self.spriteScene
+        spriteScene = OverlayScene(size: self.view.frame.size)
+        spriteScene.isUserInteractionEnabled = true
+        spriteScene.overlayDelegate = self
+        sceneView.overlaySKScene = self.spriteScene
         
-        
-        // add a tap gesture recognizer
-        //               let tapGesture = UITapGestureRecognizer(target: self, action:
-        //                   #selector(handleTap(_:)))
-        //                sceneView.addGestureRecognizer(tapGesture)
-        
-        // result.node is the node that the user tapped on
-        // perform any actions you want on it
-        // Do any additional setup after loading the view.
+        prevNode = spriteScene.childNode(withName: "prevNode") as! SKSpriteNode
+        nextNode = spriteScene.childNode(withName: "nextNode") as! SKSpriteNode
+        playNode = spriteScene.childNode(withName: "playNode") as! SKSpriteNode
+        musicNode = spriteScene.childNode(withName: "musicNode") as! SKSpriteNode
+        //stopNode = spriteScene.childNode(withName: "stopNode") as! SKSpriteNode
         
         do{
-            //print("In Game View Controller getting song ", boardVM.getCurrentBoard()?.song)
-            if let a = BoardViewModel.shared.getCurrentBoard()?.song{
-                guard let music = URL(string: a) else { print("URL Nil");  return}
+            if let musicUrl = BoardViewModel.shared.getCurrentBoard()?.song{
+                guard let music = URL(string: musicUrl) else { print("SKVC - cannoto convert music String to Url");  return}
                 _ = try AVAudioPlayer(contentsOf: music)
-                
+                backgroundAudioSource = SCNAudioSource(url: music)
                 musicEnabled = true
             }
             else{
-                print("No song")
+                print("SKVC - no music detected")
                 musicEnabled = false
             }
             
         }
         catch{
-            print("Could Not do music")
-            
+            print("SKVC - could not play music")
             musicEnabled = false
         }
-        
-        
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         self.endActionsHelper()
     }
-    
-    
-    
+
     @objc func stopAction(_ sender: UIBarButtonItem) {
-        //self.navigationItem.setRightBarButton(stopActionButton, animated: true)
-        print("Ayy")
         self.endActionsHelper()
-        
-        
+
         if formationVM.formationArray.count > 0{
-            formationVM.setCurrentSelection(index: 0)
-            presentCurrentFormation()
+            presentCurrentFormation(index: 0)
         }
         else{
-            print("No formations yet")
+            print("SVC - no formation to present")
         }
         
         
     }
     
-    func presentCurrentFormation(){
-        
-        guard let curr = formationVM.getFormation(type: FormationType.current) else { return }
+    func presentCurrentFormation(index: Int? = nil){
+        if let index = index{
+            formationVM.setCurrentSelection(index: index)
+        }
+        guard let curr = formationVM.getFormation(type: FormationType.current) else { print("SVC - Error presenting current formation"); return }
                 let dancers = dancerVM.loadDancers(selectedFormation: curr, current: true)
                 self.formationSelected(dancers: dancers)
     }
-    
-    @objc func handleTap(_ gestureRecognize: UIGestureRecognizer) {
-        //retrieve the SCNView
-        let scnView = self.view as! SCNView
-        
-        // check what nodes are tapped
-        let p = gestureRecognize.location(in: scnView)
-        
-        let hitResults = scnView.hitTest(p, options: [:])
-        // check that we clicked on at least one object
-        if hitResults.count > 0 {
-            // retrieved the first clicked object
-            let result: AnyObject = hitResults[0]
-
-            if prevNode!.contains(p){
-                print("PREV NODEIT IS")
-            }
-            guard let resultNode = result as? SKSpriteNode else { return }
-            
-            
-            
-            if let name = resultNode.name
-            {
-                switch name{
-                case "prevNode":
-                    print("prev node touched")
-                    
-                case "nextNode":
-                    print("next node touched")
-                    
-                case "playNode":
-                    print("play node touched")
-                    
-                case "musicNode":
-                    print("music node touched")
-                default:
-                    print("idk")
-                }
-            }
-            
-        }
-    }
-    
-    
+  
     override func didMove(toParent parent: UIViewController?) {
         print("HI there")
         
@@ -183,83 +122,34 @@ class SceneKitViewController: UIViewController {
     func setupScene(){
         sceneView = (self.view as! SCNView)
         sceneView.allowsCameraControl = true
-        scene = SCNScene(named: "art.scnassets/MainScene.scn")
-        sceneView.scene = scene
-        print("HI there setup")
-        templateScene = SCNScene(named: "art.scnassets/Nodes.scn")
+        stageScene = SCNScene(named: "art.scnassets/MainScene.scn")
+        sceneView.scene = stageScene
+        dancerScene = SCNScene(named: "art.scnassets/Nodes.scn")
         
-        self.stage = scene.rootNode.childNode(withName: "stage", recursively: true)!
+        stage = stageScene.rootNode.childNode(withName: "stage", recursively: true)!
+        
         formationVM.currentBoard = boardVM.getCurrentBoard()
         
         _ = formationVM.loadFormations()
         
-
         if formationVM.formationArray.count > 0{
-            formationVM.setCurrentSelection(index: 0)
-            presentCurrentFormation()
+            presentCurrentFormation(index: 0)
         }
         else{
-            print("No formations yet")
+            print("SVC - no formations")
         }
-        
-    }
-    
-    func starButtonClicked(){
-        print("Button Clicked")
         
     }
     
     func convertToStageDimensions(originalX: Float, originalY: Float) -> SCNVector3{
-        //        let stage = scene.rootNode.childNode(withName: "stage", recursively: true)!
-        //
-        //        let width = (stage.boundingBox.max.x - stage.boundingBox.min.x) * 2.0
-        //        let length = (stage.boundingBox.max.z - stage.boundingBox.min.z) * 1.8
-        
+
         let point = PositionManager.percentageToPosition(x: originalX, y: originalY, viewW: CGFloat(self.stageWidth), viewH: CGFloat(self.stageHeight))
-        //0.5
         
         let newVector = SCNVector3(point.x + CGFloat(stageWidthMin), 3, -(point.y + CGFloat(stageHeightMin)))
         return newVector
         
     }
     
-    
-    
-    // @objc
-    //func handleTap(_ gestureRecognize: UIGestureRecognizer) {
-    // retrieve the SCNView
-    //        let scnView = self.view as! SCNView
-    //
-    //        // check what nodes are tapped
-    //        let p = gestureRecognize.location(in: scnView)
-    //        let hitResults = scnView.hitTest(p, options: [:])
-    //        // check that we clicked on at least one object
-    //        if hitResults.count > 0 {
-    //            // retrieved the first clicked object
-    //            let result = hitResults[0]
-    //
-    //            // get its material
-    //            let material = result.node.geometry!.firstMaterial!
-    //
-    //            // highlight it
-    //            SCNTransaction.begin()
-    //            SCNTransaction.animationDuration = 0.5
-    //
-    //            // on completion - unhighlight
-    //            SCNTransaction.completionBlock = {
-    //                SCNTransaction.begin()
-    //                SCNTransaction.animationDuration = 0.5
-    //
-    //                material.emission.contents = UIColor.black
-    //
-    //                SCNTransaction.commit()
-    //            }
-    //
-    //            material.emission.contents = UIColor.red
-    //
-    //            SCNTransaction.commit()
-    //        }
-    //}
     
     override var shouldAutorotate: Bool {
         return false
@@ -269,51 +159,35 @@ class SceneKitViewController: UIViewController {
         return true
     }
     
-    //    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-    //        if UIDevice.current.userInterfaceIdiom == .phone {
-    //            return .allButUpsideDown
-    //        } else {
-    //            return .all
-    //        }
-    //    }
-    
-    
-    
     func playThroughFormations(dancers: [Dancer], waitTime: Double, transitionTime: Double, formIndex: Int, totalForms: Int){
         
         let actionA = SCNAction.run {[weak self] _ in
-            //THIS IS THE PROBLEM
+           
             var currNodes: [SCNNode] = []
-            self?.scene.rootNode.childNodes.filter({ $0.name == "boy" }).forEach({
+            self?.stageScene.rootNode.childNodes.filter({ $0.name == "dancer" }).forEach({
                                                                                     currNodes.append($0 ) })
 
             for dancer in dancers{
-                
-                //IF there isn't a dancer at that position - not found, add that node
-                
-                
+
                 if let toUpdateIndex = currNodes.firstIndex(where: { $0.accessibilityLabel == dancer.id }) {
-                    
-                    
-                    
+          
                     if let next = self?.convertToStageDimensions(originalX: dancer.xPos, originalY: dancer.yPos){
                         let action = SCNAction.move(to: next, duration: 2.0)
                         currNodes[toUpdateIndex].runAction(action)
                     }
                 }
                 else{
-                    print("Not found")
-                    self?.templateScene = SCNScene(named: "art.scnassets/Nodes.scn")
-                    let cubeNode = self?.templateScene.rootNode.childNode(withName: "boy", recursively: true) as! SCNNode
+                    self?.dancerScene = SCNScene(named: "art.scnassets/Nodes.scn")
+                    let cubeNode = self?.dancerScene.rootNode.childNode(withName: "dancer", recursively: true) as! SCNNode
                     
                     cubeNode.geometry?.material(named: "headColor")?.diffuse.contents = UIColor(hex: dancer.color)
-                    
                     cubeNode.geometry?.material(named: "legColor")?.diffuse.contents = UIColor(hex: dancer.color)
                     cubeNode.geometry?.material(named: "bodyColor")?.diffuse.contents = UIColor(hex: dancer.color)
                     
                     cubeNode.accessibilityLabel = dancer.id
 
                     guard let point = self?.convertToStageDimensions(originalX: dancer.xPos, originalY: dancer.yPos) else { return }
+                    
                     self?.sceneView.scene?.rootNode.addChildNode(cubeNode)
                     currNodes.append(cubeNode)
                     
@@ -321,27 +195,24 @@ class SceneKitViewController: UIViewController {
                     
                     let newVector = SCNVector3(CGFloat(startingX ?? 0.0), 3, (CGFloat(point.z)))
                     cubeNode.position = newVector
-                    
+
                     let action = SCNAction.move(to: point, duration: 2.0)
                     cubeNode.runAction(action)
                     
                 }
-                //TODO - handle case when dancers are removed from one formation
                 
             }
             
             for nodes in currNodes{
                 
-                if dancers.firstIndex(where: { $0.id == nodes.accessibilityLabel }) != nil {
-                    
-                }
-                else{
-                    
-                    nodes.removeFromParentNode()
+                if dancers.firstIndex(where: { $0.id == nodes.accessibilityLabel }) == nil {
+                    let fadeAction = SCNAction.fadeOut(duration: 1.0)
+                    let remove = SCNAction.removeFromParentNode()
+                    let sequence = SCNAction.sequence([fadeAction, remove])
+                    nodes.runAction(sequence)
                 }
                 
             }
-            
             
         }
         
@@ -352,7 +223,7 @@ class SceneKitViewController: UIViewController {
         let enableTouchAction = SCNAction.run {_ in
             self.enableTouches()
         }
-        
+        print("Form Index, Totla forms: ", formIndex, totalForms)
         if formIndex + 2 == totalForms && self.musicEnabled == true{
             self.arrayOfActions.append(SCNAction.wait(duration: 2.0))
             self.endSong()
@@ -376,19 +247,13 @@ class SceneKitViewController: UIViewController {
     }
     
     func endActionsHelper(removeDancers: Bool = true){
-        self.scene.rootNode.removeAction(forKey: "playMusic")
-        self.scene.rootNode.removeAllAudioPlayers()
-        sceneView.scene?.rootNode.enumerateChildNodes({ (dancerNode, stop) in
-            sceneView.scene?.rootNode.removeAllActions()
-            if dancerNode.name == "boy"{
+        let root = stageScene.rootNode
+        root.removeAllAudioPlayers()
+        root.removeAllActions()
+        root.enumerateChildNodes({ (dancerNode, stop) in
+            if dancerNode.name == "dancer"{
                 dancerNode.removeFromParentNode()
                 dancerNode.removeAllActions()
-                
-            }
-            
-            if dancerNode.name == "music"{
-                dancerNode.removeAllActions()
-                dancerNode.removeFromParentNode()
             }
         })
         
@@ -398,41 +263,42 @@ class SceneKitViewController: UIViewController {
     }
     
     
-    func playFormations(){
+    func playFormations(withMusic: Bool = false){
         
-        guard formationVM.formationArray.count > 1 else { return }
+        guard formationVM.formationArray.count > 1 else { print("SVC - formation array !> 1"); return }
         self.arrayOfActions = []
         self.endActionsHelper()
-        formationVM.setCurrentSelection(index: 0)
         
         guard let curr = formationVM.getFormation(type: FormationType.current) else { return }
-        self.navigationItem.setRightBarButton(stopActionButton, animated: true)
-        presentCurrentFormation()
+        var proceed: Bool = true
+        if withMusic{
+            proceed = playMusic()
+            guard proceed == true else {print("SVC - Failed Music in FormationMusicHelper"); return }
+        }
+        
+        
+            self.navigationItem.setRightBarButton(stopActionButton, animated: true)
+        
+        presentCurrentFormation(index: 0)
         
         self.sceneView.overlaySKScene?.isUserInteractionEnabled = false
         self.sceneView.overlaySKScene?.alpha = 0.3
-        
-        
-        
+
         for _ in 0..<formationVM.formationArray.count{
             
             if let nextFormation = formationVM.getFormation(type: FormationType.next){
                 let nextDancerForms = dancerVM.loadDancers(selectedFormation: nextFormation, current: false)
                 if let index = formationVM.getCurrentIndex(){
-                    
-                    self.playThroughFormations(dancers: nextDancerForms, waitTime: 3.0, transitionTime: 2.0, formIndex: index, totalForms: formationVM.formationArray.count)
-                    
-                    
-                    
+                    let wait = calculateWaitHelper(withMusic: withMusic)
+                    self.playThroughFormations(dancers: nextDancerForms, waitTime: wait, transitionTime: 2.0, formIndex: index, totalForms: formationVM.formationArray.count)
+     
                     formationVM.setCurrentSelection(index: index + 1)
-                    
-                    
-                    
+                
                 }
                 
             }   
             
-            scene.rootNode.runAction(SCNAction.sequence(self.arrayOfActions))
+            stageScene.rootNode.runAction(SCNAction.sequence(self.arrayOfActions))
         }
         
     }
@@ -440,14 +306,12 @@ class SceneKitViewController: UIViewController {
     
     func formationSelected(dancers: [Dancer]? = nil, index: IndexPath? = nil){
         
-        //endActionsHelper()
-        
         if let dancers = dancers{
             for dancer in dancers{
                 
-                templateScene = SCNScene(named: "art.scnassets/Nodes.scn")
+                dancerScene = SCNScene(named: "art.scnassets/Nodes.scn")
 
-                let cubeNode = templateScene.rootNode.childNode(withName: "boy", recursively: true)!
+                let cubeNode = dancerScene.rootNode.childNode(withName: "dancer", recursively: true)!
                 
                 cubeNode.geometry?.material(named: "headColor")?.diffuse.contents = UIColor(hex: dancer.color)
                 
@@ -463,7 +327,6 @@ class SceneKitViewController: UIViewController {
                 cubeNode.position = SCNVector3(point.x + CGFloat(self.stageWidthMin), 3, -(point.y + CGFloat(self.stageHeightMin))) // SceneKit/AR coordinates are in meters
                 
                 sceneView.scene?.rootNode.addChildNode(cubeNode)
-                //closestNode!.lineWidth = 20
                 
             }
         }
@@ -485,7 +348,7 @@ class SceneKitViewController: UIViewController {
                 self.playThroughFormations(dancers: nextDancerForms, waitTime: 0.0, transitionTime: 2.0, formIndex: index, totalForms: formationVM.formationArray.count)
             }
         }
-        scene.rootNode.runAction(SCNAction.sequence(self.arrayOfActions))
+        stageScene.rootNode.runAction(SCNAction.sequence(self.arrayOfActions))
     }
     
     func playPrevFormation(){
@@ -501,98 +364,74 @@ class SceneKitViewController: UIViewController {
                 self.playThroughFormations(dancers: nextDancerForms, waitTime: 0.0, transitionTime: 2.0, formIndex: index, totalForms: formationVM.formationArray.count)
             }
         }
-        scene.rootNode.runAction(SCNAction.sequence(self.arrayOfActions))
+        stageScene.rootNode.runAction(SCNAction.sequence(self.arrayOfActions))
     }
+    
 }
 
 extension SceneKitViewController: OverlaySceneDelegate{
     func playPressed() {
-        print("YOO")
         playFormations()
     }
     
     func nextPressed() {
-        print("YOO")
         playNextFormation()
     }
     
     func prevPressed() {
-        print("YOO")
         playPrevFormation()
     }
     
     func musicPressed() {
-        
-        
-        if musicEnabled{
-            guard formationVM.formationArray.count > 1 else { return }
-            guard let songString = BoardViewModel.shared.getCurrentBoard()?.song else { return }
-            self.arrayOfActions = []
-            self.endActionsHelper()
-            
-            guard let music = URL(string: songString) else { print("Error setting music URL")
-                return }
-            self.sceneView.overlaySKScene?.isUserInteractionEnabled = false
-            self.sceneView.overlaySKScene?.alpha = 0.3
-            
-            self.navigationItem.setRightBarButton(stopActionButton, animated: true)
-            
-            
-            formationVM.setCurrentSelection(index: 0)
-            
-            
-            presentCurrentFormation()
-            sceneView.scene?.rootNode.enumerateChildNodes({ (musicNode, stop) in
-                sceneView.scene?.rootNode.removeAllActions()
-                if musicNode.name == "music"{
-                    musicNode.removeFromParentNode()
-                    musicNode.removeAllActions()
-                    
-                }
-            })
-                guard let musicSource = SCNAudioSource(url: music) else { print("error setting music source")
-                    return
-                }
-
-                    let  musicPlayerNode = SCNNode()
-            
-                musicPlayerNode.name = "music"
-                musicSource.isPositional = false
-                musicSource.shouldStream = false
-                musicSource.load()
-                let musicPlayer = SCNAudioPlayer(source: musicSource)
-                //musicPlayerNode.addAudioPlayer(musicPlayer)
-            self.sceneView.scene?.rootNode.addAudioPlayer(musicPlayer)
-            //let actionZ = SCNAction.playAudio(musicSource, waitForCompletion: false)
-            
-            
-//            let playSongAction = SCNAction.run { [weak self] _ in
-//                self?.playSong(musicLink: music)
+        playFormations(withMusic: true)
+//        if musicEnabled{
+//            guard formationVM.formationArray.count > 1 else { return }
+//
+//            self.arrayOfActions = []
+//            self.endActionsHelper()
+//
+//            self.sceneView.overlaySKScene?.isUserInteractionEnabled = false
+//            self.sceneView.overlaySKScene?.alpha = 0.3
+//
+//            self.navigationItem.setRightBarButton(stopActionButton, animated: true)
+//
+//            formationVM.setCurrentSelection(index: 0)
+//
+//
+//            presentCurrentFormation()
+//                sceneView.scene?.rootNode.removeAllActions()
+//
+//                guard let musicSource = backgroundMusic else { print("Error Setting Background Source")
+//                    return
+//                }
+//                musicSource.isPositional = false
+//                musicSource.shouldStream = false
+//                musicSource.load()
+//                let musicPlayer = SCNAudioPlayer(source: musicSource)
+//            self.sceneView.scene?.rootNode.addAudioPlayer(musicPlayer)
+//
+//            for _ in 0..<formationVM.formationArray.count{
+//
+//                if let nextFormation = formationVM.getFormation(type: FormationType.next){
+//                    let nextDancerForms = dancerVM.loadDancers(selectedFormation: nextFormation, current: false)
+//                    let time = self.calculateWaitHelper(withMusic: true)
+//                    if let index = formationVM.getCurrentIndex(){
+//
+//                        self.playThroughFormations(dancers: nextDancerForms, waitTime: time, transitionTime: 2.0, formIndex: index, totalForms: formationVM.formationArray.count)
+//
+//
+//                        formationVM.setCurrentSelection(index: index + 1)
+//                    }
+//
+//                }
+//                stageScene.rootNode.runAction(SCNAction.group([SCNAction.sequence(self.arrayOfActions)]))
+//               // scene.rootNode.runAction(SCNAction.sequence(self.arrayOfActions))
 //            }
-           // arrayOfActions.append(playSongAction)
-            
-            for _ in 0..<formationVM.formationArray.count{
-                
-                if let nextFormation = formationVM.getFormation(type: FormationType.next){
-                    let nextDancerForms = dancerVM.loadDancers(selectedFormation: nextFormation, current: false)
-                    let time = self.calculateWaitHelper(withMusic: true)
-                    if let index = formationVM.getCurrentIndex(){
-                        
-                        self.playThroughFormations(dancers: nextDancerForms, waitTime: time, transitionTime: 2.0, formIndex: index, totalForms: formationVM.formationArray.count)
-                      
-                        
-                        formationVM.setCurrentSelection(index: index + 1)
-                    }
-                    
-                }
-                scene.rootNode.runAction(SCNAction.group([SCNAction.sequence(self.arrayOfActions)]))
-               // scene.rootNode.runAction(SCNAction.sequence(self.arrayOfActions))
-            }
-            
-        }
-        else{
-            showMusicAlert()
-        }
+//
+//        }
+//        else{
+//            showMusicAlert()
+//        }
     }
     
     func showMusicAlert() {
@@ -620,9 +459,6 @@ extension SceneKitViewController: OverlaySceneDelegate{
             if withMusic{
                 wait = Double(curr.songTime - prev.songTime)
             }
-            //go through and set all the wait times, prev + 3 to a certain amount initially when music is loaded
-            //when edited, select next song times to be + 3 seconds after
-            //when
         }
         else{
             wait = Double(curr.songTime)
@@ -648,104 +484,39 @@ extension SceneKitViewController: OverlaySceneDelegate{
         return nearestX
     }
     
-    
-    
-    
-    
 }
 
-
 extension SceneKitViewController{
-    
-    
-    func playSong(musicLink: URL? = nil){
-        guard let songString = BoardViewModel.shared.getCurrentBoard()?.song else { return }
-        guard let music = URL(string: songString) else { print("Error setting music URL")
-            return }
+    func playMusic() -> Bool{
         
-        sceneView.scene?.rootNode.enumerateChildNodes({ (musicNode, stop) in
-            sceneView.scene?.rootNode.removeAllActions()
-            if musicNode.name == "music"{
-                musicNode.removeFromParentNode()
-                musicNode.removeAllActions()
-                
+        if musicEnabled{
+            guard let musicSource = backgroundAudioSource else { print("Error Setting Background Source")
+                return false
             }
-        })
-        
-      
-            guard let musicSource = SCNAudioSource(url: music) else { print("error setting music source")
-                return
-            }
-            
-            //            node.runAction(SCNAction.playAudio(sounds[sound]!, waitForCompletion: false))
-            //
-            //            backgroundMusic.name = "music"
-            //            sceneView.scene?.rootNode.runAction(SCNAction.playAudio(backgroundMusic!, waitForCompletion: false))
-            
-            //            let enableTouchAction = SCNAction.run {_ in
-            //                self.enableTouches()
-            //            }
-            //self.sceneView.scene?.rootNode.runAction(SCNAction.playAudio(self.backgroundMusic!), forKey: "playMusic")
-                let  musicPlayerNode = SCNNode()
-        
-            musicPlayerNode.name = "music"
             musicSource.isPositional = false
             musicSource.shouldStream = false
             musicSource.load()
             let musicPlayer = SCNAudioPlayer(source: musicSource)
-            musicPlayerNode.addAudioPlayer(musicPlayer)
-            self.sceneView.scene?.rootNode.addChildNode(musicPlayerNode)
-            musicPlayerNode.runAction(SCNAction.playAudio(musicSource, waitForCompletion: false), forKey: "playMusic")
-        print("End of sceneview")
-            
-            //            let actionB = SCNAction.run {_ in
-            //                self.sceneView.scene?.rootNode.runAction(SCNAction.playAudio(self.backgroundMusic!, waitForCompletion: false), forKey: "playMusic")
-            //            }
-            
-            //arrayOfActions.append(actionB)
-            
-            //        guard let musicSource = SCNAudioSource(url: musicLink) else { return }
-            //        let  musicPlayerNode = SCNNode()
-            //
-            //    musicPlayerNode.name = "music"
-            //    musicSource.isPositional = false
-            //    musicSource.shouldStream = false
-            //    musicSource.load()
-            //    let musicPlayer = SCNAudioPlayer(source: musicSource)
-            //    musicPlayerNode.addAudioPlayer(musicPlayer)
-            //    self.sceneView.scene?.rootNode.addChildNode(musicPlayerNode)
-            //
-            //
-            //    let play = SCNAction.playAudio(musicSource, waitForCompletion: false)
-            //
-            //        let actionMusic = SCNAction.run {[unowned self] _ in
-            //
-            //            musicPlayerNode.runAction(play)
-            //
-            //    }
-            //
-            //    arrayOfActions.append(actionMusic)
-
-        
-        //scene.rootNode.runAction(SCNAction.sequence(self.arrayOfActions))
+        self.sceneView.scene?.rootNode.addAudioPlayer(musicPlayer)
+            return true
+        }
+        else{
+            showMusicAlert()
+            return false
+        }
     }
     
-    
     func endSong(){
-        //var musicNodeArray : [SKNode] = []
         
-        if backgroundMusic != nil{
-            
+        if backgroundAudioSource != nil{
             let actionC = SCNAction.run {_ in
-                
-                self.scene.rootNode.removeAction(forKey: "playMusic")
-                self.scene.rootNode.removeAllAudioPlayers()
+                self.stageScene.rootNode.removeAllAudioPlayers()
             }
             
             arrayOfActions.append(actionC)
         }
         else{
-            print("Error in stopping music")
+            print("SVC - Background music is nil so cannot stop")
         }
     }
     
