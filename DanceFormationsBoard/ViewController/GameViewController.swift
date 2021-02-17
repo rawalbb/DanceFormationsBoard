@@ -48,8 +48,8 @@ class GameViewController: KeyUIViewController{
     var enableText: Bool = false
     var enableMusic: Bool = false{
         didSet{
-            self.playMusicButton.isHidden = !enableMusic
-            self.musicScrubberButton.isHidden = !enableMusic
+            self.playMusicButton.isHidden = false //!enableMusic
+            self.musicScrubberButton.isHidden = false //!enableMusic
             self.stage.musicEnabled = enableMusic
         }
     }
@@ -270,12 +270,13 @@ class GameViewController: KeyUIViewController{
             if let currIndex = formationVM.getCurrentIndex(){
                 formationVM.removeFormation(form: toRemove)
                 self.formationArray = formationVM.loadFormations(callDelegate: false)
+                print(formationArray.count)
                 if currIndex - 1 == -1 && formationArray.count < 1{
                     formationVM.createNewFormation()
                     formationVM.setCurrentSelection(index: currIndex)
                     
                 }
-                else if currIndex - 1 == -1 && formationArray.count > 1{
+                else if currIndex - 1 == -1 && formationArray.count >= 1{
                     formationVM.setCurrentSelection(index: currIndex)
                     
                 }

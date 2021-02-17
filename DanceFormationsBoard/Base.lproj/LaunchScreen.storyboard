@@ -23,8 +23,8 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="color-black"/>
                         <constraints>
+                            <constraint firstItem="fXa-Yp-5Lz" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="1c9-IJ-ylI"/>
                             <constraint firstItem="fXa-Yp-5Lz" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="2AS-jw-tXp"/>
-                            <constraint firstItem="fXa-Yp-5Lz" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="8Iz-bQ-XFp"/>
                             <constraint firstItem="fXa-Yp-5Lz" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="8s5-zb-sqd"/>
                             <constraint firstItem="fXa-Yp-5Lz" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="LSY-YL-fpw"/>
                             <constraint firstAttribute="trailing" secondItem="fXa-Yp-5Lz" secondAttribute="trailing" id="iPk-Wb-At0"/>
@@ -38,7 +38,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="splashImage" width="2680" height="1237"/>
+        <image name="splashImage" width="2080" height="1080"/>
         <namedColor name="color-black">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

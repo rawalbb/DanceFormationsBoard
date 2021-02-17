@@ -240,6 +240,9 @@ class StageScene: SKScene {
         n.name = "dancers"
         n.addChild(label)
         self.addChild(n)
+        if let prevNode = currentNode{
+            prevNode.lineWidth = 0
+        }
         currentNode = n
         
         
@@ -267,7 +270,6 @@ class StageScene: SKScene {
             let gridLocation = getNearestIntersection(x: location.x, y: location.y)
             
             let touchedNodes = self.nodes(at: gridLocation)
-            //if touched nodes have name dancer don't add
             
             if touchedNodes.contains(where: { (node) -> Bool in
                 node.name == "dancers"
@@ -278,42 +280,8 @@ class StageScene: SKScene {
             //printing curr array - I
             if !spotTaken {
                 
-                print("Spot is taken")
-//                //let n = DanceNode(imageNamed: "circle")
-//                let n = DanceNode(circleOfRadius: 11)
-//                n.fillColor = selectedColor
-//                n.strokeColor = selectedColor
-//
-//                let label = SKLabelNode(text: "")
-//                let nearest = getNearestIntersection(x: location.x, y: location.y)
-//
-//                label.fontSize = 14.0
-//                //label.color = UIColor.red
-//                label.fontColor = UIColor.red
-//                label.fontName = "GillSans-SemiBold"
-//
-//                n.position = nearest
-//                n.zPosition = 1
-//                label.name = "labelName"
-//                label.position = CGPoint(x: 20, y: 20 )
-//                //label.color = UIColor.blue
-//                n.name = "dancers"
-//                n.addChild(label)
-//                self.addChild(n)
-//                currentNode = n
-//
-//
-//
-//                let point = PositionManager.positionToPercentage(x: n.position.x, y: n.position.y, viewW: self.view?.bounds.width, viewH: self.view?.bounds.height)
-//
-//                let xPos = Float(point.x)
-//                let yPos = Float(point.y)
-//                print("PRINTING POINTS", xPos, yPos)
-//                n.nodeId = UUID().uuidString
-//                let color = selectedColor.toHexString()
-//                let dancerId = n.nodeId
-//                self.myDelegate.dancerToAdd(xPosition: xPos, yPosition: yPos, id: dancerId, color: color, label: label.text ?? "")
-//                //self.saveDancers()
+                currentNode = nil
+                self.myDelegate.enableTextField(enable: false, id: "")
     
             }
             else{
@@ -428,8 +396,6 @@ class StageScene: SKScene {
             self.myDelegate.dancerMoved(id: id, xPosition: Float(point.x), yPosition: Float(point.y))
             }
         }
-        //currentNode = nil
-        //self.myDelegate.enableTextField(enable: false)
 
     }
     

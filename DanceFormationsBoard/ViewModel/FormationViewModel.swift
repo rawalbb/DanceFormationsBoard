@@ -154,7 +154,7 @@ class FormationViewModel{
             curr.name = label
             }
             else{
-                curr.name = "Enter Name:"
+                curr.name = ""
             }
         }
     }
