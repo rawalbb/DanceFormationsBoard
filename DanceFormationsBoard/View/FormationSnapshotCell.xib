@@ -3,6 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,10 +21,10 @@
                         <rect key="frame" x="6" y="2" width="332" height="165"/>
                         <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
                     </imageView>
-                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Enter Name:" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oDK-1R-4sg">
+                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Name:" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oDK-1R-4sg">
                         <rect key="frame" x="6" y="171" width="332" height="50"/>
                         <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="textColor" name="color-nav"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits"/>
                     </textField>
@@ -50,5 +51,8 @@
     </objects>
     <resources>
         <image name="square.and.arrow.up" catalog="system" width="115" height="128"/>
+        <namedColor name="color-nav">
+            <color red="0.65098041296005249" green="0.79607844352722168" blue="0.92941176891326904" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

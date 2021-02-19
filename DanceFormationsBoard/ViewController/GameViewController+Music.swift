@@ -19,14 +19,6 @@ extension GameViewController: MusicChosenDelegate {
                 stage.musicEnabled = true
     }
     
-//    func musicChosen(url: URL) {
-//        self.musicUrl = url
-//        self.musicToggleButton.isEnabled = true
-//        self.musicTimingButton.isEnabled = true
-//        boardVM.updateBoardSong(songUrl: "\(url)")
-//        self.setInitialSongTimes()
-//        stage.musicEnabled = true
-//    }
     
     //Should be called when music is first added
     //Should also be called when formationis are - no scratch that
@@ -79,12 +71,27 @@ extension GameViewController: ScrubberUpdates{
 
 extension GameViewController{
     
-//    func songExists(){
-//        var finalSongsArray: [MPMediaItem] = []
-//                let mediaItems = MPMediaQuery.songs().items
-//                     let mediaCollection = MPMediaItemCollection(items: mediaItems ?? [])
-//        finalSongsArray = mediaCollection.items
-//    }
+     func handleRemoveForm(toRemove: Formation) {
+        
+        let alert = UIAlertController(title: "Delete", message: "Are you sure you want to delete this formation?",  preferredStyle: UIAlertController.Style.alert)
+
+        alert.addAction(UIAlertAction(title: "Cancel",
+                                      style: UIAlertAction.Style.default,
+                                              handler: { (_: UIAlertAction!) in
+                }))
+        
+        
+        alert.addAction(UIAlertAction(title: "Delete",
+                                      style: UIAlertAction.Style.default,
+                                              handler: { [weak self] (_: UIAlertAction!) in
+                                                self?.formationVM.updatePosition(type: PositionType.remove)
+                                                self?.formationVM.removeFormation(form: toRemove)
+                                                //self?.allBoardUpdates()
+                }))
+           
+            self.present(alert, animated: true, completion: nil)
+        
+    }
     
     
 }

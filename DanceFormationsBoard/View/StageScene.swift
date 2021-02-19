@@ -462,9 +462,8 @@ class StageScene: SKScene {
             ////When text is changed it should get the currently selected Node and change it's text
             
             label.fontSize = 14.0
-            label.fontName = "GillSans-SemiBold"
-            label.fontColor = UIColor.red
-            
+            label.fontName = "System"
+            label.fontColor = UIColor(named: "color-header") ?? #colorLiteral(red: 0.6705882353, green: 0.137254902, blue: 0.2745098039, alpha: 1)
             
             let point = PositionManager.percentageToPosition(x: dancer.xPos, y: dancer.yPos, viewW: self.view?.frame.width, viewH: self.view?.frame.height)
 

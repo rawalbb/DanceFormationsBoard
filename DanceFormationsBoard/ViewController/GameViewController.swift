@@ -48,8 +48,8 @@ class GameViewController: KeyUIViewController{
     var enableText: Bool = false
     var enableMusic: Bool = false{
         didSet{
-            self.playMusicButton.isHidden = false //!enableMusic
-            self.musicScrubberButton.isHidden = false //!enableMusic
+            self.playMusicButton.isHidden = !enableMusic
+            self.musicScrubberButton.isHidden = !enableMusic
             self.stage.musicEnabled = enableMusic
         }
     }
@@ -261,35 +261,71 @@ class GameViewController: KeyUIViewController{
     }
     
     @IBAction func removeFormation(_ sender: UIButton) {
-        //current 1
+        //current 1 alert
+        let alert = UIAlertController(title: "Delete", message: "Are you sure you want to delete this formation?",  preferredStyle: UIAlertController.Style.alert)
         if let toRemove = formationVM.getFormation(type: FormationType.current){
             
-            formationVM.updatePosition(type: PositionType.remove)
+            //formationVM.updatePosition(type: PositionType.remove)
             
             
             if let currIndex = formationVM.getCurrentIndex(){
-                formationVM.removeFormation(form: toRemove)
-                self.formationArray = formationVM.loadFormations(callDelegate: false)
-                print(formationArray.count)
-                if currIndex - 1 == -1 && formationArray.count < 1{
-                    formationVM.createNewFormation()
-                    formationVM.setCurrentSelection(index: currIndex)
-                    
-                }
-                else if currIndex - 1 == -1 && formationArray.count >= 1{
-                    formationVM.setCurrentSelection(index: currIndex)
-                    
-                }
-                else if currIndex - 1 != -1 && currIndex + 2 <= formationArray.count{
-                    formationVM.setCurrentSelection(index: currIndex)
-                }
-                else{
-                    formationVM.setCurrentSelection(index: currIndex - 1)
-                }
+                
+                alert.addAction(UIAlertAction(title: "Cancel",
+                                              style: UIAlertAction.Style.default,
+                                                      handler: { (_: UIAlertAction!) in
+                        }))
+                
+                alert.addAction(UIAlertAction(title: "Delete",
+                                              style: UIAlertAction.Style.default,
+                                                      handler: { [weak self] (_: UIAlertAction!) in
+                                                        guard let formationVM = self?.formationVM, let self = self else { return }
+                                                        formationVM.updatePosition(type: PositionType.remove)
+                                                        formationVM.removeFormation(form: toRemove)
+                                                        self.formationArray = formationVM.loadFormations(callDelegate: false)
+                                                        
+                                                        if currIndex - 1 == -1 && self.formationArray.count < 1{
+                                                            formationVM.createNewFormation()
+                                                            formationVM.setCurrentSelection(index: currIndex)
+                                                            
+                                                        }
+                                                        else if currIndex - 1 == -1 && self.formationArray.count >= 1{
+                                                            formationVM.setCurrentSelection(index: currIndex)
+                                                            
+                                                        }
+                                                        else if currIndex - 1 != -1 && currIndex + 2 <= self.formationArray.count{
+                                                            formationVM.setCurrentSelection(index: currIndex)
+                                                        }
+                                                        else{
+                                                            formationVM.setCurrentSelection(index: currIndex - 1)
+                                                        }
+                         
+                                                        self.allFormUpdates()
+                                                        self.presentFormation()
+                        }))
+                
+                //formationVM.removeFormation(form: toRemove)
+                //handleRemoveForm(toRemove: toRemove)
+//                self.formationArray = formationVM.loadFormations(callDelegate: false)
+//                print(formationArray.count)
+//                if currIndex - 1 == -1 && formationArray.count < 1{
+//                    formationVM.createNewFormation()
+//                    formationVM.setCurrentSelection(index: currIndex)
+//
+//                }
+//                else if currIndex - 1 == -1 && formationArray.count >= 1{
+//                    formationVM.setCurrentSelection(index: currIndex)
+//
+//                }
+//                else if currIndex - 1 != -1 && currIndex + 2 <= formationArray.count{
+//                    formationVM.setCurrentSelection(index: currIndex)
+//                }
+//                else{
+//                    formationVM.setCurrentSelection(index: currIndex - 1)
+//                }
                 
             }
-            allFormUpdates()
-            presentFormation()
+            self.present(alert, animated: true, completion: nil)
+        
             
         }
     }
@@ -609,8 +645,8 @@ extension GameViewController: UITextFieldDelegate{
         // add their new text to the existing text
         let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
         
-        // make sure the result is under 16 characters
-        return updatedText.count <= 8
+        // make sure the result is under 12 characters
+        return updatedText.count <= 12
     }
     
 }

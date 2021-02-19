@@ -48,6 +48,7 @@ class InstructionsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "instructionCell", for: indexPath)
         cell.textLabel?.textColor = UIColor.white
+        cell.textLabel?.font = UIFont.systemFont(ofSize: 16.0, weight: .light)
         cell.textLabel?.lineBreakMode = .byWordWrapping
         cell.textLabel?.numberOfLines = 0;
         cell.textLabel?.text = instructions[indexPath.row]
