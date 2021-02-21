@@ -215,7 +215,7 @@ class SceneKitViewController: UIViewController {
             }
             
         }
-        
+        print("WAITING FOR", waitTime)
         let wait = SCNAction.wait(duration: waitTime)
         arrayOfActions.append(wait)
         arrayOfActions.append(actionA)
@@ -414,7 +414,13 @@ extension SceneKitViewController: OverlaySceneDelegate{
             }
         }
         else{
-            wait = Double(curr.songTime)
+            if !withMusic{
+                wait = 3.0
+                
+            }
+            if withMusic{
+                wait = Double(curr.songTime)
+            }
         }
         return wait
     }
