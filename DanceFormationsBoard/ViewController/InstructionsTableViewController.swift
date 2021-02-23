@@ -8,9 +8,16 @@
 import UIKit
 
 class InstructionsTableViewController: UITableViewController {
-    
 
-    var instructions: [String] = [
+    var boardInstructions: [String] = ["1. Each Dance Board represents a dance routine with multiple formations",
+        "2. Add a Board: Tap on the rectangular button with a plus sign at the top left",
+        "3. Edit Board Title: Tap on the board title which will prompt your keyboard to appear",
+        "4. Switch between 2D and 3D modes: Select the appropriate toggle switch and click on the image",
+        "5. Delete Dance Board: Swipe right",
+        "6. Add Notes to a Dance Board: Swipe left and select Notes",
+        "7. Send a Dance Board: Swipe left and select the forward button. You should be prompted to send via multiple platforms including iMessage.",
+        "8. Open a Dance Board sent to you through iMessage: Click on the individual’s name at the top of the iMessage and select the info button. Scroll to see all files shared. You should see the file with a .board extension. Select the file and select the upload button. You should be allowed to open the Dance Board through the DanceBoards app."]
+    var formInstructions: [String] = [
         "1. Add a dancer: tap on the person icon with the add symbol",
         "2. The selected dancer will always be outlined",
         "3. Remove a dancer: drag the dancer out of the grid, the dancer will be removed for that formation only",
@@ -25,6 +32,17 @@ class InstructionsTableViewController: UITableViewController {
         "12. Play all formations: select the play button",
         "13. Play all formations with music: select tv button with music symbol",
         "14. To change the name of a formation: select the textbook at the right of the formation"]
+    var instructions: [String] = []
+    var instructionType: InstructionType = .boardInstruct{
+        didSet{
+            switch instructionType{
+            case .boardInstruct:
+                instructions = boardInstructions
+            case .formInstruct:
+                instructions = formInstructions
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,4 +74,8 @@ class InstructionsTableViewController: UITableViewController {
         
         return cell
     }
+}
+
+enum InstructionType{
+    case boardInstruct, formInstruct
 }

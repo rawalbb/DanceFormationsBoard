@@ -415,11 +415,18 @@
                         <barButtonItem key="backBarButtonItem" title="Boards" id="0Di-LA-83i">
                             <color key="tintColor" name="color-nav"/>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Item" id="7kV-HI-6MA">
+                        <barButtonItem key="leftBarButtonItem" title="Item" id="7kV-HI-6MA">
                             <imageReference key="image" image="plus.rectangle.fill.on.rectangle.fill" catalog="system" symbolScale="large"/>
                             <color key="tintColor" name="color-nav"/>
                             <connections>
                                 <action selector="addBoardPressed:" destination="kuo-cn-jFQ" id="6c8-Cb-dfu"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" id="fDO-iD-leC" userLabel="info">
+                            <imageReference key="image" image="info.circle.fill" catalog="system" symbolScale="large"/>
+                            <color key="tintColor" name="color-nav"/>
+                            <connections>
+                                <action selector="infoButtonPressed:" destination="kuo-cn-jFQ" id="tjX-aw-aVz"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

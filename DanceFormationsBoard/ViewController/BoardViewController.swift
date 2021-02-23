@@ -52,6 +52,13 @@ class BoardViewController: KeyViewController {
         
     }
     
+    @IBAction func infoButtonPressed(_ sender: UIBarButtonItem) {
+        let nextVC = storyboard?.instantiateViewController(identifier: "InstructionsTableViewController") as! InstructionsTableViewController
+        nextVC.instructionType = .boardInstruct
+        self.navigationController?.pushViewController(nextVC, animated: true)
+    }
+    
+    
     func allBoardUpdates(){
         
         boardVM.saveBoard()
@@ -232,7 +239,7 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
             defaultLabel.frame = CGRect(x: 0.0, y: 0.0, width: self.view.bounds.width, height: self.view.bounds.height/10)
             defaultLabel.center = CGPoint(x: mid.x, y: mid.y + 148)
             defaultLabel.textAlignment = .center
-            defaultLabel.text = "No formations yet :/. Select button at top-right to add"
+            defaultLabel.text = "No DanceBoards created yet. Select button at top-left to add"
             defaultLabel.textColor = UIColor(named: "color-nav")
             self.view.addSubview(defaultLabel)
             

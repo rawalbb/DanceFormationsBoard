@@ -427,6 +427,7 @@ class GameViewController: KeyUIViewController{
     @IBAction func infoButtonPressed(_ sender: Any) {
         
         let nextVC = storyboard?.instantiateViewController(identifier: "InstructionsTableViewController") as! InstructionsTableViewController
+        nextVC.instructionType = .formInstruct
         self.navigationController?.pushViewController(nextVC, animated: true)
         
     }
