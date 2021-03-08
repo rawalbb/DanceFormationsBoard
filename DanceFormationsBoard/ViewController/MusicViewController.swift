@@ -21,6 +21,14 @@ class MusicViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var tableView: UITableView!
     
     var finalSongsArray: [MPMediaItem] = []
+//    {
+//        didSet{
+//            finalSongsArray.removeAll{
+//                $0.isCloudItem == true
+//            }
+//
+//        }
+//    }
     weak var delegate: MusicChosenDelegate?
     var headerTitle = ""
     var permission: MPMediaLibraryAuthorizationStatus = .notDetermined
@@ -120,6 +128,7 @@ class MusicViewController: UIViewController, UITableViewDelegate, UITableViewDat
             for: indexPath)
         cell.textLabel?.textColor = UIColor.white
         cell.textLabel?.text = finalSongsArray[indexPath.row].title
+        print("Printing: ", finalSongsArray[indexPath.row].title, finalSongsArray[indexPath.row].isCloudItem)
         cell.selectedBackgroundView?.backgroundColor = UIColor(named: "color-heading")
 
         return cell;
@@ -135,7 +144,7 @@ class MusicViewController: UIViewController, UITableViewDelegate, UITableViewDat
             return "No music in library"
         }
         else {
-        return "My Music"
+        return "My Music: Please make sure the song is downloaded"
         }
     }
 
@@ -144,13 +153,25 @@ class MusicViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.selectedMusicButton?.isEnabled = true
+        
         if let assetUrl = finalSongsArray[indexPath.row].assetURL{
+            self.selectedMusicButton?.isEnabled = true
             self.musicUrl = assetUrl
             self.songName = finalSongsArray[indexPath.row].title ?? ""
         
         //self.dismiss(animated: true, completion: nil)
     }
+        else{
+            self.selectedMusicButton?.isEnabled = false
+            let alert = UIAlertController(title: "Music Selection", message: "Error in processing media. Please make sure media is downloaded.",  preferredStyle: UIAlertController.Style.alert)
+            
+            alert.addAction(UIAlertAction(title: "Ok",
+                                          style: UIAlertAction.Style.default,
+                                                  handler: { (_: UIAlertAction!) in
+                    }))
+            
+            self.present(alert, animated: true, completion: nil)
+        }
         
         
 

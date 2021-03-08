@@ -10,8 +10,16 @@ import QuartzCore
 import SceneKit
 import SpriteKit
 import AVFoundation
+import GoogleMobileAds
 
+struct Constants{
+    static let viewAdId = "ca-app-pub-3940256099942544/4411468910"
+    //"ca-app-pub-3177692481701481/3085950265"
+}
 class SceneKitViewController: UIViewController {
+
+    
+    var interstitial: GADInterstitialAd?
     
     var sceneView: SCNView!
     var stageScene: SCNScene!
@@ -35,6 +43,7 @@ class SceneKitViewController: UIViewController {
     var stageHeightMin: Float = 0.0
     var stopActionButton: UIBarButtonItem?
     let stageScale: Float = 2.0
+    var initial = false
     
     var stage: SCNNode? = nil {
         didSet{
@@ -50,7 +59,9 @@ class SceneKitViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        initial = true
+        //createAd()
+
         //sets stopActionButton properties
         stopActionButton = UIBarButtonItem(image: UIImage(systemName: "stop.fill"), style: .plain, target: self, action: #selector(stopAction(_:)))
         stopActionButton?.tintColor = UIColor(named: "color-nav")
@@ -85,6 +96,19 @@ class SceneKitViewController: UIViewController {
             print("SKVC - could not play music")
             musicEnabled = false
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        guard initial == true else {
+            setupScene()
+            return }
+        if interstitial != nil {
+            interstitial?.present(fromRootViewController: self)
+         } else {
+           print("Ad wasn't ready")
+            setupScene()
+         }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -372,6 +396,7 @@ class SceneKitViewController: UIViewController {
 extension SceneKitViewController: OverlaySceneDelegate{
     func playPressed() {
         playFormations()
+        
     }
     
     func nextPressed() {
@@ -443,6 +468,24 @@ extension SceneKitViewController: OverlaySceneDelegate{
         return nearestX
     }
     
+    
+    private func createAd(){
+        let request = GADRequest()
+        GADInterstitialAd.load(withAdUnitID: Constants.viewAdId,
+                                        request: request,
+                              completionHandler: { [self] ad, error in
+                                if let error = error {
+                                  print("Failed to load interstitial ad with error: \(error.localizedDescription)")
+                                  return
+                                }
+                                interstitial = ad
+                                interstitial?.fullScreenContentDelegate = self
+                              }
+            )
+        
+
+    }
+    
 }
 
 extension SceneKitViewController{
@@ -479,4 +522,23 @@ extension SceneKitViewController{
         }
     }
     
+}
+
+extension SceneKitViewController: GADFullScreenContentDelegate{
+    func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
+       print("Ad did fail to present full screen content.")
+        setupScene()
+     }
+
+     /// Tells the delegate that the ad presented full screen content.
+     func adDidPresentFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+       print("Ad did present full screen content.")
+     }
+
+     /// Tells the delegate that the ad dismissed full screen content.
+     func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+       print("Ad did dismiss full screen content.")
+        initial = false
+        setupScene()
+     }
 }

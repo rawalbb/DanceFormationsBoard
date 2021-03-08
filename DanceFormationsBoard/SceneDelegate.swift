@@ -17,6 +17,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
+        
+        if let url = connectionOptions.urlContexts.first?.url {
+            let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+            guard url.pathExtension == "board" else { return }
+              let decoder = JSONDecoder()
+              decoder.userInfo[CodingUserInfoKey.managedObjectContext] = context
+            DataSharingManager.importData(from: url, decoder: decoder)
+        }
+
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -49,6 +58,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Save changes in the application's managed object context when the application transitions to the background.
         (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
     }
+    
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext

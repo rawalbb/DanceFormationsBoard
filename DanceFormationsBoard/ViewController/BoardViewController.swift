@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GoogleMobileAds
 
 class BoardViewController: KeyViewController {
     
@@ -15,12 +16,14 @@ class BoardViewController: KeyViewController {
     var boardVMArray: [Board] = []
     let defaultImageView:UIImageView = UIImageView()
     let defaultLabel = UILabel()
+    var interstitialo: GADInterstitialAd?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         //Sets tableview in inherited class KeyboardViewController
         self.backgroundSV = boardTableView
+        
         
         //Sets tableview properties
         boardTableView.register(UINib(nibName: "BoardTableViewCell", bundle: nil), forCellReuseIdentifier: "BoardReusableCell")
@@ -42,7 +45,7 @@ class BoardViewController: KeyViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+        createAd()
     }
     
     @IBAction func addBoardPressed(_ sender: UIBarButtonItem) {
@@ -63,6 +66,23 @@ class BoardViewController: KeyViewController {
         
         boardVM.saveBoard()
         boardVM.loadBoards()
+    }
+    
+    private func createAd(){
+        let request = GADRequest()
+        GADInterstitialAd.load(withAdUnitID: Constants.viewAdId,
+                                        request: request,
+                              completionHandler: { [self] ad, error in
+                                if let error = error {
+                                  print("Failed to load interstitial ad with error: \(error.localizedDescription)")
+                                  return
+                                }
+                                interstitialo = ad
+                                //interstitial?.fullScreenContentDelegate = self
+                              }
+            )
+        
+
     }
     
 }
@@ -113,7 +133,12 @@ extension BoardViewController: UITableViewDelegate, UITableViewDataSource{
             self.navigationController?.pushViewController(nextVC, animated: true)
         case 1:
             let nextVC = storyboard?.instantiateViewController(identifier: "SceneKitViewController") as! SceneKitViewController
+            nextVC.interstitial = interstitialo
+            nextVC.interstitial?.fullScreenContentDelegate = nextVC
             //boardVM.setCurrentBoard(index: indexPath.row)
+            
+            
+            
             self.navigationController?.pushViewController(nextVC, animated: true)
         default:
             break

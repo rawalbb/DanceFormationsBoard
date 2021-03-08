@@ -321,7 +321,10 @@ public class ASWaveformPlayerView: UIView {
     private func addOverlay() {
         
         let maskLayer = CALayer()
-        maskLayer.frame = bounds
+        print(" Self Bounds ", self.bounds)
+        maskLayer.frame = self.bounds
+        maskLayer.bounds = self.bounds
+        print(" Mask Layer.frame ", maskLayer.frame, maskLayer.bounds)
         
         let upperOverlayLayer = CALayer()
         let bottomOverlayLayer = CALayer()
@@ -338,19 +341,20 @@ public class ASWaveformPlayerView: UIView {
         uppePrevLayer.opacity = 0.5
         bottomPrevLayer.opacity = 0.5
         
-        maskLayer.addSublayer(upperOverlayLayer)
-        maskLayer.addSublayer(bottomOverlayLayer)
-        maskLayer.addSublayer(uppePrevLayer)
-        maskLayer.addSublayer(bottomPrevLayer)
+//        maskLayer.addSublayer(upperOverlayLayer)
+//        maskLayer.addSublayer(bottomOverlayLayer)
+//        maskLayer.addSublayer(uppePrevLayer)
+//        maskLayer.addSublayer(bottomPrevLayer)
         
                 guard let totalAudioDuration = audioPlayer.currentItem?.asset.duration else {
                     return
                 }
                 let totalAudioDurationSeconds = CMTimeGetSeconds(totalAudioDuration)
-        
+        print("prev playback ", CMTimeGetSeconds(prevPlaybackTime), totalAudioDurationSeconds)
                 let percentagePlayed = CMTimeGetSeconds(prevPlaybackTime) / totalAudioDurationSeconds
-        
+        //TODO:::: percentage played is NAN
         let prevWidth = maskLayer.bounds.width * CGFloat(percentagePlayed)
+        print(" Mask Layer bounds width ", maskLayer.bounds.width, CGFloat(percentagePlayed), " prev width ", prevWidth)
         let remainingWidth = maskLayer.bounds.width - prevWidth
         
         
@@ -358,12 +362,15 @@ public class ASWaveformPlayerView: UIView {
         let origin1 = CGPoint(x: prevWidth, y: 0)
         let size1 = CGSize(width: remainingWidth,
                            height: height1)
-        upperOverlayLayer.frame = CGRect(origin: origin1,
-                                         size: size1)
+        
         
         let origin2 = CGPoint(x: prevWidth, y: (maskLayer.bounds.height / 2) + 0.25)
         let size2 = CGSize(width: remainingWidth,
                            height: maskLayer.bounds.height / 2)
+        
+        print("ORIGIN, SIZE: ", origin1, "  ", size1, origin2, "  ", size2)
+        upperOverlayLayer.frame = CGRect(origin: origin1,
+                                         size: size1)
         bottomOverlayLayer.frame = CGRect(origin: origin2,
                                           size: size2)
         
@@ -389,6 +396,11 @@ public class ASWaveformPlayerView: UIView {
 //
 //        mySlider.addTarget(self, action: #selector(self.sliderValueChanged(_:event:)), for: .allEvents)
 //                addSubview(mySlider)
+        
+        maskLayer.addSublayer(upperOverlayLayer)
+        maskLayer.addSublayer(bottomOverlayLayer)
+        maskLayer.addSublayer(uppePrevLayer)
+        maskLayer.addSublayer(bottomPrevLayer)
         layer.mask = maskLayer
     }
 

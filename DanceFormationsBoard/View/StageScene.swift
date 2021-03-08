@@ -235,7 +235,7 @@ class StageScene: SKScene {
         n.position = nearest
         n.zPosition = 1
         label.name = "labelName"
-        label.position = CGPoint(x: 20, y: 20 )
+        label.position = CGPoint(x: 0, y: 14)
         //label.color = UIColor.blue
         n.name = "dancers"
         n.addChild(label)

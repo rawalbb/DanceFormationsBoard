@@ -13,6 +13,7 @@ class InstructionsTableViewController: UITableViewController {
         "2. Add a Board: Tap on the rectangular button with a plus sign at the top left",
         "3. Edit Board Title: Tap on the board title which will prompt your keyboard to appear",
         "4. Switch between 2D and 3D modes: Select the appropriate toggle switch and click on the image",
+        "5. The 2D screen allows editing/viewing formations. 3D screen only allows viewing formations",
         "5. Delete Dance Board: Swipe right",
         "6. Add Notes to a Dance Board: Swipe left and select Notes",
         "7. Send a Dance Board: Swipe left and select the forward button. You should be prompted to send via multiple platforms including iMessage.",
