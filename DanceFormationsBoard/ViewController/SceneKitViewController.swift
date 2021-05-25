@@ -13,8 +13,7 @@ import AVFoundation
 import GoogleMobileAds
 
 struct Constants{
-    static let viewAdId = "ca-app-pub-3940256099942544/4411468910"
-    //"ca-app-pub-3177692481701481/3085950265"
+    static let viewAdId = "ca-app-pub-3177692481701481/3085950265"
 }
 class SceneKitViewController: UIViewController {
 
@@ -66,7 +65,7 @@ class SceneKitViewController: UIViewController {
         stopActionButton = UIBarButtonItem(image: UIImage(systemName: "stop.fill"), style: .plain, target: self, action: #selector(stopAction(_:)))
         stopActionButton?.tintColor = UIColor(named: "color-nav")
         
-        setupScene()
+        setupSceneInitial()
         
         spriteScene = OverlayScene(size: self.view.frame.size)
         spriteScene.isUserInteractionEnabled = true
@@ -99,15 +98,16 @@ class SceneKitViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        print("In view did appear")
         super.viewDidAppear(animated)
         guard initial == true else {
-            setupScene()
+            setupSceneForms()
             return }
         if interstitial != nil {
             interstitial?.present(fromRootViewController: self)
          } else {
            print("Ad wasn't ready")
-            setupScene()
+            setupSceneForms()
          }
     }
     
@@ -143,7 +143,7 @@ class SceneKitViewController: UIViewController {
         
     }
     
-    func setupScene(){
+    func setupSceneInitial(){
         sceneView = (self.view as! SCNView)
         sceneView.allowsCameraControl = true
         stageScene = SCNScene(named: "art.scnassets/MainScene.scn")
@@ -152,6 +152,20 @@ class SceneKitViewController: UIViewController {
         
         stage = stageScene.rootNode.childNode(withName: "stage", recursively: true)!
         
+//        formationVM.currentBoard = boardVM.getCurrentBoard()
+//
+//        _ = formationVM.loadFormations()
+//
+//        if formationVM.formationArray.count > 0{
+//            presentCurrentFormation(index: 0)
+//        }
+//        else{
+//            print("SVC - no formations")
+//        }
+        
+    }
+    
+    func setupSceneForms(){
         formationVM.currentBoard = boardVM.getCurrentBoard()
         
         _ = formationVM.loadFormations()
@@ -162,7 +176,6 @@ class SceneKitViewController: UIViewController {
         else{
             print("SVC - no formations")
         }
-        
     }
     
     func convertToStageDimensions(originalX: Float, originalY: Float) -> SCNVector3{
@@ -417,7 +430,9 @@ extension SceneKitViewController: OverlaySceneDelegate{
         
         alert.addAction(UIAlertAction(title: "Continue",
                                       style: UIAlertAction.Style.default,
-                                      handler: {(_: UIAlertAction!) in
+                                      handler: { [weak self] (_: UIAlertAction!) in
+                                        
+                                        self?.setupSceneForms()
                                       }))
         
         self.present(alert, animated: true, completion: nil)
@@ -527,18 +542,17 @@ extension SceneKitViewController{
 extension SceneKitViewController: GADFullScreenContentDelegate{
     func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
        print("Ad did fail to present full screen content.")
-        setupScene()
      }
 
      /// Tells the delegate that the ad presented full screen content.
      func adDidPresentFullScreenContent(_ ad: GADFullScreenPresentingAd) {
        print("Ad did present full screen content.")
+        initial = false
      }
 
      /// Tells the delegate that the ad dismissed full screen content.
      func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
        print("Ad did dismiss full screen content.")
-        initial = false
-        setupScene()
+        
      }
 }

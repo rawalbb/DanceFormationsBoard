@@ -349,6 +349,9 @@ public class ASWaveformPlayerView: UIView {
                 guard let totalAudioDuration = audioPlayer.currentItem?.asset.duration else {
                     return
                 }
+        if totalAudioDuration <= CMTime(value: 0, timescale: 1){
+            return
+        }
                 let totalAudioDurationSeconds = CMTimeGetSeconds(totalAudioDuration)
         print("prev playback ", CMTimeGetSeconds(prevPlaybackTime), totalAudioDurationSeconds)
                 let percentagePlayed = CMTimeGetSeconds(prevPlaybackTime) / totalAudioDurationSeconds

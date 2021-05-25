@@ -20,15 +20,14 @@ class MusicViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     @IBOutlet weak var tableView: UITableView!
     
-    var finalSongsArray: [MPMediaItem] = []
-//    {
-//        didSet{
-//            finalSongsArray.removeAll{
-//                $0.isCloudItem == true
-//            }
-//
-//        }
-//    }
+    var finalSongsArray: [MPMediaItem] = []{
+        didSet{
+            finalSongsArray.removeAll{
+                $0.isCloudItem == true
+            }
+
+        }
+    }
     weak var delegate: MusicChosenDelegate?
     var headerTitle = ""
     var permission: MPMediaLibraryAuthorizationStatus = .notDetermined
@@ -172,8 +171,6 @@ class MusicViewController: UIViewController, UITableViewDelegate, UITableViewDat
             
             self.present(alert, animated: true, completion: nil)
         }
-        
-        
 
 }
 }
